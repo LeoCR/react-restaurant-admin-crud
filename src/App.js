@@ -1,26 +1,35 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Header from "./components/Header";
+import {Provider} from "react-redux";
+import store from "./store";
+import AddStrongDish from "./components/add/AddStrongDish";
+import ShowStrongsDishes from "./components/show/ShowStrongsDishes";
+import {BrowserRouter as Router,Route,Switch} from "react-router-dom";
+import {getStrongsDishes} from "./actions/strongDishActions";
 
 class App extends Component {
+  constructor(props){
+      super(props);
+      store.dispatch(getStrongsDishes());
+  }
+  
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <Provider store={store}>
+          <Router>
+            <React.Fragment>
+                <Header/>
+                <div className="container">
+                  <Switch>
+                      <Route exact path="/" component={ShowStrongsDishes}/>
+                      <Route exact path="/strong-dish" component={ShowStrongsDishes}/>
+                      <Route exact path="/add/strong-dish" component={AddStrongDish}/>
+                      <Route exact path="/edit/strong-dish/:id" component={AddStrongDish}/>
+                  </Switch>  
+                </div>
+            </React.Fragment>
+          </Router>
+      </Provider>
     );
   }
 }
