@@ -1,4 +1,4 @@
-import { SHOW_STRONGS_DISHES, DELETE_STRONG_DISH,ADD_STRONG_DISH } from "../constants/strongDishTypes";
+import { SHOW_STRONGS_DISHES, DELETE_STRONG_DISH,ADD_STRONG_DISH,SHOW_STRONG_DISH } from "../constants/strongDishTypes";
 const initialState={
     strongsDishes:[]
 }
@@ -18,6 +18,11 @@ export default function strongsDishesReducer(state=initialState,action){
             return{
                 ...state,
                 strongsDishes:[...state.strongsDishes,action.payload]
+            }
+        case SHOW_STRONG_DISH:
+            return {
+                ...state,
+                strongDish:action.payload
             }
         default:
             return state;

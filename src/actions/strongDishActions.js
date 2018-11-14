@@ -1,4 +1,9 @@
-import { SHOW_STRONGS_DISHES,DELETE_STRONG_DISH,ADD_STRONG_DISH} from "../constants/strongDishTypes"
+import { SHOW_STRONGS_DISHES,
+    DELETE_STRONG_DISH,
+    ADD_STRONG_DISH,
+    SHOW_STRONG_DISH,
+    EDIT_STRONG_DISH
+} from "../constants/strongDishTypes"
 import axios from 'axios';
 export  const getStrongsDishes=()=>async dispatch=>{
     const response = await axios.get('http://www.isplusdesign.co.cr:49652/api/strongs-dish');
@@ -21,19 +26,18 @@ export const addStrongDish=dish=>async dispatch=>{
         payload:response.data
     })
 }
-/*
-
-export const showSTRONG_DISH=id=>async dispatch=>{
-    const response=await axios.get(`http://www.isplusdesign.co.cr:49652/STRONG_DISHs/${id}`);
+export const showSrongDish=id=>async dispatch=>{
+    const response=await axios.get(`http://www.isplusdesign.co.cr:49652/api/strong-dish/show/${id}`);
     dispatch({
         type:SHOW_STRONG_DISH,
         payload:response.data
     })
 }
-export const editSTRONG_DISH=STRONG_DISH=>async dispatch=>{
-    const response = await axios.put(`http://www.isplusdesign.co.cr:49652/STRONG_DISHs/${STRONG_DISH.id}`,STRONG_DISH);
+
+export const editStrongDish=dish=>async dispatch=>{
+    const response = await axios.put(`http://www.isplusdesign.co.cr:49652/api/strong-dish/update/${dish.idStrongDish}`,dish);
     dispatch({
         type:EDIT_STRONG_DISH,
         payload:response.data
     })
-} */
+}

@@ -3,15 +3,14 @@ import {Link} from "react-router-dom";
 import {deleteStrongDish} from "../../actions/strongDishActions";
 import {connect} from "react-redux";
 class StrongDish extends Component{
-    constructor(props){
-        super(props);
-        this.deleteMainCourse=this.deleteMainCourse.bind(this);
-    }
-    deleteMainCourse(){
+    
+    deleteMainCourse=()=>{
         console.log('Eliminando');
-        this.props.deleteStrongDish(this.props.info.idStrongDish);
-        console.log(this.props);
-        window.location.reload();
+        const id=this.props.info.idStrongDish;
+        this.props.deleteStrongDish(id);
+        setTimeout(() => {
+            window.location.reload();
+        }, 1200);
     }
     render(){
         const {idStrongDish,name,price} = this.props.info;
