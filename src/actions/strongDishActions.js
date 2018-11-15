@@ -26,7 +26,7 @@ export const addStrongDish=dish=>async dispatch=>{
         payload:response.data
     })
 }
-export const showSrongDish=id=>async dispatch=>{
+export const showStrongDish=id=>async dispatch=>{
     const response=await axios.get(`http://www.isplusdesign.co.cr:49652/api/strong-dish/show/${id}`);
     dispatch({
         type:SHOW_STRONG_DISH,

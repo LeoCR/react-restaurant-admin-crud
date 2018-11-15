@@ -20,6 +20,12 @@ class AddStrongDish extends Component{
         this.categoryDish=this.categoryDish.bind(this);
         this.priceDish=this.priceDish.bind(this);
         this.addNewStrongDish=this.addNewStrongDish.bind(this);
+        this.idStrongDish=this.idStrongDish.bind(this);
+    }
+    idStrongDish(e){
+        this.setState({
+            name:e.target.value
+        });
     }
     nameDish(e){
         this.setState({
@@ -33,8 +39,9 @@ class AddStrongDish extends Component{
     }
     pictureDish(e){
         this.setState({
-            picture:e.target.value
+            picture:e.target.files[0]
         });
+        console.log(e.target.files[0]);
     }
     categoryDish(e){
         this.setState({
@@ -47,7 +54,8 @@ class AddStrongDish extends Component{
         });
     }
     addNewStrongDish(e){
-        e.preventDefault();
+        /* 
+        */
         const {
             idStrongDish ,
             name,
@@ -59,12 +67,13 @@ class AddStrongDish extends Component{
         if(name===''||price===''||description===''||category==''||picture===''){
             this.setState({
                 error:true
-            })
+            });
+            e.preventDefault();
         }
         else{
             this.setState({
                 error:false
-            });
+            });/*
             const infoDish={
                 idStrongDish,
                 name,
@@ -75,8 +84,8 @@ class AddStrongDish extends Component{
             }
             console.log(infoDish);
             this.props.addStrongDish(infoDish);
-            this.props.history.push('/');
-        }
+            this.props.history.push('/');*/
+        }  
     }
     componentDidMount(){
         var totalOfItems=0;var idString
@@ -96,7 +105,7 @@ class AddStrongDish extends Component{
                 idStrongDish:idString
             });
             console.log('this.state.idStrongDish '+this.state.idStrongDish);
-        }, 900);
+        }, 300);
         
     }
     render(){
@@ -107,26 +116,42 @@ class AddStrongDish extends Component{
                     <div className="card">
                         <div className="card-body">
                             <h2 className="text-center">Add New Dish</h2>
-                            <form encType="multipart/form-data" onSubmit={this.addNewStrongDish}>
+                            <form encType="multipart/form-data" onSubmit={this.addNewStrongDish} 
+                            method="post" action="/strong-dish/add/">
                                 <div className="form-group">
                                     <label>Name</label>
-                                    <input type="text" onChange={this.nameDish} className="form-control" placeholder="Name" />
+                                    <input type="text" defaultValue={this.state.idStrongDish} 
+                                    onChange={this.idStrongDish} className="" style={{display:'none'}}
+                                     name="idStrongDish"/>
+                                    <input type="text" onChange={this.nameDish} name="name"
+                                     className="form-control" placeholder="Name" />
                                 </div>
                                 <div className="form-group">
                                     <label>Description</label>
-                                    <input type="text" onChange={this.descriptionDish} className="form-control" placeholder="Description" />
+                                    <input type="text"
+                                        name="description"
+                                     onChange={this.descriptionDish} className="form-control" 
+                                    placeholder="Description" />
                                 </div>
                                 <div className="form-group">
                                     <label>Picture</label>
-                                    <input type="file" onChange={this.pictureDish} className="form-control-file" placeholder="Picture" />
+                                    <input type="file" onChange={this.pictureDish} 
+                                    className="form-control-file" 
+                                    placeholder="Picture" name="picture"/>
                                 </div>
                                 <div className="form-group">
                                     <label>Category</label>
-                                    <input type="text" onChange={this.categoryDish} className="form-control" placeholder="Category" />
+                                    <input type="text" onChange={this.categoryDish} 
+                                    className="form-control"
+                                    name="category"
+                                     placeholder="Category" />
                                 </div>
                                 <div className="form-group">
                                     <label>Price</label>
-                                    <input type="text" onChange={this.priceDish} className="form-control" placeholder="Price" />
+                                    <input type="text" onChange={this.priceDish} 
+                                    className="form-control" 
+                                    name="price"
+                                    placeholder="Price" />
                                 </div>
                             {error ? 
                             <div className="font-weight-bold alert-danger text-center mt-4">
@@ -134,7 +159,7 @@ class AddStrongDish extends Component{
                             </div>
                             :''
                             }
-                                <button type="submit" className="btn btn-primary font-weight-bold text-uppercase d-block w-100">Agregar</button>
+                                <button type="submit" className="btn btn-primary font-weight-bold text-uppercase d-block w-100">Add</button>
                             </form>
                             
                         </div>
