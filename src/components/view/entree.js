@@ -1,33 +1,34 @@
 import React,{Component} from 'react';
 import {Link} from "react-router-dom";
-import {deleteStrongDish} from "../../actions/strongDishActions";
+import {deleteEntree} from "../../actions/entreeActions";
 import {connect} from "react-redux";
-class StrongDish extends Component{ 
-    deleteMainCourse=()=>{
-        const id=this.props.info.idStrongDish;
-        this.props.deleteStrongDish(id);
+class Entree extends Component{ 
+    deleteEntree=()=>{
+        const id=this.props.info.idEntree;
+        this.props.deleteEntree(id);
         setTimeout(() => {
             window.location.reload();
         }, 1200);
     }
     render(){
-        const {idStrongDish,name,price} = this.props.info;
+        const {idEntree,name,price,picture} = this.props.info;
         return(
-            <li className="list-group-item" id={idStrongDish}>
+            <li className="list-group-item" id={idEntree}>
                 <div className="row justify-content-between align-items-center">
                     <div className="col-md-8 d-flex justify-content-between align-items-center">
                         <p className="text-dark m-0">
                             {name}
                         </p>
                         <span className="badge badge-warning text-dark"> $ {price}</span>
+                        <img src={picture} alt={name} className="responsive-img col-md-3"/>
                     </div>
                     <div className="col-md-4 d-flex justify-content-end acciones">
-                        <Link to={`/edit/strong-dish/${idStrongDish}`} className="btn btn-success mr-2">Edit</Link>
-                        <button type="button" className="btn btn-primary ml-2" onClick={this.deleteMainCourse}>Delete</button>
+                        <Link to={`/edit/entree/${idEntree}`} className="btn btn-success mr-2">Edit</Link>
+                        <button type="button" className="btn btn-primary ml-2" onClick={this.deleteEntree}>Delete</button>
                     </div>
                 </div>
             </li>
         )
     }
 }
-export default connect(null,{deleteStrongDish})( StrongDish);
+export default connect(null,{deleteEntree})( Entree);

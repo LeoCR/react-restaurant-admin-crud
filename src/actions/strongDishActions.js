@@ -1,12 +1,10 @@
-import { SHOW_STRONGS_DISHES,
-    DELETE_STRONG_DISH,
-    ADD_STRONG_DISH,
-    SHOW_STRONG_DISH,
+import { SHOW_STRONGS_DISHES,DELETE_STRONG_DISH,
+    ADD_STRONG_DISH, SHOW_STRONG_DISH,
     EDIT_STRONG_DISH
 } from "../constants/strongDishTypes"
 import axios from 'axios';
 export  const getStrongsDishes=()=>async dispatch=>{
-    const response = await axios.get('http://www.isplusdesign.co.cr:49652/api/strongs-dish');
+    const response = await axios.get('http://www.isplusdesign.co.cr:49652/api/strongs-dishes');
     dispatch({
         type:SHOW_STRONGS_DISHES,
         payload:response.data

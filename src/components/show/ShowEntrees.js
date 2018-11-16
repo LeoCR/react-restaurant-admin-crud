@@ -1,20 +1,20 @@
 import React,{Component} from 'react';
 import {connect} from "react-redux";
 import axios from 'axios';
-import StrongDish from "../view/strongDish";
-import {getStrongsDishes} from "../../actions/strongDishActions"
-class ShowStrongsDishes extends Component{
+import Entree from "../view/entree";
+import {getEntrees} from "../../actions/entreeActions"
+class ShowEntrees extends Component{
     constructor(props){
         super(props);
         this.state={
-            mainCourse:[],
+            entree:[],
             isLoading: true,
             errors: null
       };
     }
     componentDidMount(){
-        this.props.getStrongsDishes();
-        axios.get('http://www.isplusdesign.co.cr:49652/api/strongs-dishes')
+        this.props.getEntrees();
+        axios.get('http://www.isplusdesign.co.cr:49652/api/entrees')
             .then(response => {
                 console.log(response.data);
                 this.setState({
@@ -25,22 +25,22 @@ class ShowStrongsDishes extends Component{
                 console.log(error);
         });
         setTimeout(() => {
-            console.log('this.props.strongsDishes');
-            console.log(this.props.strongsDishes);
+            console.log('this.props.entrees');
+            console.log(this.props.entrees);
         },1200);
         console.log(this.props);
     }
     render(){
         const { isLoading } = this.state;
-        const {strongsDishes}=this.props;
+        const {entrees}=this.props;
         return(
             <React.Fragment>
                 {!isLoading ? ( 
                 <div className="row justify-content-center">
                     <div className="col-md-9">
                         <ul>
-                            {strongsDishes.map(strongDish=>
-                                 <StrongDish key={strongDish.idStrongDish} info={strongDish}/> 
+                            {entrees.map(entree=>
+                                 <Entree key={entree.idEntree} info={entree}/> 
                             )}
                         </ul>
                     </div>
@@ -52,6 +52,6 @@ class ShowStrongsDishes extends Component{
     }
 }
 const mapStateToProps=state=>({
-    strongsDishes:state.strongsDishes.strongsDishes
+    entrees:state.entrees.entrees
 })
-export default connect(mapStateToProps,{getStrongsDishes})(ShowStrongsDishes);
+export default connect(mapStateToProps,{getEntrees})(ShowEntrees);

@@ -6,12 +6,7 @@ class Header extends Component{
         this.toggleSubmenu=this.toggleSubmenu.bind(this);
     }
     toggleSubmenu(e){
-        var dropDown=e.currentTarget;
-        dropDown.classList.toggle("open");
-    }
-    componentDidMount(){
-        var dropdown= document.querySelector(".dropdown");
-        dropdown.addEventListener("click",this.toggleSubmenu);
+        e.currentTarget.classList.toggle("open");
     }
     render(){
         return(
@@ -24,26 +19,40 @@ class Header extends Component{
                         <span className="icon-bar"></span>
                         <span className="icon-bar"></span>
                     </button>
-                    <Link className="navbar-brand" to="/">React Redux</Link>
+                    <Link className="navbar-brand" to="/">React Redux CRUD</Link>
                     </div>
 
                     <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
                     <ul className="nav navbar-nav">
-                        
-                        <li className="dropdown">
-                            <Link to="/strong-dish" className="dropdown-toggle">Strong's Dishes <span className="caret"></span>
+                        <li className="dropdown" onClick={this.toggleSubmenu}>
+                            <Link to="/strongs-dishes" className="dropdown-toggle">Strong's Dishes <span className="caret"></span>
                             </Link>
                             <ul className="dropdown-menu" role="menu">
                                 <li>
                                     <Link to="/add/strong-dish">Add</Link>
                                 </li>
                                 <li>
-                                    <Link to="/strong-dish">Edit</Link>
+                                    <Link to="/strongs-dishes">Edit</Link>
                                 </li>
                                 <li>
-                                    <Link to="/strong-dish">Delete</Link>
+                                    <Link to="/strongs-dishes">Delete</Link>
                                 </li>
                             </ul>
+                        </li>
+                        <li className="dropdown" onClick={this.toggleSubmenu}>
+                            <Link to="/entrees" className="dropdown-toggle">Entrees <span className="caret"></span>
+                            </Link>
+                            <ul className="dropdown-menu" role="menu">
+                                <li>
+                                    <Link to="/add/entree">Add</Link>
+                                </li>
+                                <li>
+                                    <Link to="/entrees">Edit</Link>
+                                </li>
+                                <li>
+                                    <Link to="/entrees">Delete</Link>
+                                </li>
+                            </ul> 
                         </li>
                     </ul>
                     

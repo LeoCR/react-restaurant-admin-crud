@@ -1,5 +1,7 @@
-import strongsDishesReducer from "./strongsDishesReducer"
+import strongsDishesReducer from "./strongsDishesReducer";
+import entreesReducer from "./entreesReducer";
 import {combineReducers} from "redux";
 export default combineReducers({
-    strongsDishes:strongsDishesReducer
+    strongsDishes:strongsDishesReducer,
+    entrees:entreesReducer
 });

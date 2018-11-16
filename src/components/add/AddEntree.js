@@ -1,12 +1,12 @@
 import React,{Component} from 'react';
 import axios from "axios";
 import {connect} from "react-redux";
-import {addStrongDish} from "../../actions/strongDishActions";
-class AddStrongDish extends Component{
+import {addEntree} from "../../actions/entreeActions";
+class AddEntree extends Component{
     constructor(props){
         super(props);
         this.state={
-            idStrongDish:'',
+            idEntree:'',
             name:'',
             description:'',
             picture:'',
@@ -20,9 +20,9 @@ class AddStrongDish extends Component{
         this.categoryDish=this.categoryDish.bind(this);
         this.priceDish=this.priceDish.bind(this);
         this.addNewStrongDish=this.addNewStrongDish.bind(this);
-        this.idStrongDish=this.idStrongDish.bind(this);
+        this.idEntree=this.idEntree.bind(this);
     }
-    idStrongDish(e){
+    idEntree(e){
         this.setState({
             name:e.target.value
         });
@@ -57,7 +57,7 @@ class AddStrongDish extends Component{
         /* 
         */
         const {
-            idStrongDish ,
+            idEntree ,
             name,
             description,
             price,
@@ -75,7 +75,7 @@ class AddStrongDish extends Component{
                 error:false
             });/*
             const infoDish={
-                idStrongDish,
+                idEntree,
                 name,
                 price,
                 description,
@@ -88,8 +88,8 @@ class AddStrongDish extends Component{
         }  
     }
     componentDidMount(){
-        var totalOfItems=0;var idString
-        axios.get('http://www.isplusdesign.co.cr:49652/api/strongs-dishes')
+        var totalOfItems=0;var idString;
+        axios.get('http://www.isplusdesign.co.cr:49652/api/entrees')
             .then(response => {
                 for(var properties in response.data) {
                         ++totalOfItems;
@@ -102,9 +102,9 @@ class AddStrongDish extends Component{
         });
         setTimeout(() => {
             this.setState({
-                idStrongDish:idString
+                idEntree:idString
             });
-            console.log('this.state.idStrongDish '+this.state.idStrongDish);
+            console.log('this.state.idEntree '+this.state.idEntree);
         }, 300);
         
     }
@@ -115,14 +115,14 @@ class AddStrongDish extends Component{
                 <div className="col-md-8">
                     <div className="card">
                         <div className="card-body">
-                            <h2 className="text-center">Add New Dish</h2>
+                            <h2 className="text-center">Add New Entree</h2>
                             <form encType="multipart/form-data" onSubmit={this.addNewStrongDish} 
-                            method="post" action="/strong-dish/add/">
+                            method="post" action="/entree/add/">
                                 <div className="form-group">
                                     <label>Name</label>
-                                    <input type="text" defaultValue={this.state.idStrongDish} 
-                                    onChange={this.idStrongDish} className="" style={{display:'none'}}
-                                     name="idStrongDish"/>
+                                    <input type="text" defaultValue={this.state.idEntree} 
+                                    onChange={this.idEntree} className="" style={{display:'none'}}
+                                     name="idEntree"/>
                                     <input type="text" onChange={this.nameDish} name="name"
                                      className="form-control" placeholder="Name" />
                                 </div>
@@ -169,4 +169,4 @@ class AddStrongDish extends Component{
         )
     }
 }
-export default connect(null,{addStrongDish})(AddStrongDish);
+export default connect(null,{addEntree})(AddEntree);
