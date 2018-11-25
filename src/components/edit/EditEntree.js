@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import {connect} from "react-redux";
-import {showEntree} from "../../actions/entreeActions";
+import {showEntree,updateEntree} from "../../actions/entreeActions";
 class EditEntree extends Component{
     constructor(props){
         super(props);
@@ -11,7 +11,8 @@ class EditEntree extends Component{
             picture:'',
             category:'',
             price:'',
-            error:true
+            error:false,
+            changedPicture:false
         }
         this.nameEntree=this.nameEntree.bind(this);
         this.descriptionEntree=this.descriptionEntree.bind(this);
@@ -41,7 +42,7 @@ class EditEntree extends Component{
             picture,
             price
         })
-        console.log(nextProps.strongDish);
+        console.log(nextProps.entree);
         
     }
     nameEntree(e){
@@ -57,22 +58,13 @@ class EditEntree extends Component{
     pictureEntree(e){
         this.setState({
             //picture:e.target.value
-            picture:e.target.files[0]
+            picture:e.target.files[0],
+            changedPicture:true
         });
-        const {
-            idEntree ,
-            name,
-            description,
-            price,
-            category,
-            picture
-        } =this.state;
-        
-        if(name!==''||price!==''||description!==''||category!==''){
-            document.querySelector('#form-update-entree').setAttribute("action", "/entree/update/");
-            document.querySelector('#form-update-entree').setAttribute("method", "post");
-        }
-        
+        document.querySelector("#picture_upload").setAttribute("name","picture");
+        document.querySelector("#picture_hidden").removeAttribute("name");
+        document.querySelector("#form-entree-update").setAttribute("action","/entree/update/");
+        document.querySelector("#form-entree-update").setAttribute("method","post")
     }
     categoryEntree(e){
         this.setState({
@@ -92,9 +84,10 @@ class EditEntree extends Component{
             description,
             price,
             category,
-            picture
+            picture,
+            changedPicture
         } =this.state;
-        if(name===''||price===''||description===''||category===''||picture===''){
+        if(name===''||price===''||description===''||category===''){
             this.setState({
                 error:true
             });
@@ -104,7 +97,7 @@ class EditEntree extends Component{
             this.setState({
                 error:false
             });
-            /* const infoDish={
+             const infoDish={
                 idEntree,
                 name,
                 price,
@@ -112,9 +105,12 @@ class EditEntree extends Component{
                 category,
                 picture
             }
-            console.log(infoDish); */
-            //this.props.addStrongDish(infoDish);
-            //this.props.history.push('/');
+            console.log(infoDish); 
+            if(changedPicture===false){
+                this.props.updateEntree(infoDish);
+                this.props.history.push('/');
+            }
+            
         }
     }
     
@@ -127,7 +123,7 @@ class EditEntree extends Component{
                         <div className="card-body">
                             <h2 className="text-center">Edit an Entree</h2>
                             <form encType="multipart/form-data" onSubmit={this.editEntree} 
-                            id="form-update-entree">
+                            id="form-entree-update" >
                                 <div className="form-group">
                                     <label>Name</label>
                                     <input type="text" defaultValue={this.state.idEntree} 
@@ -148,12 +144,11 @@ class EditEntree extends Component{
                                 </div>
                                 <div className="form-group">
                                     <label>Picture</label>
-                                    <input type="file" defaultValue={picture} 
+                                    <input type="file" id="picture_upload" defaultValue={picture} 
                                     onChange={this.pictureEntree} className="form-control-file"
-                                     placeholder="Picture" name="picture"/>
-                                <input type="text" defaultValue={picture} 
-                                    onChange={this.pictureEntree} className="form-control-file"
-                                    readonly="readonly" />
+                                     placeholder="Picture" />
+                                <input type="text" defaultValue={picture} className="form-control-file"
+                                    readonly="readonly" name="picture" id="picture_hidden" style={{display:"none"}}/>
                                 </div>
                                 <div className="form-group">
                                     <label>Category</label>
@@ -191,4 +186,4 @@ class EditEntree extends Component{
 const mapStateToProps=state=>({
     entree:state.entrees.entree
 })
-export default connect(mapStateToProps,{showEntree})(EditEntree);
+export default connect(mapStateToProps,{showEntree,updateEntree})(EditEntree);

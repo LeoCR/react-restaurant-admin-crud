@@ -30,3 +30,10 @@ export const addEntree=dish=>async dispatch=>{
         payload:response.data
     })
 }
+export const updateEntree=dish=>async dispatch=>{
+    const response = await axios.put(`http://www.isplusdesign.co.cr:49652/api/entree/update/${dish.idEntree}`,dish);
+    dispatch({
+        type:EDIT_ENTREE,
+        payload:response.data
+    })
+}

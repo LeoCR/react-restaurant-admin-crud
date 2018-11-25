@@ -1,12 +1,12 @@
 import React,{Component} from 'react';
 import axios from "axios";
 import {connect} from "react-redux";
-import {addEntree} from "../../actions/entreeActions";
-class AddEntree extends Component{
+import {addDessert} from "../../actions/dessertActions";
+class AddDessert extends Component{
     constructor(props){
         super(props);
         this.state={
-            idEntree:'',
+            idDessert:'',
             name:'',
             description:'',
             picture:'',
@@ -14,48 +14,48 @@ class AddEntree extends Component{
             price:'',
             error:false
         }
-        this.nameDish=this.nameDish.bind(this);
-        this.descriptionDish=this.descriptionDish.bind(this);
-        this.pictureDish=this.pictureDish.bind(this);
-        this.categoryDish=this.categoryDish.bind(this);
-        this.priceDish=this.priceDish.bind(this);
-        this.addNewStrongDish=this.addNewStrongDish.bind(this);
-        this.idEntree=this.idEntree.bind(this);
+        this.nameDessert=this.nameDessert.bind(this);
+        this.descriptionDessert=this.descriptionDessert.bind(this);
+        this.pictureDessert=this.pictureDessert.bind(this);
+        this.categoryDessert=this.categoryDessert.bind(this);
+        this.priceDessert=this.priceDessert.bind(this);
+        this.addNewDessert=this.addNewDessert.bind(this);
+        this.idDessert=this.idDessert.bind(this);
     }
-    idEntree(e){
+    idDessert(e){
         this.setState({
-            idEntree:e.target.value
+            idDessert:e.target.value
         });
     }
-    nameDish(e){
+    nameDessert(e){
         this.setState({
             name:e.target.value
         });
     }
-    descriptionDish(e){
+    descriptionDessert(e){
         this.setState({
             description:e.target.value
         });
     }
-    pictureDish(e){
+    pictureDessert(e){
         this.setState({
             picture:e.target.files[0]
         });
         console.log(e.target.files[0]);
     }
-    categoryDish(e){
+    categoryDessert(e){
         this.setState({
             category:e.target.value
         });
     }
-    priceDish(e){
+    priceDessert(e){
         this.setState({
             price:e.target.value
         });
     }
-    addNewStrongDish(e){
+    addNewDessert(e){
         const {
-            idEntree ,
+            idDessert ,
             name,
             description,
             price,
@@ -73,7 +73,7 @@ class AddEntree extends Component{
                 error:false
             });/*
             const infoDish={
-                idEntree,
+                idDessert,
                 name,
                 price,
                 description,
@@ -81,30 +81,29 @@ class AddEntree extends Component{
                 picture
             }
             console.log(infoDish);
-            this.props.addStrongDish(infoDish);
+            this.props.addDessert(infoDish);
             this.props.history.push('/');*/
         }  
     }
     componentDidMount(){
-        var totalOfItems=0;var idString;
-        axios.get('http://www.isplusdesign.co.cr:49652/api/entrees')
+        var totalOfItems=0;var idString
+        axios.get('http://www.isplusdesign.co.cr:49652/api/desserts')
             .then(response => {
                 for(var properties in response.data) {
                         ++totalOfItems;
                 }
             }).then(()=>{
-                idString=totalOfItems+1+'SGDH';//console.log(idString); 
+                idString=totalOfItems+1+'DSSRT';//console.log(idString); 
             })
             .catch(error => {
                 console.log(error);
         });
         setTimeout(() => {
             this.setState({
-                idEntree:idString
+                idDessert:idString
             });
-            console.log('this.state.idEntree '+this.state.idEntree);
+            console.log('this.state.idDessert '+this.state.idDessert);
         }, 300);
-        
     }
     render(){
         const {error} = this.state;
@@ -113,40 +112,40 @@ class AddEntree extends Component{
                 <div className="col-md-8">
                     <div className="card">
                         <div className="card-body">
-                            <h2 className="text-center">Add New Entree</h2>
-                            <form encType="multipart/form-data" onSubmit={this.addNewStrongDish} 
-                            method="post" action="/entree/add/">
+                            <h2 className="text-center">Add New Dessert</h2>
+                            <form encType="multipart/form-data" onSubmit={this.addNewDessert} 
+                            method="post" action="/dessert/add/">
                                 <div className="form-group">
                                     <label>Name</label>
-                                    <input type="text" defaultValue={this.state.idEntree} 
-                                    onChange={this.idEntree} className="" style={{display:'none'}}
-                                     name="idEntree"/>
-                                    <input type="text" onChange={this.nameDish} name="name"
+                                    <input type="text" defaultValue={this.state.idDessert} 
+                                    onChange={this.idDessert} className="" style={{display:'none'}}
+                                     name="idDessert"/>
+                                    <input type="text" onChange={this.nameDessert} name="name"
                                      className="form-control" placeholder="Name" />
                                 </div>
                                 <div className="form-group">
                                     <label>Description</label>
                                     <input type="text"
                                         name="description"
-                                     onChange={this.descriptionDish} className="form-control" 
+                                     onChange={this.descriptionDessert} className="form-control" 
                                     placeholder="Description" />
                                 </div>
                                 <div className="form-group">
                                     <label>Picture</label>
-                                    <input type="file" onChange={this.pictureDish} 
+                                    <input type="file" onChange={this.pictureDessert} 
                                     className="form-control-file" 
                                     placeholder="Picture" name="picture"/>
                                 </div>
                                 <div className="form-group">
                                     <label>Category</label>
-                                    <input type="text" onChange={this.categoryDish} 
+                                    <input type="text" onChange={this.categoryDessert} 
                                     className="form-control"
                                     name="category"
                                      placeholder="Category" />
                                 </div>
                                 <div className="form-group">
                                     <label>Price</label>
-                                    <input type="text" onChange={this.priceDish} 
+                                    <input type="text" onChange={this.priceDessert} 
                                     className="form-control" 
                                     name="price"
                                     placeholder="Price" />
@@ -159,7 +158,6 @@ class AddEntree extends Component{
                             }
                                 <button type="submit" className="btn btn-primary font-weight-bold text-uppercase d-block w-100">Add</button>
                             </form>
-                            
                         </div>
                     </div>
                 </div>
@@ -167,4 +165,4 @@ class AddEntree extends Component{
         )
     }
 }
-export default connect(null,{addEntree})(AddEntree);
+export default connect(null,{addDessert})(AddDessert);

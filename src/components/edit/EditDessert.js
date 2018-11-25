@@ -1,11 +1,11 @@
 import React,{Component} from 'react';
 import {connect} from "react-redux";
-import {showStrongDish,editStrongDish} from "../../actions/strongDishActions";
-class EditStrongDish extends Component{
+import {showDessert,editDessert} from "../../actions/dessertActions";
+class EditDessert extends Component{
     constructor(props){
         super(props);
         this.state={
-            idStrongDish:'',
+            idDessert:'',
             name:'',
             description:'',
             picture:'',
@@ -14,69 +14,68 @@ class EditStrongDish extends Component{
             error:false,
             changedPicture:false
         }
-        this.nameDish=this.nameDish.bind(this);
-        this.descriptionDish=this.descriptionDish.bind(this);
-        this.pictureDish=this.pictureDish.bind(this);
-        this.categoryDish=this.categoryDish.bind(this);
-        this.priceDish=this.priceDish.bind(this);
-        this.editStrongDish=this.editStrongDish.bind(this);
-        this.idStrongDish=this.idStrongDish.bind(this);
+        this.nameDessert=this.nameDessert.bind(this);
+        this.descriptionDessert=this.descriptionDessert.bind(this);
+        this.pictureDessert=this.pictureDessert.bind(this);
+        this.categoryDessert=this.categoryDessert.bind(this);
+        this.priceDessert=this.priceDessert.bind(this);
+        this.editDessert=this.editDessert.bind(this);
+        this.idDessert=this.idDessert.bind(this);
     }
-    idStrongDish(e){
+    idDessert(e){
         this.setState({
-            idStrongDish:e.target.value
+            idDessert:e.target.value
         });
-
     }
     componentDidMount(){
         const {id}=this.props.match.params;
-        this.props.showStrongDish(id);
+        this.props.showDessert(id);
     }
     componentWillReceiveProps(nextProps,nextState){
-        const {idStrongDish, name,price,description,category,picture}=nextProps.strongDish;
+        const {idDessert, name,price,description,category,picture}=nextProps.dessert;
         this.setState({
-            idStrongDish,
+            idDessert,
             name,
             description,
             category,
             picture,
             price
         })
-        console.log(nextProps.strongDish);
+        console.log(nextProps.dessert);
     }
-    nameDish(e){
+    nameDessert(e){
         this.setState({
             name:e.target.value
         });
     }
-    descriptionDish(e){
+    descriptionDessert(e){
         this.setState({
             description:e.target.value
         });
     }
-    pictureDish(e){
+    pictureDessert(e){
         this.setState({
             picture:e.target.files[0],
             changedPicture:true
         });  
         document.querySelector("#picture_upload").setAttribute("name","picture");
         document.querySelector("#picture_hidden").removeAttribute("name");
-        document.querySelector("#form-strong-dish-update").setAttribute("action","/strong-dish/update/");
-        document.querySelector("#form-strong-dish-update").setAttribute("method","post");
+        document.querySelector("#form-dessert-update").setAttribute("action","/dessert/update/");
+        document.querySelector("#form-dessert-update").setAttribute("method","post");
     }
-    categoryDish(e){
+    categoryDessert(e){
         this.setState({
             category:e.target.value
         });
     }
-    priceDish(e){
+    priceDessert(e){
         this.setState({
             price:e.target.value
         });
     }
-    editStrongDish(e){    
+    editDessert(e){    
         const {
-            idStrongDish ,
+            idDessert ,
             name,
             description,
             price,
@@ -94,22 +93,21 @@ class EditStrongDish extends Component{
             this.setState({
                 error:false
             });
-            const infoDish={
-                idStrongDish,
+            const infoDessert={
+                idDessert,
                 name,
                 price,
                 description,
                 category,
                 picture
             }
-            console.log(infoDish); 
+            console.log(infoDessert); 
             if(changedPicture===false){
-                this.props.editStrongDish(infoDish);
+                this.props.editDessert(infoDessert);
                 this.props.history.push('/');
             }
         }
     }
-    
     render(){
         const {name,price,description,category,picture,error} = this.state;
         return(
@@ -118,14 +116,14 @@ class EditStrongDish extends Component{
                     <div className="card">
                         <div className="card-body">
                             <h2 className="text-center">Edit a Strong Dish</h2>
-                            <form encType="multipart/form-data" onSubmit={this.editStrongDish} 
-                            id="form-strong-dish-update">
+                            <form encType="multipart/form-data" onSubmit={this.editDessert} 
+                            id="form-dessert-update">
                                 <div className="form-group">
                                     <label>Name</label>
-                                    <input type="text" defaultValue={this.state.idStrongDish} 
-                                    onChange={this.idStrongDish} className="" style={{display:'none'}}
-                                     name="idStrongDish"/>
-                                    <input type="text" defaultValue={name} onChange={this.nameDish} 
+                                    <input type="text" defaultValue={this.state.idDessert} 
+                                    onChange={this.idDessert} className="" style={{display:'none'}}
+                                     name="idDessert"/>
+                                    <input type="text" defaultValue={name} onChange={this.nameDessert} 
                                     className="form-control" placeholder="Name"
                                     name="name"
                                      />
@@ -133,7 +131,7 @@ class EditStrongDish extends Component{
                                 <div className="form-group">
                                     <label>Description</label>
                                     <input type="text" defaultValue={description} 
-                                    onChange={this.descriptionDish} className="form-control" 
+                                    onChange={this.descriptionDessert} className="form-control" 
                                     placeholder="Description"
                                     name="description" 
                                     />
@@ -141,7 +139,7 @@ class EditStrongDish extends Component{
                                 <div className="form-group">
                                     <label>Picture</label>
                                     <input type="file" id="picture_upload" defaultValue={picture} 
-                                    onChange={this.pictureDish} className="form-control-file"
+                                    onChange={this.pictureDessert} className="form-control-file"
                                      placeholder="Picture" />
                                 <input type="text" defaultValue={picture} className="form-control-file"
                                     readonly="readonly" name="picture" id="picture_hidden" style={{display:"none"}}/>
@@ -149,7 +147,7 @@ class EditStrongDish extends Component{
                                 <div className="form-group">
                                     <label>Category</label>
                                     <input type="text" defaultValue={category} 
-                                    onChange={this.categoryDish} className="form-control"
+                                    onChange={this.categoryDessert} className="form-control"
                                      placeholder="Category" 
                                      name="category"
                                      />
@@ -157,7 +155,7 @@ class EditStrongDish extends Component{
                                 <div className="form-group">
                                     <label>Price</label>
                                     <input type="text" defaultValue={price} 
-                                    onChange={this.priceDish} 
+                                    onChange={this.priceDessert} 
                                     className="form-control"
                                      placeholder="Price" 
                                      name="price"
@@ -180,6 +178,6 @@ class EditStrongDish extends Component{
     }
 }
 const mapStateToProps=state=>({
-    strongDish:state.strongsDishes.strongDish
+    dessert:state.desserts.dessert
 })
-export default connect(mapStateToProps,{showStrongDish,editStrongDish})(EditStrongDish);
+export default connect(mapStateToProps,{showDessert,editDessert})(EditDessert);

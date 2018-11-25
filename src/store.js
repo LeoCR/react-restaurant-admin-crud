@@ -3,7 +3,10 @@ import thunk from 'redux-thunk';
 import rootReducer from './reducers';
 
 const initialState = {
-    strongsDishes:[]
+    strongsDishes:[],
+    entrees:[],
+    ingredients:[],
+    desserts:[]
 };
 
 const store = createStore(rootReducer, initialState, applyMiddleware(thunk)/* , 

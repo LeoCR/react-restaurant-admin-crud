@@ -23,7 +23,7 @@ class Entree extends Component{
                         <img src={picture} alt={name} className="responsive-img col-md-3"/>
                     </div>
                     <div className="col-md-4 d-flex justify-content-end acciones">
-                        <Link to={`/edit/entree/${idEntree}`} className="btn btn-success mr-2">Edit</Link>
+                        <Link to={`/admin/edit/entree/${idEntree}`} className="btn btn-success mr-2">Edit</Link>
                         <button type="button" className="btn btn-primary ml-2" onClick={this.deleteEntree}>Delete</button>
                     </div>
                 </div>

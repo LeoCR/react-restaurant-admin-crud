@@ -24,7 +24,7 @@ class AddStrongDish extends Component{
     }
     idStrongDish(e){
         this.setState({
-            name:e.target.value
+            idStrongDish:e.target.value
         });
     }
     nameDish(e){
