@@ -14,7 +14,7 @@ class ShowDesserts extends Component{
     }
     componentDidMount(){
         this.props.getDesserts();
-        axios.get('http://www.isplusdesign.co.cr:49652/api/desserts')
+        axios.get('http://localhost:49652/api/desserts')
             .then(response => {
                 console.log(response.data);
                 this.setState({

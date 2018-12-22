@@ -17,7 +17,6 @@ class AddDessert extends Component{
         this.nameDessert=this.nameDessert.bind(this);
         this.descriptionDessert=this.descriptionDessert.bind(this);
         this.pictureDessert=this.pictureDessert.bind(this);
-        this.categoryDessert=this.categoryDessert.bind(this);
         this.priceDessert=this.priceDessert.bind(this);
         this.addNewDessert=this.addNewDessert.bind(this);
         this.idDessert=this.idDessert.bind(this);
@@ -43,11 +42,7 @@ class AddDessert extends Component{
         });
         console.log(e.target.files[0]);
     }
-    categoryDessert(e){
-        this.setState({
-            category:e.target.value
-        });
-    }
+    
     priceDessert(e){
         this.setState({
             price:e.target.value
@@ -59,10 +54,10 @@ class AddDessert extends Component{
             name,
             description,
             price,
-            category,
+           
             picture
         } =this.state;
-        if(name===''||price===''||description===''||category==''||picture===''){
+        if(name===''||price===''||description===''||picture===''){
             this.setState({
                 error:true
             });
@@ -77,7 +72,6 @@ class AddDessert extends Component{
                 name,
                 price,
                 description,
-                category,
                 picture
             }
             console.log(infoDish);
@@ -87,13 +81,13 @@ class AddDessert extends Component{
     }
     componentDidMount(){
         var totalOfItems=0;var idString
-        axios.get('http://www.isplusdesign.co.cr:49652/api/desserts')
+        axios.get('http://localhost:49652/api/desserts')
             .then(response => {
                 for(var properties in response.data) {
                         ++totalOfItems;
                 }
             }).then(()=>{
-                idString=totalOfItems+1+'DSSRT';//console.log(idString); 
+                idString=totalOfItems+1+'DESRT';//console.log(idString); 
             })
             .catch(error => {
                 console.log(error);
@@ -136,13 +130,7 @@ class AddDessert extends Component{
                                     className="form-control-file" 
                                     placeholder="Picture" name="picture"/>
                                 </div>
-                                <div className="form-group">
-                                    <label>Category</label>
-                                    <input type="text" onChange={this.categoryDessert} 
-                                    className="form-control"
-                                    name="category"
-                                     placeholder="Category" />
-                                </div>
+                                
                                 <div className="form-group">
                                     <label>Price</label>
                                     <input type="text" onChange={this.priceDessert} 

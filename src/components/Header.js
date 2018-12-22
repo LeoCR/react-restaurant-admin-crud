@@ -21,71 +21,54 @@ class Header extends Component{
                     </button>
                     <Link className="navbar-brand" to="/admin">React Redux CRUD</Link>
                     </div>
-
                     <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
-                    <ul className="nav navbar-nav">
-                        <li className="dropdown" onClick={this.toggleSubmenu}>
-                            <Link to="/admin/strongs-dishes" className="dropdown-toggle">Strong's Dishes <span className="caret"></span>
-                            </Link>
-                            <ul className="dropdown-menu" role="menu">
-                                <li>
-                                    <Link to="/admin/add/strong-dish">Add</Link>
-                                </li>
-                                <li>
-                                    <Link to="/admin/strongs-dishes">Edit</Link>
-                                </li>
-                                <li>
-                                    <Link to="/admin/strongs-dishes">Delete</Link>
-                                </li>
-                            </ul>
-                        </li>
-                        <li className="dropdown" onClick={this.toggleSubmenu}>
-                            <Link to="/admin/desserts" className="dropdown-toggle">Desserts <span className="caret"></span>
-                            </Link>
-                            <ul className="dropdown-menu" role="menu">
-                                <li>
-                                    <Link to="/admin/add/dessert">Add</Link>
-                                </li>
-                                <li>
-                                    <Link to="/admin/desserts">Edit</Link>
-                                </li>
-                                <li>
-                                    <Link to="/admin/desserts">Delete</Link>
-                                </li>
-                            </ul> 
-                        </li>
-                        <li className="dropdown" onClick={this.toggleSubmenu}>
-                            <Link to="/admin/entrees" className="dropdown-toggle">Entrees <span className="caret"></span>
-                            </Link>
-                            <ul className="dropdown-menu" role="menu">
-                                <li>
-                                    <Link to="/admin/add/entree">Add</Link>
-                                </li>
-                                <li>
-                                    <Link to="/admin/entrees">Edit</Link>
-                                </li>
-                                <li>
-                                    <Link to="/admin/entrees">Delete</Link>
-                                </li>
-                            </ul> 
-                        </li>
-                        <li className="dropdown" onClick={this.toggleSubmenu}>
-                            <Link to="/admin/ingredients" className="dropdown-toggle">Ingredients <span className="caret"></span>
-                            </Link>
-                            <ul className="dropdown-menu" role="menu">
-                                <li>
-                                    <Link to="/admin/add/ingredient">Add</Link>
-                                </li>
-                                <li>
-                                    <Link to="/admin/ingredients">Edit</Link>
-                                </li>
-                                <li>
-                                    <Link to="/admin/ingredients">Delete</Link>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                    
+                        <ul className="nav navbar-nav">
+                            <li className="dropdown" onClick={this.toggleSubmenu}>
+                                <Link to="/admin/strongs-dishes" className="dropdown-toggle">Strong's Dishes <span className="caret"></span>
+                                </Link>
+                                <ul className="dropdown-menu" role="menu">
+                                    <li>
+                                        <Link to="/admin/add/strong-dish">Add</Link>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li className="dropdown" onClick={this.toggleSubmenu}>
+                                <Link to="/admin/desserts" className="dropdown-toggle">Desserts <span className="caret"></span>
+                                </Link>
+                                <ul className="dropdown-menu" role="menu">
+                                    <li>
+                                        <Link to="/admin/add/dessert">Add</Link>
+                                    </li>
+                                </ul> 
+                            </li>
+                            <li className="dropdown" onClick={this.toggleSubmenu}>
+                                <Link to="/admin/entrees" className="dropdown-toggle">Entrees <span className="caret"></span>
+                                </Link>
+                                <ul className="dropdown-menu" role="menu">
+                                    <li>
+                                        <Link to="/admin/add/entree">Add</Link>
+                                    </li>
+                                </ul> 
+                            </li>
+                            <li className="dropdown" onClick={this.toggleSubmenu}>
+                                <Link to="/admin/ingredients" className="dropdown-toggle">Ingredients <span className="caret"></span>
+                                </Link>
+                                <ul className="dropdown-menu" role="menu">
+                                    <li>
+                                        <Link to="/admin/add/ingredient">Add</Link>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li className="dropdown" onClick={this.toggleSubmenu}>
+                                <Link to="/admin/drinks" className="dropdown-toggle">Drinks <span className="caret"></span>
+                                </Link>
+                                <ul className="dropdown-menu" role="menu">
+                                    <li>
+                                        <Link to="/admin/add/drink">Add</Link>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </nav>

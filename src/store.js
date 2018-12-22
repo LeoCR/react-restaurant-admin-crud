@@ -6,7 +6,8 @@ const initialState = {
     strongsDishes:[],
     entrees:[],
     ingredients:[],
-    desserts:[]
+    desserts:[],
+    drinks:[]
 };
 
 const store = createStore(rootReducer, initialState, applyMiddleware(thunk)/* , 

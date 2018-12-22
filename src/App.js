@@ -6,27 +6,21 @@ import AddStrongDish from "./components/add/AddStrongDish";
 import AddEntree from "./components/add/AddEntree";
 import AddIngredient from "./components/add/AddIngredient";
 import AddDessert from "./components/add/AddDessert";
+import AddDrink from "./components/add/AddDrink";
 import ShowStrongsDishes from "./components/show/ShowStrongsDishes";
 import ShowIngredients from "./components/show/ShowIngredients";
 import ShowEntrees from "./components/show/ShowEntrees";
 import ShowDesserts from "./components/show/ShowDesserts";
+import ShowDrinks from "./components/show/ShowDrinks";
 import EditStrongDish from "./components/edit/EditStrongDish";
 import EditIngredient from "./components/edit/EditIngredient";
 import EditEntree from "./components/edit/EditEntree";
 import EditDessert from "./components/edit/EditDessert";
+import EditDrink from "./components/edit/EditDrink";
 import {BrowserRouter as Router,Route,Switch} from "react-router-dom";
-import {getStrongsDishes} from "./actions/strongDishActions";
-import {getEntrees} from "./actions/entreeActions";
-import {getDesserts} from "./actions/dessertActions";
-import {getIngredients} from "./actions/ingredientActions";
+
 class App extends Component {
-  constructor(props){
-      super(props);
-      store.dispatch(getEntrees());
-      store.dispatch(getStrongsDishes());
-      store.dispatch(getIngredients());
-      store.dispatch(getDesserts());
-  } 
+  
   render() {
     return (
       <Provider store={store}>
@@ -51,6 +45,10 @@ class App extends Component {
                       <Route exact path="/admin/desserts" component={ShowDesserts}/>
                       <Route exact path="/admin/add/dessert" component={AddDessert}/>
                       <Route exact path="/admin/edit/dessert/:id" component={EditDessert}/>
+
+                      <Route exact path="/admin/drinks" component={ShowDrinks}/>
+                      <Route exact path="/admin/add/drink" component={AddDrink}/>
+                      <Route exact path="/admin/edit/drink/:id" component={EditDrink}/>
                   </Switch>  
                 </div>
             </React.Fragment>

@@ -14,7 +14,7 @@ class ShowStrongsDishes extends Component{
     }
     componentDidMount(){
         this.props.getStrongsDishes();
-        axios.get('http://www.isplusdesign.co.cr:49652/api/strongs-dishes')
+        axios.get('http://localhost:49652/api/strongs-dishes')
             .then(response => {
                 console.log(response.data);
                 this.setState({

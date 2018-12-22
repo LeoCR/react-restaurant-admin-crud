@@ -14,7 +14,7 @@ class ShowEntrees extends Component{
     }
     componentDidMount(){
         this.props.getEntrees();
-        axios.get('http://www.isplusdesign.co.cr:49652/api/entrees')
+        axios.get('http://localhost:49652/api/entrees')
             .then(response => {
                 console.log(response.data);
                 this.setState({

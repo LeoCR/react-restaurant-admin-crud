@@ -1,8 +1,8 @@
 import React,{Component} from 'react';
 import axios from "axios";
 import {connect} from "react-redux";
-import {addStrongDish} from "../../actions/strongDishActions";
-class AddStrongDish extends Component{
+import {addDrink} from "../../actions/drinkActions";
+class AddDrink extends Component{
     constructor(props){
         super(props);
         this.state={
@@ -10,14 +10,12 @@ class AddStrongDish extends Component{
             name:'',
             description:'',
             picture:'',
-            category:'',
             price:'',
             error:false
         }
         this.nameDish=this.nameDish.bind(this);
         this.descriptionDish=this.descriptionDish.bind(this);
         this.pictureDish=this.pictureDish.bind(this);
-        this.categoryDish=this.categoryDish.bind(this);
         this.priceDish=this.priceDish.bind(this);
         this.addNewStrongDish=this.addNewStrongDish.bind(this);
         this.idStrongDish=this.idStrongDish.bind(this);
@@ -43,28 +41,20 @@ class AddStrongDish extends Component{
         });
         console.log(e.target.files[0]);
     }
-    categoryDish(e){
-        this.setState({
-            category:e.target.value
-        });
-    }
     priceDish(e){
         this.setState({
             price:e.target.value
         });
     }
     addNewStrongDish(e){
-        /* 
-        */
         const {
             idStrongDish ,
             name,
             description,
             price,
-            category,
             picture
         } =this.state;
-        if(name===''||price===''||description===''||category==''||picture===''){
+        if(name===''||price===''||description===''||picture===''){
             this.setState({
                 error:true
             });
@@ -79,7 +69,6 @@ class AddStrongDish extends Component{
                 name,
                 price,
                 description,
-                category,
                 picture
             }
             console.log(infoDish);
@@ -89,13 +78,13 @@ class AddStrongDish extends Component{
     }
     componentDidMount(){
         var totalOfItems=0;var idString
-        axios.get('http://localhost:49652/api/strongs-dishes')
+        axios.get('http://localhost:49652/api/drinks')
             .then(response => {
                 for(var properties in response.data) {
                         ++totalOfItems;
                 }
             }).then(()=>{
-                idString=totalOfItems+1+'BGD';//console.log(idString); 
+                idString=totalOfItems+1+'DRK';//console.log(idString); 
             })
             .catch(error => {
                 console.log(error);
@@ -140,13 +129,6 @@ class AddStrongDish extends Component{
                                     placeholder="Picture" name="picture"/>
                                 </div>
                                 <div className="form-group">
-                                    <label>Category</label>
-                                    <input type="text" onChange={this.categoryDish} 
-                                    className="form-control"
-                                    name="category"
-                                     placeholder="Category" />
-                                </div>
-                                <div className="form-group">
                                     <label>Price</label>
                                     <input type="text" onChange={this.priceDish} 
                                     className="form-control" 
@@ -169,4 +151,4 @@ class AddStrongDish extends Component{
         )
     }
 }
-export default connect(null,{addStrongDish})(AddStrongDish);
+export default connect(null,{addDrink})(AddDrink);

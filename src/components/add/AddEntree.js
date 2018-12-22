@@ -87,13 +87,13 @@ class AddEntree extends Component{
     }
     componentDidMount(){
         var totalOfItems=0;var idString;
-        axios.get('http://www.isplusdesign.co.cr:49652/api/entrees')
+        axios.get('http://localhost:49652/api/entrees')
             .then(response => {
                 for(var properties in response.data) {
                         ++totalOfItems;
                 }
             }).then(()=>{
-                idString=totalOfItems+1+'SGDH';//console.log(idString); 
+                idString=totalOfItems+1+'ENTR';//console.log(idString); 
             })
             .catch(error => {
                 console.log(error);
