@@ -31,7 +31,7 @@ export const addIngredient=dish=>async dispatch=>{
     })
 }
 export const editIngredient=dish=>async dispatch=>{
-    const response = await axios.put(`http://localhost:49652/api/ingredient/update/${dish.idIngredient}`,dish);
+    const response = await axios.put(`http://localhost:49652/api/ingredient/update/${dish.id}`,dish);
     dispatch({
         type:EDIT_INGREDIENT,
         payload:response.data

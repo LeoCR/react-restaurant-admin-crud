@@ -6,7 +6,7 @@ class AddDessert extends Component{
     constructor(props){
         super(props);
         this.state={
-            idDessert:'',
+            id:'',
             name:'',
             description:'',
             picture:'',
@@ -19,11 +19,11 @@ class AddDessert extends Component{
         this.pictureDessert=this.pictureDessert.bind(this);
         this.priceDessert=this.priceDessert.bind(this);
         this.addNewDessert=this.addNewDessert.bind(this);
-        this.idDessert=this.idDessert.bind(this);
+        this.id=this.id.bind(this);
     }
-    idDessert(e){
+    id(e){
         this.setState({
-            idDessert:e.target.value
+            id:e.target.value
         });
     }
     nameDessert(e){
@@ -50,7 +50,7 @@ class AddDessert extends Component{
     }
     addNewDessert(e){
         const {
-            idDessert ,
+            id ,
             name,
             description,
             price,
@@ -68,7 +68,7 @@ class AddDessert extends Component{
                 error:false
             });/*
             const infoDish={
-                idDessert,
+                id,
                 name,
                 price,
                 description,
@@ -94,9 +94,9 @@ class AddDessert extends Component{
         });
         setTimeout(() => {
             this.setState({
-                idDessert:idString
+                id:idString
             });
-            console.log('this.state.idDessert '+this.state.idDessert);
+            console.log('this.state.id '+this.state.id);
         }, 300);
     }
     render(){
@@ -111,9 +111,9 @@ class AddDessert extends Component{
                             method="post" action="/dessert/add/">
                                 <div className="form-group">
                                     <label>Name</label>
-                                    <input type="text" defaultValue={this.state.idDessert} 
-                                    onChange={this.idDessert} className="" style={{display:'none'}}
-                                     name="idDessert"/>
+                                    <input type="text" defaultValue={this.state.id} 
+                                    onChange={this.id} className="" style={{display:'none'}}
+                                     name="id"/>
                                     <input type="text" onChange={this.nameDessert} name="name"
                                      className="form-control" placeholder="Name" />
                                 </div>

@@ -31,7 +31,7 @@ export const addEntree=dish=>async dispatch=>{
     })
 }
 export const updateEntree=dish=>async dispatch=>{
-    const response = await axios.put(`http://localhost:49652/api/entree/update/${dish.idEntree}`,dish);
+    const response = await axios.put(`http://localhost:49652/api/entree/update/${dish.id}`,dish);
     dispatch({
         type:EDIT_ENTREE,
         payload:response.data

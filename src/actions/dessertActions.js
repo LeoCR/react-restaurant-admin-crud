@@ -33,7 +33,7 @@ export const showDessert=id=>async dispatch=>{
 }
 
 export const editDessert=dessert=>async dispatch=>{
-    const response = await axios.put(`http://localhost:49652/api/dessert/update/${dessert.idDessert}`,dessert);
+    const response = await axios.put(`http://localhost:49652/api/dessert/update/${dessert.id}`,dessert);
     dispatch({
         type:EDIT_DESSERT,
         payload:response.data

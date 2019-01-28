@@ -5,7 +5,7 @@ class EditIngredient extends Component{
     constructor(props){
         super(props);
         this.state={
-            idIngredient:'',
+            id:'',
             img:'',
             name:'',
             error:false,
@@ -13,12 +13,12 @@ class EditIngredient extends Component{
         }
         this.nameIngredient=this.nameIngredient.bind(this);
         this.imgIngredient=this.imgIngredient.bind(this);
-        this.idIngredient=this.idIngredient.bind(this);
+        this.id=this.id.bind(this);
         this.submitIngredient=this.submitIngredient.bind(this);
     }
-    idIngredient(e){
+    id(e){
         this.setState({
-            idIngredient:e.target.value
+            id:e.target.value
         });
     }
     componentDidMount(){
@@ -27,12 +27,12 @@ class EditIngredient extends Component{
     }
     componentWillReceiveProps(nextProps,nextState){
         const {
-            idIngredient, 
+            id, 
             name,
             img,
         }=nextProps.ingredient;
         this.setState({
-            idIngredient,
+            id,
             name,
             img
         })
@@ -57,7 +57,7 @@ class EditIngredient extends Component{
     
     submitIngredient(e){ 
         const {
-            idIngredient ,
+            id ,
             name,
             img,
             changedPicture
@@ -73,7 +73,7 @@ class EditIngredient extends Component{
                 error:false
             });
             const infoIngredient={
-                idIngredient ,
+                id ,
                 name,
                 img
             }
@@ -96,9 +96,9 @@ class EditIngredient extends Component{
                             id="form-update-ingredient">
                                 <div className="form-group">
                                     <label>Name</label>
-                                    <input type="text" defaultValue={this.state.idIngredient} 
-                                    onChange={this.idIngredient} style={{display:'none'}}
-                                     name="idIngredient"/>
+                                    <input type="text" defaultValue={this.state.id} 
+                                    onChange={this.id} style={{display:'none'}}
+                                     name="id"/>
                                     <input type="text" defaultValue={name} onChange={this.nameIngredient} 
                                     className="form-control" placeholder="Name"
                                     name="name"

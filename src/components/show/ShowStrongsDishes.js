@@ -33,6 +33,13 @@ class ShowStrongsDishes extends Component{
     render(){
         const { isLoading } = this.state;
         const {strongsDishes}=this.props;
+        if(!strongsDishes){
+            return(
+                <div>
+                    <p>Loading Data From Database ,please Wait...</p>
+                </div>
+            )
+        }
         return(
             <React.Fragment>
                 {!isLoading ? ( 
@@ -40,7 +47,7 @@ class ShowStrongsDishes extends Component{
                     <div className="col-md-9">
                         <ul>
                             {strongsDishes.map(strongDish=>
-                                 <StrongDish key={strongDish.idStrongDish} info={strongDish}/> 
+                                 <StrongDish key={strongDish.id} info={strongDish}/> 
                             )}
                         </ul>
                     </div>

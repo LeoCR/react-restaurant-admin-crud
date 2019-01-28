@@ -5,7 +5,7 @@ class EditDrink extends Component{
     constructor(props){
         super(props);
         this.state={
-            idDrink:'',
+            id:'',
             name:'',
             description:'',
             picture:'', 
@@ -19,11 +19,11 @@ class EditDrink extends Component{
         
         this.priceDrink=this.priceDrink.bind(this);
         this.editStrongDrink=this.editStrongDrink.bind(this);
-        this.idDrink=this.idDrink.bind(this);
+        this.id=this.id.bind(this);
     }
-    idDrink(e){
+    id(e){
         this.setState({
-            idDrink:e.target.value
+            id:e.target.value
         });
 
     }
@@ -32,9 +32,9 @@ class EditDrink extends Component{
         this.props.showDrink(id);
     }
     componentWillReceiveProps(nextProps,nextState){
-        const {idDrink, name,price,description,picture}=nextProps.drink;
+        const {id, name,price,description,picture}=nextProps.drink;
         this.setState({
-            idDrink,
+            id,
             name,
             description, 
             picture,
@@ -70,7 +70,7 @@ class EditDrink extends Component{
     }
     editStrongDrink(e){    
         const {
-            idDrink ,
+            id ,
             name,
             description,
             price,
@@ -88,7 +88,7 @@ class EditDrink extends Component{
                 error:false
             });
             const infoDrink={
-                idDrink,
+                id,
                 name,
                 price,
                 description,
@@ -114,9 +114,9 @@ class EditDrink extends Component{
                             id="form-drink-update">
                                 <div className="form-group">
                                     <label>Name</label>
-                                    <input type="text" defaultValue={this.state.idDrink} 
-                                    onChange={this.idDrink} className="" style={{display:'none'}}
-                                     name="idDrink"/>
+                                    <input type="text" defaultValue={this.state.id} 
+                                    onChange={this.id} className="" style={{display:'none'}}
+                                     name="id"/>
                                     <input type="text" defaultValue={name} onChange={this.nameDrink} 
                                     className="form-control" placeholder="Name"
                                     name="name"

@@ -6,7 +6,7 @@ class AddStrongDish extends Component{
     constructor(props){
         super(props);
         this.state={
-            idStrongDish:'',
+            id:'',
             name:'',
             description:'',
             picture:'',
@@ -20,11 +20,11 @@ class AddStrongDish extends Component{
         this.categoryDish=this.categoryDish.bind(this);
         this.priceDish=this.priceDish.bind(this);
         this.addNewStrongDish=this.addNewStrongDish.bind(this);
-        this.idStrongDish=this.idStrongDish.bind(this);
+        this.id=this.id.bind(this);
     }
-    idStrongDish(e){
+    id(e){
         this.setState({
-            idStrongDish:e.target.value
+            id:e.target.value
         });
     }
     nameDish(e){
@@ -57,7 +57,7 @@ class AddStrongDish extends Component{
         /* 
         */
         const {
-            idStrongDish ,
+            id ,
             name,
             description,
             price,
@@ -75,7 +75,7 @@ class AddStrongDish extends Component{
                 error:false
             });/*
             const infoDish={
-                idStrongDish,
+                id,
                 name,
                 price,
                 description,
@@ -102,9 +102,9 @@ class AddStrongDish extends Component{
         });
         setTimeout(() => {
             this.setState({
-                idStrongDish:idString
+                id:idString
             });
-            console.log('this.state.idStrongDish '+this.state.idStrongDish);
+            console.log('this.state.id '+this.state.id);
         }, 300);
         
     }
@@ -120,9 +120,9 @@ class AddStrongDish extends Component{
                             method="post" action="/strong-dish/add/">
                                 <div className="form-group">
                                     <label>Name</label>
-                                    <input type="text" defaultValue={this.state.idStrongDish} 
-                                    onChange={this.idStrongDish} className="" style={{display:'none'}}
-                                     name="idStrongDish"/>
+                                    <input type="text" defaultValue={this.state.id} 
+                                    onChange={this.id} className="" style={{display:'none'}}
+                                     name="id"/>
                                     <input type="text" onChange={this.nameDish} name="name"
                                      className="form-control" placeholder="Name" />
                                 </div>

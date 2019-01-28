@@ -12,9 +12,9 @@ class ShowDesserts extends Component{
             errors: null
       };
     }
-    componentDidMount(){
+    async componentDidMount(){
         this.props.getDesserts();
-        axios.get('http://localhost:49652/api/desserts')
+        await axios.get('http://localhost:49652/api/desserts')
             .then(response => {
                 console.log(response.data);
                 this.setState({
@@ -33,6 +33,13 @@ class ShowDesserts extends Component{
     render(){
         const { isLoading } = this.state;
         const {desserts}=this.props;
+        if(!desserts){
+            return(
+                <div>
+                    <p>Loading Data From Database ,please Wait...</p>
+                </div>
+            )
+        }
         return(
             <React.Fragment>
                 {!isLoading ? ( 
@@ -40,7 +47,7 @@ class ShowDesserts extends Component{
                     <div className="col-md-9">
                         <ul>
                             {desserts.map(dessert=>
-                                 <Dessert key={dessert.idDessert} info={dessert}/> 
+                                 <Dessert key={dessert.id} info={dessert}/> 
                             )}
                         </ul>
                     </div>

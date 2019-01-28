@@ -33,6 +33,13 @@ class ShowEntrees extends Component{
     render(){
         const { isLoading } = this.state;
         const {entrees}=this.props;
+        if(!entrees){
+            return(
+                <div>
+                    <p>Loading Data From Database ,please Wait...</p>
+                </div>
+            )
+        }
         return(
             <React.Fragment>
                 {!isLoading ? ( 
@@ -40,7 +47,7 @@ class ShowEntrees extends Component{
                     <div className="col-md-9">
                         <ul>
                             {entrees.map(entree=>
-                                 <Entree key={entree.idEntree} info={entree}/> 
+                                 <Entree key={entree.id} info={entree}/> 
                             )}
                         </ul>
                     </div>

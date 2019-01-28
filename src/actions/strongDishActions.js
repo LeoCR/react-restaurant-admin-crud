@@ -33,7 +33,7 @@ export const showStrongDish=id=>async dispatch=>{
 }
 
 export const editStrongDish=dish=>async dispatch=>{
-    const response = await axios.put(`http://localhost:49652/api/strong-dish/update/${dish.idStrongDish}`,dish);
+    const response = await axios.put(`http://localhost:49652/api/strong-dish/update/${dish.id}`,dish);
     dispatch({
         type:EDIT_STRONG_DISH,
         payload:response.data

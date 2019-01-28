@@ -33,6 +33,13 @@ class ShowIngredients extends Component{
     render(){
         const { isLoading } = this.state;
         const {ingredients}=this.props;
+        if(!ingredients){
+            return(
+                <div>
+                    <p>Loading Data From Database ,please Wait...</p>
+                </div>
+            )
+        }
         return(
             <React.Fragment>
                 {!isLoading ? ( 
@@ -40,7 +47,7 @@ class ShowIngredients extends Component{
                     <div className="col-md-9">
                         <ul>
                             {ingredients.map(ingredient=>
-                                 <Ingredient key={ingredient.idIngredient} info={ingredient}/> 
+                                 <Ingredient key={ingredient.id} info={ingredient}/> 
                             )}
                         </ul>
                     </div>

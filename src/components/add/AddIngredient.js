@@ -6,7 +6,7 @@ class AddIngredient extends Component{
     constructor(props){
         super(props);
         this.state={
-            idIngredient:'',
+            id:'',
             name:'',
             img:'',
             error:false
@@ -14,11 +14,11 @@ class AddIngredient extends Component{
         this.nameIngredient=this.nameIngredient.bind(this);
         this.imgIngredient=this.imgIngredient.bind(this);
         this.addNewIngredient=this.addNewIngredient.bind(this);
-        this.idIngredient=this.idIngredient.bind(this);
+        this.id=this.id.bind(this);
     }
-    idIngredient(e){
+    id(e){
         this.setState({
-            idIngredient:e.target.value
+            id:e.target.value
         });
     }
     nameIngredient(e){
@@ -34,7 +34,7 @@ class AddIngredient extends Component{
     }
     addNewIngredient(e){
         const {
-            idIngredient ,
+            id ,
             name,
             img
         } =this.state;
@@ -65,9 +65,9 @@ class AddIngredient extends Component{
         });
         setTimeout(() => {
             this.setState({
-                idIngredient:idString
+                id:idString
             });
-            console.log('this.state.idIngredient '+this.state.idIngredient);
+            console.log('this.state.id '+this.state.id);
         }, 300);
         
     }
@@ -83,9 +83,9 @@ class AddIngredient extends Component{
                             method="post" action="/ingredient/add/">
                                 <div className="form-group">
                                     <label>Name</label>
-                                    <input type="text" defaultValue={this.state.idIngredient} 
-                                    onChange={this.idIngredient} name="idIngredient" style={{display:'none'}}
-                                     name="idIngredient"/>
+                                    <input type="text" defaultValue={this.state.id} 
+                                    onChange={this.id} name="id" style={{display:'none'}}
+                                     name="id"/>
                                     <input type="text" onChange={this.nameIngredient} name="name"
                                      className="form-control" placeholder="Name" />
                                 </div>
