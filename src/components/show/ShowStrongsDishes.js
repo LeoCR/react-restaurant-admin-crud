@@ -24,11 +24,6 @@ class ShowStrongsDishes extends Component{
             .catch(error => {
                 console.log(error);
         });
-        setTimeout(() => {
-            console.log('this.props.strongsDishes');
-            console.log(this.props.strongsDishes);
-        },1200);
-        console.log(this.props);
     }
     render(){
         const { isLoading } = this.state;

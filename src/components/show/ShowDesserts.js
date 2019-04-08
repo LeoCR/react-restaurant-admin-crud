@@ -24,11 +24,6 @@ class ShowDesserts extends Component{
             .catch(error => {
                 console.log(error);
         });
-        setTimeout(() => {
-            console.log('this.props.desserts');
-            console.log(this.props.desserts);
-        },1200);
-        console.log(this.props);
     }
     render(){
         const { isLoading } = this.state;

@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import axios from 'axios';
 import Drink from "../view/drink";
 import {getDrinks} from "../../actions/drinkActions"
-class ShowDrinks extends Component{
+class ShowDrinks extends React.Component{
     constructor(props){
         super(props);
         this.state={
@@ -15,7 +15,6 @@ class ShowDrinks extends Component{
         this.props.getDrinks();
         await axios.get('http://localhost:49652/api/drinks')
             .then(response => {
-                console.log(response.data);
                 this.setState({
                     isLoading: false
                 })
@@ -23,11 +22,6 @@ class ShowDrinks extends Component{
             .catch(error => {
                 console.log(error);
         });
-        setTimeout(() => {
-            console.log('this.props.drinks');
-            console.log(this.props.drinks);
-        },1200);
-        console.log(this.props);
     }
     render(){
         const { isLoading } = this.state;
@@ -46,7 +40,7 @@ class ShowDrinks extends Component{
                     <div className="col-md-9">
                         <ul>
                             {drinks.map(drink=>
-                                 <Drink key={drink.id} info={drink}/> 
+                                <Drink key={drink.id} info={drink}/> 
                             )}
                         </ul>
                     </div>

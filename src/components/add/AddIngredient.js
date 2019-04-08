@@ -48,7 +48,16 @@ class AddIngredient extends Component{
             this.setState({
                 error:false
             });
-        }  
+            const infoIngredient={
+                id,
+                name,
+                img 
+            } 
+            console.log(infoIngredient);
+            //this.props.addIngredient(infoIngredient);
+            //this.props.history.push('/');
+        } 
+        
     }
     componentDidMount(){
         var totalOfItems=0;var idString;
@@ -80,7 +89,7 @@ class AddIngredient extends Component{
                         <div className="card-body">
                             <h2 className="text-center">Add New Ingredient</h2>
                             <form encType="multipart/form-data" onSubmit={this.addNewIngredient} 
-                            method="post" action="/ingredient/add/">
+                            method="post" action="/api/ingredient/add/">
                                 <div className="form-group">
                                     <label>Name</label>
                                     <input type="text" defaultValue={this.state.id} 

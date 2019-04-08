@@ -24,11 +24,6 @@ class ShowEntrees extends Component{
             .catch(error => {
                 console.log(error);
         });
-        setTimeout(() => {
-            console.log('this.props.entrees');
-            console.log(this.props.entrees);
-        },1200);
-        console.log(this.props);
     }
     render(){
         const { isLoading } = this.state;

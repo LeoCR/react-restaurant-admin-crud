@@ -15,9 +15,9 @@ class AddDrink extends Component{
         }
         this.nameDish=this.nameDish.bind(this);
         this.descriptionDish=this.descriptionDish.bind(this);
-        this.pictureDish=this.pictureDish.bind(this);
+        this.pictureDrink=this.pictureDrink.bind(this);
         this.priceDish=this.priceDish.bind(this);
-        this.addNewStrongDish=this.addNewStrongDish.bind(this);
+        this.addNewDrink=this.addNewDrink.bind(this);
         this.id=this.id.bind(this);
     }
     id(e){
@@ -35,7 +35,7 @@ class AddDrink extends Component{
             description:e.target.value
         });
     }
-    pictureDish(e){
+    pictureDrink(e){
         this.setState({
             picture:e.target.files[0]
         });
@@ -46,7 +46,7 @@ class AddDrink extends Component{
             price:e.target.value
         });
     }
-    addNewStrongDish(e){
+    addNewDrink(e){
         const {
             id ,
             name,
@@ -63,17 +63,18 @@ class AddDrink extends Component{
         else{
             this.setState({
                 error:false
-            });/*
-            const infoDish={
+            }); 
+            const infoDrink={
                 id,
                 name,
                 price,
                 description,
                 picture
             }
-            console.log(infoDish);
-            this.props.addStrongDish(infoDish);
-            this.props.history.push('/');*/
+            console.log('infoDrink');
+            console.log(infoDrink);
+            //this.props.addDrink(infoDrink);
+            //this.props.history.push('/'); 
         }  
     }
     componentDidMount(){
@@ -104,9 +105,9 @@ class AddDrink extends Component{
                 <div className="col-md-8">
                     <div className="card">
                         <div className="card-body">
-                            <h2 className="text-center">Add New Dish</h2>
-                            <form encType="multipart/form-data" onSubmit={this.addNewStrongDish} 
-                            method="post" action="/strong-dish/add/">
+                            <h2 className="text-center">Add New Drink</h2>
+                            <form encType="multipart/form-data" onSubmit={this.addNewDrink} 
+                            method="post" action="/api/drink/add/">
                                 <div className="form-group">
                                     <label>Name</label>
                                     <input type="text" defaultValue={this.state.id} 
@@ -124,7 +125,7 @@ class AddDrink extends Component{
                                 </div>
                                 <div className="form-group">
                                     <label>Picture</label>
-                                    <input type="file" onChange={this.pictureDish} 
+                                    <input type="file" onChange={this.pictureDrink} 
                                     className="form-control-file" 
                                     placeholder="Picture" name="picture"/>
                                 </div>

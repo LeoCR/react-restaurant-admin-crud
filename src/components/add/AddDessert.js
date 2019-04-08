@@ -66,7 +66,7 @@ class AddDessert extends Component{
         else{
             this.setState({
                 error:false
-            });/*
+            }); 
             const infoDish={
                 id,
                 name,
@@ -75,8 +75,8 @@ class AddDessert extends Component{
                 picture
             }
             console.log(infoDish);
-            this.props.addDessert(infoDish);
-            this.props.history.push('/');*/
+            //this.props.addDessert(infoDish);
+            //this.props.history.push('/'); 
         }  
     }
     componentDidMount(){
@@ -108,7 +108,7 @@ class AddDessert extends Component{
                         <div className="card-body">
                             <h2 className="text-center">Add New Dessert</h2>
                             <form encType="multipart/form-data" onSubmit={this.addNewDessert} 
-                            method="post" action="/dessert/add/">
+                            method="post" action="/api/dessert/add/">
                                 <div className="form-group">
                                     <label>Name</label>
                                     <input type="text" defaultValue={this.state.id} 

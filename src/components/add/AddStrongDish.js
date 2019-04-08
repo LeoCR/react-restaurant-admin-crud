@@ -53,9 +53,7 @@ class AddStrongDish extends Component{
             price:e.target.value
         });
     }
-    addNewStrongDish(e){
-        /* 
-        */
+    addNewStrongDish(e){ 
         const {
             id ,
             name,
@@ -73,7 +71,7 @@ class AddStrongDish extends Component{
         else{
             this.setState({
                 error:false
-            });/*
+            }); 
             const infoDish={
                 id,
                 name,
@@ -83,8 +81,8 @@ class AddStrongDish extends Component{
                 picture
             }
             console.log(infoDish);
-            this.props.addStrongDish(infoDish);
-            this.props.history.push('/');*/
+            //this.props.addStrongDish(infoDish);
+            //this.props.history.push('/'); 
         }  
     }
     componentDidMount(){
@@ -117,7 +115,7 @@ class AddStrongDish extends Component{
                         <div className="card-body">
                             <h2 className="text-center">Add New Dish</h2>
                             <form encType="multipart/form-data" onSubmit={this.addNewStrongDish} 
-                            method="post" action="/strong-dish/add/">
+                            method="post" action="/api/strong-dish/add/">
                                 <div className="form-group">
                                     <label>Name</label>
                                     <input type="text" defaultValue={this.state.id} 

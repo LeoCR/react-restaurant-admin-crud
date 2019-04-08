@@ -12,11 +12,10 @@ class ShowIngredients extends Component{
             errors: null
       };
     }
-    componentDidMount(){
+    async componentDidMount(){
         this.props.getIngredients();
-        axios.get('http://localhost:49652/api/ingredients')
+        await axios.get('http://localhost:49652/api/ingredients')
             .then(response => {
-                console.log(response.data);
                 this.setState({
                     isLoading: false
                 })
@@ -24,11 +23,6 @@ class ShowIngredients extends Component{
             .catch(error => {
                 console.log(error);
         });
-        setTimeout(() => {
-            console.log('this.props.ingredients');
-            console.log(this.props.ingredients);
-        },1200);
-        console.log(this.props);
     }
     render(){
         const { isLoading } = this.state;
