@@ -1,32 +1,12 @@
 import React,{Component} from 'react';
 import {connect} from "react-redux";
-import axios from 'axios';
-import Dessert from "../view/dessert";
+import Dessert from "../../components/view/dessert";
 import {getDesserts} from "../../actions/dessertActions"
 class ShowDesserts extends Component{
-    constructor(props){
-        super(props);
-        this.state={
-            dessert:[],
-            isLoading: true,
-            errors: null
-      };
-    }
-    async componentDidMount(){
+    componentDidMount(){
         this.props.getDesserts();
-        await axios.get('http://localhost:49652/api/desserts')
-            .then(response => {
-                console.log(response.data);
-                this.setState({
-                    isLoading: false
-                })
-            })
-            .catch(error => {
-                console.log(error);
-        });
     }
     render(){
-        const { isLoading } = this.state;
         const {desserts}=this.props;
         if(!desserts){
             return(
@@ -37,7 +17,6 @@ class ShowDesserts extends Component{
         }
         return(
             <React.Fragment>
-                {!isLoading ? ( 
                 <div className="row justify-content-center">
                     <div className="col-md-9">
                         <ul>
@@ -46,9 +25,7 @@ class ShowDesserts extends Component{
                             )}
                         </ul>
                     </div>
-                </div> ) : (
-                    <p>Loading Data From Database ,please Wait...</p>
-                )}
+                </div>
             </React.Fragment>
         )
     }

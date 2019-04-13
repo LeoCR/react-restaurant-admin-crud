@@ -62,7 +62,7 @@ class AddStrongDish extends Component{
             category,
             picture
         } =this.state;
-        if(name===''||price===''||description===''||category==''||picture===''){
+        if(name===''||price===''||description===''||category===''||picture===''){
             this.setState({
                 error:true
             });
@@ -89,7 +89,7 @@ class AddStrongDish extends Component{
         var totalOfItems=0;var idString
         axios.get('http://localhost:49652/api/strongs-dishes')
             .then(response => {
-                for(var properties in response.data) {
+                for(var i = 0; i < response.data.length; ++i){
                         ++totalOfItems;
                 }
             }).then(()=>{

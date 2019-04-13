@@ -1,32 +1,13 @@
 import React,{Component} from 'react';
 import {connect} from "react-redux";
 import axios from 'axios';
-import Entree from "../view/entree";
+import Entree from "../../components/view/entree";
 import {getEntrees} from "../../actions/entreeActions"
 class ShowEntrees extends Component{
-    constructor(props){
-        super(props);
-        this.state={
-            entree:[],
-            isLoading: true,
-            errors: null
-      };
-    }
     componentDidMount(){
         this.props.getEntrees();
-        axios.get('http://localhost:49652/api/entrees')
-            .then(response => {
-                console.log(response.data);
-                this.setState({
-                    isLoading: false
-                })
-            })
-            .catch(error => {
-                console.log(error);
-        });
     }
     render(){
-        const { isLoading } = this.state;
         const {entrees}=this.props;
         if(!entrees){
             return(
@@ -37,7 +18,6 @@ class ShowEntrees extends Component{
         }
         return(
             <React.Fragment>
-                {!isLoading ? ( 
                 <div className="row justify-content-center">
                     <div className="col-md-9">
                         <ul>
@@ -46,9 +26,7 @@ class ShowEntrees extends Component{
                             )}
                         </ul>
                     </div>
-                </div> ) : (
-                    <p>Loading Data From Database ,please Wait...</p>
-                )}
+                </div> 
             </React.Fragment>
         )
     }

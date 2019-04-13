@@ -1,8 +1,8 @@
-import React,{Component} from 'react';
+import React from 'react';
 import axios from "axios";
 import {connect} from "react-redux";
 import {addIngredient} from "../../actions/ingredientActions";
-class AddIngredient extends Component{
+class AddIngredient extends React.Component{
     constructor(props){
         super(props);
         this.state={
@@ -38,7 +38,7 @@ class AddIngredient extends Component{
             name,
             img
         } =this.state;
-        if(name===''||img==''){
+        if(name===''||img===''){
             this.setState({
                 error:true
             });
@@ -63,7 +63,7 @@ class AddIngredient extends Component{
         var totalOfItems=0;var idString;
         axios.get('http://localhost:49652/api/ingredients')
             .then(response => {
-                for(var properties in response.data) {
+                for(var i = 0; i < response.data.length; ++i){
                         ++totalOfItems;
                 }
             }).then(()=>{
@@ -94,7 +94,7 @@ class AddIngredient extends Component{
                                     <label>Name</label>
                                     <input type="text" defaultValue={this.state.id} 
                                     onChange={this.id} name="id" style={{display:'none'}}
-                                     name="id"/>
+                                    />
                                     <input type="text" onChange={this.nameIngredient} name="name"
                                      className="form-control" placeholder="Name" />
                                 </div>

@@ -83,8 +83,8 @@ class AddDessert extends Component{
         var totalOfItems=0;var idString
         axios.get('http://localhost:49652/api/desserts')
             .then(response => {
-                for(var properties in response.data) {
-                        ++totalOfItems;
+                for(var i = 0; i < response.data.length; ++i){
+                    ++totalOfItems;
                 }
             }).then(()=>{
                 idString=totalOfItems+1+'DESRT';//console.log(idString); 

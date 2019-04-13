@@ -62,7 +62,7 @@ class AddEntree extends Component{
             category,
             picture
         } =this.state;
-        if(name===''||price===''||description===''||category==''||picture===''){
+        if(name===''||price===''||description===''||category===''||picture===''){
             this.setState({
                 error:true
             });
@@ -90,6 +90,7 @@ class AddEntree extends Component{
         axios.get('http://localhost:49652/api/entrees')
             .then(response => {
                 for(var properties in response.data) {
+                    console.log(properties);
                         ++totalOfItems;
                 }
             }).then(()=>{
