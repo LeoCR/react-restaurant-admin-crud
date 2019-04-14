@@ -82,7 +82,7 @@ class AddEntree extends Component{
             }
             console.log(infoDish);
             //this.props.addEntree(infoDish);
-            //this.props.history.push('/');
+            this.props.history.push('/');
         }  
     }
     componentDidMount(){

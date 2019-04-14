@@ -79,7 +79,7 @@ class ShowIngredients extends Component{
             totalPagination:tempItems
         });
     } 
-    renderIngredients=(ingredients)=>{
+    renderIngredients=()=>{
         if(this.state.ingredientsToShow.length===0){
             return(
                 <div>
@@ -109,7 +109,7 @@ class ShowIngredients extends Component{
             setTimeout(() => {
                 $('.page-nav:nth-child('+ parseInt(this.state.currentPage+1)+')').addClass('active');
                 this.setIngredientsItems();
-            }, 300);
+            }, 200);
         }
     }
     getPrevPage(){
@@ -136,12 +136,13 @@ class ShowIngredients extends Component{
         }
         setTimeout(() => {
             $('.page-nav:nth-child('+ parseInt(index+1)+')').addClass('active');
+            this.setState({
+                currentPage:index,
+                firstItemToShow:tempFirstItemToShow
+            });
+            this.setIngredientsItems(); 
         }, 300);
-        this.setState({
-            currentPage:index,
-            firstItemToShow:tempFirstItemToShow
-        });
-        this.setIngredientsItems(); 
+        
     }
     getPagination=()=>{
         return(
@@ -182,7 +183,7 @@ class ShowIngredients extends Component{
                 <div className="row justify-content-center">
                     <div className="col-md-9">
                         <ul>
-                            {this.renderIngredients(ingredients)}
+                            {this.renderIngredients()}
                         </ul>
                         {this.getPagination()}
                     </div>
