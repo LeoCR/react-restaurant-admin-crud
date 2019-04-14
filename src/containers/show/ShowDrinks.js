@@ -3,8 +3,9 @@ import {connect} from "react-redux";
 import Drink from "../../components/view/drink";
 import {getDrinks} from "../../actions/drinkActions"
 class ShowDrinks extends React.Component{
-     componentDidMount(){
-        this.props.getDrinks();
+    async componentDidMount(){
+        await this.props.getDrinks();
+        console.log(this.props);
     }
     render(){
         const {drinks}=this.props;

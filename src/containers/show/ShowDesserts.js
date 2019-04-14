@@ -40,7 +40,6 @@ class ShowDesserts extends Component{
     }
     async componentDidMount(){
         await this.props.getDesserts();
-        console.log(this.props);
         const {desserts}= this.props;
         this.setState({
             totalItems:desserts.length
