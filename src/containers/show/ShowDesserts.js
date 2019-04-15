@@ -75,8 +75,8 @@ class ShowDesserts extends Component{
             while(index <=maxItemsLenght);
         } 
         catch (error) {
-            console.log('An error occurs');
-            console.error(error);
+            console.log('An error occurs no worried about');
+            console.log(error);
         }
     }
     renderDesserts=()=>{
