@@ -83,33 +83,8 @@ class ShowStrongsDishes extends Component{
         this.setState({
             totalPagination:tempItems
         });
-        
     }
-    setStrongDishesItems=()=>{
-        const {strongsDishes}=this.props;
-        var tempStrongsDishesToShow=[];
-        var maxItemsLenght=parseInt(this.state.maxItemsPerPage*this.state.currentPage);
-        try {
-            let index = this.state.firstItemToShow;
-            if(maxItemsLenght>strongsDishes.length){
-                maxItemsLenght=strongsDishes.length;
-            }
-            do{ 
-                if(strongsDishes[index].name!==null   ){
-                    tempStrongsDishesToShow.push(strongsDishes[index]);
-                }
-                this.setState({
-                    strongDishesToShow:tempStrongsDishesToShow
-                })
-                index++;
-            }
-            while(index <=maxItemsLenght);
-        } 
-        catch (error) {
-            console.log('An error occurs');
-            console.error(error);
-        }
-    }
+    
     renderStrongsDishes=()=>{
         if(this.state.strongsDishesToShow.length===0){
             return(
@@ -161,6 +136,7 @@ class ShowStrongsDishes extends Component{
         }
     }
     getPage=(e,index)=>{
+        e.preventDefault();
         var tempFirstItemToShow=(index*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
         if($('.page-nav').hasClass('active')){
             $('.page-nav').removeClass('active');
