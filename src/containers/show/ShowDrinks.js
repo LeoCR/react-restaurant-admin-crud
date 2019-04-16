@@ -119,7 +119,7 @@ class ShowDrinks extends React.Component{
             });
             setTimeout(() => {
                 $('.page-nav:nth-child('+ parseInt(this.state.currentPage+1)+')').addClass('active');
-                this.DrinksItems();
+                this.setDrinksItems();
             }, 300); 
         }
     }
