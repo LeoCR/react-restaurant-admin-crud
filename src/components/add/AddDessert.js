@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import axios from "axios";
+import api from "../../api/api"
 import {connect} from "react-redux";
 import {addDessert} from "../../actions/dessertActions";
 class AddDessert extends Component{
@@ -14,74 +14,67 @@ class AddDessert extends Component{
             price:'',
             error:false
         }
-        this.nameDessert=this.nameDessert.bind(this);
-        this.descriptionDessert=this.descriptionDessert.bind(this);
-        this.pictureDessert=this.pictureDessert.bind(this);
-        this.priceDessert=this.priceDessert.bind(this);
-        this.addNewDessert=this.addNewDessert.bind(this);
-        this.id=this.id.bind(this);
     }
-    id(e){
+    id=(e)=>{
         this.setState({
             id:e.target.value
         });
     }
-    nameDessert(e){
+    nameDessert=(e)=>{
         this.setState({
             name:e.target.value
         });
     }
-    descriptionDessert(e){
+    descriptionDessert=(e)=>{
         this.setState({
             description:e.target.value
         });
     }
-    pictureDessert(e){
+    pictureDessert=(e)=>{
         this.setState({
             picture:e.target.files[0]
         });
-        console.log(e.target.files[0]);
     }
-    
-    priceDessert(e){
+    priceDessert=(e)=>{
         this.setState({
             price:e.target.value
         });
     }
-    addNewDessert(e){
+    addNewDessert=(e)=>{
+        e.preventDefault();
         const {
             id ,
             name,
             description,
             price,
-           
             picture
         } =this.state;
+        var formData = new FormData(),
+        _this=this;
         if(name===''||price===''||description===''||picture===''){
             this.setState({
                 error:true
             });
-            e.preventDefault();
         }
         else{
             this.setState({
                 error:false
-            }); 
-            const infoDish={
-                id,
-                name,
-                price,
-                description,
-                picture
-            }
-            console.log(infoDish);
-            //this.props.addDessert(infoDish);
-            //this.props.history.push('/'); 
+            });
+            formData.append('id',id);
+            formData.append('name',name);
+            formData.append('price',price);
+            formData.append('description',description);
+            formData.append('picture',picture);
+            this.props.addDessert(formData);
+            setTimeout(() => {
+                _this.props.history.push('/admin/desserts'); 
+            }, 900);
         }  
     }
     componentDidMount(){
-        var totalOfItems=0;var idString
-        axios.get('http://localhost:49652/api/desserts')
+        var totalOfItems=0,
+        idString;
+        api.get('/api/desserts')
             .then(response => {
                 for(var i = 0; i < response.data.length; ++i){
                     ++totalOfItems;
@@ -107,8 +100,7 @@ class AddDessert extends Component{
                     <div className="card">
                         <div className="card-body">
                             <h2 className="text-center">Add New Dessert</h2>
-                            <form encType="multipart/form-data" onSubmit={this.addNewDessert} 
-                            method="post" action="/api/dessert/add/">
+                            <form onSubmit={this.addNewDessert}>
                                 <div className="form-group">
                                     <label>Name</label>
                                     <input type="text" defaultValue={this.state.id} 

@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import {connect} from "react-redux";
-import {showDrink,editDrink} from "../../actions/drinkActions";
+import {showDrink,editDrink,updateDrink,getDrinks} from "../../actions/drinkActions";
 class EditDrink extends Component{
     constructor(props){
         super(props);
@@ -13,19 +13,11 @@ class EditDrink extends Component{
             error:false,
             changedPicture:false
         }
-        this.nameDrink=this.nameDrink.bind(this);
-        this.descriptionDrink=this.descriptionDrink.bind(this);
-        this.pictureDrink=this.pictureDrink.bind(this);
-        
-        this.priceDrink=this.priceDrink.bind(this);
-        this.editStrongDrink=this.editStrongDrink.bind(this);
-        this.id=this.id.bind(this);
     }
-    id(e){
+    id=(e)=>{
         this.setState({
             id:e.target.value
         });
-
     }
     componentDidMount(){
         const {id}=this.props.match.params;
@@ -40,35 +32,32 @@ class EditDrink extends Component{
             picture,
             price
         })
-        console.log(nextProps.drink);
     }
-    nameDrink(e){
+    nameDrink=(e)=>{
         this.setState({
             name:e.target.value
         });
     }
-    descriptionDrink(e){
+    descriptionDrink=(e)=>{
         this.setState({
             description:e.target.value
         });
     }
-    pictureDrink(e){
-        this.setState({
-            picture:e.target.files[0],
-            changedPicture:true
-        });  
-        document.querySelector("#picture_upload").setAttribute("name","picture");
-        document.querySelector("#picture_hidden").removeAttribute("name");
-        document.querySelector("#form-drink-update").setAttribute("action","/drink/update/");
-        document.querySelector("#form-drink-update").setAttribute("method","post");
+    pictureDrink=(e)=>{
+        if(e.target.files[0]!==null){
+            this.setState({
+                picture:e.target.files[0],
+                changedPicture:true
+            });   
+        }
     }
-    
-    priceDrink(e){
+    priceDrink=(e)=>{
         this.setState({
             price:e.target.value
         });
     }
-    editStrongDrink(e){    
+    editDrink=(e)=>{ 
+        e.preventDefault();   
         const {
             id ,
             name,
@@ -77,11 +66,12 @@ class EditDrink extends Component{
             picture,
             changedPicture
         } =this.state;
+        var formData=new FormData(),
+        _this=this;
         if(name===''||price===''||description===''){
             this.setState({
                 error:true
             });
-            e.preventDefault();
         }
         else{
             this.setState({
@@ -97,8 +87,19 @@ class EditDrink extends Component{
             console.log(infoDrink); 
             if(changedPicture===false){
                 this.props.editDrink(infoDrink);
-                this.props.history.push('/');
             }
+            else{
+                formData.append('id',id);
+                formData.append('name',name);
+                formData.append('price',price);
+                formData.append('description',description);
+                formData.append('picture',picture);
+                this.props.updateDrink(formData);
+            }
+            this.props.getDrinks();
+            setTimeout(() => {
+                _this.props.history.push('/admin/drinks/');
+            }, 900);
         }
     }
     
@@ -110,7 +111,7 @@ class EditDrink extends Component{
                     <div className="card">
                         <div className="card-body">
                             <h2 className="text-center">Edit a Drink</h2>
-                            <form encType="multipart/form-data" onSubmit={this.editStrongDrink} 
+                            <form encType="multipart/form-data" onSubmit={this.editDrink} 
                             id="form-drink-update">
                                 <div className="form-group">
                                     <label>Name</label>
@@ -164,6 +165,7 @@ class EditDrink extends Component{
     }
 }
 const mapStateToProps=state=>({
-    drink:state.drinks.drink
+    drink:state.drinks.drink,
+    drinks:state.drinks.drinks
 })
-export default connect(mapStateToProps,{showDrink,editDrink})(EditDrink);
+export default connect(mapStateToProps,{showDrink,editDrink,updateDrink,getDrinks})(EditDrink);

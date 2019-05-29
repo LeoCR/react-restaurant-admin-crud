@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import {connect} from "react-redux";
-import {showDessert,editDessert} from "../../actions/dessertActions";
+import {showDessert,editDessert,updateDessert,getDesserts} from "../../actions/dessertActions";
 class EditDessert extends Component{
     constructor(props){
         super(props);
@@ -13,14 +13,8 @@ class EditDessert extends Component{
             error:false,
             changedPicture:false
         }
-        this.nameDessert=this.nameDessert.bind(this);
-        this.descriptionDessert=this.descriptionDessert.bind(this);
-        this.pictureDessert=this.pictureDessert.bind(this);
-        this.priceDessert=this.priceDessert.bind(this);
-        this.editDessert=this.editDessert.bind(this);
-        this.id=this.id.bind(this);
     }
-    id(e){
+    id=(e)=>{
         this.setState({
             id:e.target.value
         });
@@ -38,35 +32,32 @@ class EditDessert extends Component{
             picture,
             price
         })
-        console.log(nextProps.dessert);
     }
-    nameDessert(e){
+    nameDessert=(e)=>{
         this.setState({
             name:e.target.value
         });
     }
-    descriptionDessert(e){
+    descriptionDessert=(e)=>{
         this.setState({
             description:e.target.value
         });
     }
-    pictureDessert(e){
-        this.setState({
-            picture:e.target.files[0],
-            changedPicture:true
-        });  
-        document.querySelector("#picture_upload").setAttribute("name","picture");
-        document.querySelector("#picture_hidden").removeAttribute("name");
-        document.querySelector("#form-dessert-update").setAttribute("action","/dessert/update/");
-        document.querySelector("#form-dessert-update").setAttribute("method","post");
+    pictureDessert=(e)=>{
+        if(e.target.files[0]!==null){
+            this.setState({
+                picture:e.target.files[0],
+                changedPicture:true
+            }); 
+        } 
     }
-    
-    priceDessert(e){
+    priceDessert=(e)=>{
         this.setState({
             price:e.target.value
         });
     }
-    editDessert(e){    
+    editDessert=(e)=>{   
+        e.preventDefault(); 
         const {
             id ,
             name,
@@ -75,6 +66,8 @@ class EditDessert extends Component{
             picture,
             changedPicture
         } =this.state;
+        var formData=new FormData(),
+        _this=this;
         if(name===''||price===''||description===''){
             this.setState({
                 error:true
@@ -92,11 +85,21 @@ class EditDessert extends Component{
                 description,
                 picture
             }
-            console.log(infoDessert); 
             if(changedPicture===false){
                 this.props.editDessert(infoDessert);
-                this.props.history.push('/');
             }
+            else{
+                formData.append('id',id);
+                formData.append('name',name);
+                formData.append('price',price);
+                formData.append('description',description);
+                formData.append('picture',picture);
+                this.props.updateDessert(formData);
+            }
+            this.props.getDesserts();
+            setTimeout(() => {
+                _this.props.history.push('/admin/desserts/');
+            }, 900);
         }
     }
     render(){
@@ -107,8 +110,7 @@ class EditDessert extends Component{
                     <div className="card">
                         <div className="card-body">
                             <h2 className="text-center">Edit a Strong Dish</h2>
-                            <form encType="multipart/form-data" onSubmit={this.editDessert} 
-                            id="form-dessert-update">
+                            <form onSubmit={this.editDessert} id="form-dessert-update">
                                 <div className="form-group">
                                     <label>Name</label>
                                     <input type="text" defaultValue={this.state.id} 
@@ -130,19 +132,15 @@ class EditDessert extends Component{
                                 <div className="form-group">
                                     <label>Picture</label>
                                     <input type="file" id="picture_upload" defaultValue={picture} 
-                                    onChange={this.pictureDessert} className="form-control-file"
-                                     placeholder="Picture" />
-                                <input type="text" defaultValue={picture} className="form-control-file"
+                                    onChange={this.pictureDessert} className="form-control-file" placeholder="Picture" />
+                                    <img src={picture} style={{maxWidth:'400px'}} alt={name}/>
+                                    <input type="text" defaultValue={picture} className="form-control-file" 
                                     readonly="readonly" name="picture" id="picture_hidden" style={{display:"none"}}/>
                                 </div>
                                 <div className="form-group">
                                     <label>Price</label>
-                                    <input type="text" defaultValue={price} 
-                                    onChange={this.priceDessert} 
-                                    className="form-control"
-                                     placeholder="Price" 
-                                     name="price"
-                                     />
+                                    <input type="text" defaultValue={price}  onChange={this.priceDessert} 
+                                     className="form-control" placeholder="Price" name="price" />
                                 </div>
                             {error ? 
                             <div className="font-weight-bold alert-danger text-center mt-4">
@@ -152,7 +150,6 @@ class EditDessert extends Component{
                             }
                                 <button type="submit" className="btn btn-primary font-weight-bold text-uppercase d-block w-100">Update</button>
                             </form>
-                            
                         </div>
                     </div>
                 </div>
@@ -161,6 +158,7 @@ class EditDessert extends Component{
     }
 }
 const mapStateToProps=state=>({
-    dessert:state.desserts.dessert
+    dessert:state.desserts.dessert,
+    desserts:state.desserts.desserts
 })
-export default connect(mapStateToProps,{showDessert,editDessert})(EditDessert);
+export default connect(mapStateToProps,{showDessert,editDessert,updateDessert,getDesserts})(EditDessert);

@@ -87,7 +87,7 @@ class AddEntree extends Component{
     }
     componentDidMount(){
         var totalOfItems=0;var idString;
-        axios.get('http://localhost:49652/api/entrees')
+        axios.get('https://localhost:49652/api/entrees')
             .then(response => {
                 for(var i = 0; i < response.data.length; ++i){
                     ++totalOfItems;

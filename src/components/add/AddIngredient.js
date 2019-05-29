@@ -61,7 +61,7 @@ class AddIngredient extends React.Component{
     }
     componentDidMount(){
         var totalOfItems=0;var idString;
-        axios.get('http://localhost:49652/api/ingredients')
+        axios.get('https://localhost:49652/api/ingredients')
             .then(response => {
                 for(var i = 0; i < response.data.length; ++i){
                         ++totalOfItems;
