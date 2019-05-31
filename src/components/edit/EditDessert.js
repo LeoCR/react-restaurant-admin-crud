@@ -72,7 +72,6 @@ class EditDessert extends Component{
             this.setState({
                 error:true
             });
-            e.preventDefault();
         }
         else{
             this.setState({
@@ -109,7 +108,7 @@ class EditDessert extends Component{
                 <div className="col-md-8">
                     <div className="card">
                         <div className="card-body">
-                            <h2 className="text-center">Edit a Strong Dish</h2>
+                            <h2 className="text-center">Edit a Dessert</h2>
                             <form onSubmit={this.editDessert} id="form-dessert-update">
                                 <div className="form-group">
                                     <label>Name</label>

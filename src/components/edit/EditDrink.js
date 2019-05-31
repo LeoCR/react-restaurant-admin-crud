@@ -136,7 +136,8 @@ class EditDrink extends Component{
                                     <input type="file" id="picture_upload" defaultValue={picture} 
                                     onChange={this.pictureDrink} className="form-control-file"
                                      placeholder="Picture" />
-                                <input type="text" defaultValue={picture} className="form-control-file"
+                                    <img src={picture} style={{maxWidth:'400px'}} alt={name}/>
+                                    <input type="text" defaultValue={picture} className="form-control-file"
                                     readonly="readonly" name="picture" id="picture_hidden" style={{display:"none"}}/>
                                 </div>
                                 <div className="form-group">

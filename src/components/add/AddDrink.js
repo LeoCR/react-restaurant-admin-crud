@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import api from "../../api/api"
+import api from "../../api/api";
 import {connect} from "react-redux";
 import {addDrink} from "../../actions/drinkActions";
 class AddDrink extends Component{
@@ -30,10 +30,11 @@ class AddDrink extends Component{
         });
     }
     pictureDrink=(e)=>{
-        this.setState({
-            picture:e.target.files[0]
-        });
-        console.log(e.target.files[0]);
+        if(e.target.files[0]!==null ||e.target.files[0]!==undefined){
+            this.setState({
+                picture:e.target.files[0]
+            });
+        }
     }
     priceDish=(e)=>{
         this.setState({
@@ -51,7 +52,7 @@ class AddDrink extends Component{
         } =this.state;
         var formData = new FormData(),
         _this=this;
-        if(name===''||price===''||description===''||picture===''){
+        if(name===''||price===''||description===''||picture===''||picture===null){
             this.setState({
                 error:true
             });
@@ -72,10 +73,10 @@ class AddDrink extends Component{
         }  
     }
     componentDidMount(){
-        var totalOfItems=0;var idString
+        var totalOfItems=1;var idString
         api.get('/api/drinks')
             .then(response => {
-                for(var i = 0; i < response.data.length; ++i){
+                for(var i = 0; i <= response.data.length; ++i){
                     ++totalOfItems;
                 }
             }).then(()=>{

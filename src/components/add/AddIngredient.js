@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from "axios";
+import api from "../../api/api";
 import {connect} from "react-redux";
 import {addIngredient} from "../../actions/ingredientActions";
 class AddIngredient extends React.Component{
@@ -11,59 +11,57 @@ class AddIngredient extends React.Component{
             img:'',
             error:false
         }
-        this.nameIngredient=this.nameIngredient.bind(this);
-        this.imgIngredient=this.imgIngredient.bind(this);
-        this.addNewIngredient=this.addNewIngredient.bind(this);
-        this.id=this.id.bind(this);
     }
-    id(e){
+    id=(e)=>{
         this.setState({
             id:e.target.value
         });
     }
-    nameIngredient(e){
+    nameIngredient=(e)=>{
         this.setState({
             name:e.target.value
         });
     }
-    
-    imgIngredient(e){
-        this.setState({
-            img:e.target.files[0]
-        });//console.log(e.target.files[0]);
+    imgIngredient=(e)=>{
+        if(e.target.files[0]!==null ||e.target.files[0]!==undefined){
+            this.setState({
+                img:e.target.files[0]
+            });
+        }
     }
-    addNewIngredient(e){
+    addNewIngredient=(e)=>{
+        e.preventDefault();
         const {
             id ,
             name,
             img
         } =this.state;
+        var formData = new FormData(),
+        _this=this;
         if(name===''||img===''){
             this.setState({
                 error:true
             });
-            e.preventDefault();
         }
         else{
             this.setState({
                 error:false
             });
-            const infoIngredient={
-                id,
-                name,
-                img 
-            } 
-            console.log(infoIngredient);
-            //this.props.addIngredient(infoIngredient);
-            //this.props.history.push('/');
+            formData.append('id',id);
+            formData.append('name',name);
+            formData.append('img',img); 
+            this.props.addIngredient(formData);
+            setTimeout(() => {
+                _this.props.history.push('/admin/ingredients'); 
+            }, 900);
         } 
         
     }
     componentDidMount(){
-        var totalOfItems=0;var idString;
-        axios.get('https://localhost:49652/api/ingredients')
+        var totalOfItems=1;var idString;
+        api.get('/api/ingredients')
             .then(response => {
-                for(var i = 0; i < response.data.length; ++i){
+                for(var i = 0; i <= response.data.length; ++i){
                         ++totalOfItems;
                 }
             }).then(()=>{
@@ -88,8 +86,7 @@ class AddIngredient extends React.Component{
                     <div className="card">
                         <div className="card-body">
                             <h2 className="text-center">Add New Ingredient</h2>
-                            <form encType="multipart/form-data" onSubmit={this.addNewIngredient} 
-                            method="post" action="/api/ingredient/add/">
+                            <form onSubmit={this.addNewIngredient}>
                                 <div className="form-group">
                                     <label>Name</label>
                                     <input type="text" defaultValue={this.state.id} 

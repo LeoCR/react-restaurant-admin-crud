@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import {connect} from "react-redux";
-import {showStrongDish,editStrongDish} from "../../actions/strongDishActions";
+import {showStrongDish,editStrongDish,updateStrongDish,getStrongsDishes} from "../../actions/strongDishActions";
 class EditStrongDish extends Component{
     constructor(props){
         super(props);
@@ -14,15 +14,8 @@ class EditStrongDish extends Component{
             error:false,
             changedPicture:false
         }
-        this.nameDish=this.nameDish.bind(this);
-        this.descriptionDish=this.descriptionDish.bind(this);
-        this.pictureDish=this.pictureDish.bind(this);
-        this.categoryDish=this.categoryDish.bind(this);
-        this.priceDish=this.priceDish.bind(this);
-        this.editStrongDish=this.editStrongDish.bind(this);
-        this.id=this.id.bind(this);
     }
-    id(e){
+    id=(e)=>{
         this.setState({
             id:e.target.value
         });
@@ -44,37 +37,36 @@ class EditStrongDish extends Component{
         })
         console.log(nextProps.strongDish);
     }
-    nameDish(e){
+    nameDish=(e)=>{
         this.setState({
             name:e.target.value
         });
     }
-    descriptionDish(e){
+    descriptionDish=(e)=>{
         this.setState({
             description:e.target.value
         });
     }
-    pictureDish(e){
-        this.setState({
-            picture:e.target.files[0],
-            changedPicture:true
-        });  
-        document.querySelector("#picture_upload").setAttribute("name","picture");
-        document.querySelector("#picture_hidden").removeAttribute("name");
-        document.querySelector("#form-strong-dish-update").setAttribute("action","/strong-dish/update/");
-        document.querySelector("#form-strong-dish-update").setAttribute("method","post");
+    pictureDish=(e)=>{
+        if(e.target.files[0]!==null){
+            this.setState({
+                picture:e.target.files[0],
+                changedPicture:true
+            });  
+        }
     }
-    categoryDish(e){
+    categoryDish=(e)=>{
         this.setState({
             category:e.target.value
         });
     }
-    priceDish(e){
+    priceDish=(e)=>{
         this.setState({
             price:e.target.value
         });
     }
-    editStrongDish(e){    
+    editStrongDish=(e)=>{    
+        e.preventDefault();
         const {
             id ,
             name,
@@ -84,11 +76,12 @@ class EditStrongDish extends Component{
             picture,
             changedPicture
         } =this.state;
+        var formData=new FormData(),
+        _this=this;
         if(name===''||price===''||description===''||category===''){
             this.setState({
                 error:true
             });
-            e.preventDefault();
         }
         else{
             this.setState({
@@ -102,14 +95,24 @@ class EditStrongDish extends Component{
                 category,
                 picture
             }
-            console.log(infoDish); 
             if(changedPicture===false){
                 this.props.editStrongDish(infoDish);
-                this.props.history.push('/');
             }
+            else{
+                formData.append('id',id);
+                formData.append('name',name);
+                formData.append('price',price);
+                formData.append('description',description);
+                formData.append('picture',picture);
+                formData.append('category',category);
+                this.props.updateStrongDish(formData);
+            }
+            this.props.getStrongsDishes();
+            setTimeout(() => {
+                _this.props.history.push('/admin/strongs-dishes'); 
+            }, 900); 
         }
     }
-    
     render(){
         const {name,price,description,category,picture,error} = this.state;
         return(
@@ -143,6 +146,7 @@ class EditStrongDish extends Component{
                                     <input type="file" id="picture_upload" defaultValue={picture} 
                                     onChange={this.pictureDish} className="form-control-file"
                                      placeholder="Picture" />
+                                     <img src={picture} style={{maxWidth:'400px'}} alt={name}/>
                                 <input type="text" defaultValue={picture} className="form-control-file"
                                     readonly="readonly" name="picture" id="picture_hidden" style={{display:"none"}}/>
                                 </div>
@@ -180,6 +184,7 @@ class EditStrongDish extends Component{
     }
 }
 const mapStateToProps=state=>({
-    strongDish:state.strongsDishes.strongDish
+    strongDish:state.strongsDishes.strongDish,
+    strongsDishes:state.strongsDishes.strongsDishes
 })
-export default connect(mapStateToProps,{showStrongDish,editStrongDish})(EditStrongDish);
+export default connect(mapStateToProps,{showStrongDish,editStrongDish,updateStrongDish,getStrongsDishes})(EditStrongDish);

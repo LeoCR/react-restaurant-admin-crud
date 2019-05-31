@@ -1,37 +1,50 @@
-import { SHOW_INGREDIENTS,DELETE_INGREDIENT,
-    ADD_INGREDIENT,SHOW_INGREDIENT,EDIT_INGREDIENT
-} from "../constants/ingredientTypes";
-import axios from 'axios';
+import { SHOW_INGREDIENTS,DELETE_INGREDIENT, ADD_INGREDIENT,SHOW_INGREDIENT,EDIT_INGREDIENT} from "../constants/ingredientTypes";
+import api from '../api/api';
 export  const getIngredients=()=>async dispatch=>{
-    const response = await axios.get('https://localhost:49652/api/ingredients');
+    const response = await api.get('/api/ingredients');
     dispatch({
         type:SHOW_INGREDIENTS,
         payload:response.data
     })
 }
 export const deleteIngredient =id=>async dispatch=>{
-    await axios.delete(`https://localhost:49652/api/ingredient/delete/${id}`);
+    await api.delete(`/api/ingredient/delete/${id}`);
     dispatch({
         type:DELETE_INGREDIENT,
         payload:id
     })
 }
 export const showIngredient=id=>async dispatch=>{
-    const response=await axios.get(`https://localhost:49652/api/ingredient/show/${id}`);
+    const response=await api.get(`/api/ingredient/show/${id}`);
     dispatch({
         type:SHOW_INGREDIENT,
         payload:response.data
     })
 }
-export const addIngredient=dish=>async dispatch=>{
-    const response = await axios.post('https://localhost:49652/api/ingredient/add/',dish);
+export const addIngredient=ingredient=>async dispatch=>{
+    const response = await api.post('/api/ingredient/add/',ingredient,{
+        headers: {
+            'content-type': 'multipart/form-data'
+        }
+    });
     dispatch({
         type:ADD_INGREDIENT,
         payload:response.data
     })
 }
-export const editIngredient=dish=>async dispatch=>{
-    const response = await axios.put(`https://localhost:49652/api/ingredient/update/${dish.id}`,dish);
+export const editIngredient=ingredient=>async dispatch=>{
+    const response = await api.put(`/api/ingredient/update/${ingredient.id}`,ingredient);
+    dispatch({
+        type:EDIT_INGREDIENT,
+        payload:response.data
+    })
+}
+export const updateIngredient=ingredient=>async dispatch=>{
+    const response = await api.put(`/api/ingredient/update-img/${ingredient.id}`,ingredient,{
+        headers: {
+            'content-type': 'multipart/form-data'
+        }
+    });
     dispatch({
         type:EDIT_INGREDIENT,
         payload:response.data

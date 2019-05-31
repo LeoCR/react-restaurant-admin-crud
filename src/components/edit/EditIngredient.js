@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import {connect} from "react-redux";
-import {showIngredient,editIngredient} from "../../actions/ingredientActions";
+import {showIngredient,editIngredient,updateIngredient,getIngredients} from "../../actions/ingredientActions";
 class EditIngredient extends Component{
     constructor(props){
         super(props);
@@ -11,12 +11,8 @@ class EditIngredient extends Component{
             error:false,
             changedPicture:false
         }
-        this.nameIngredient=this.nameIngredient.bind(this);
-        this.imgIngredient=this.imgIngredient.bind(this);
-        this.id=this.id.bind(this);
-        this.submitIngredient=this.submitIngredient.bind(this);
     }
-    id(e){
+    id=(e)=>{
         this.setState({
             id:e.target.value
         });
@@ -38,31 +34,30 @@ class EditIngredient extends Component{
         })
         console.log(nextProps.ingredient);   
     }
-    nameIngredient(e){
+    nameIngredient=(e)=>{
         this.setState({
             name:e.target.value
         });
     }
-    imgIngredient(e){
-        this.setState({
-            //picture:e.target.value
-            img:e.target.files[0],
-            changedPicture:true
-        });
-        document.querySelector("#picture_upload").setAttribute("name","img");
-        document.querySelector("#picture_hidden").removeAttribute("name");
-        document.querySelector('#form-update-ingredient').setAttribute("action", "/ingredient/update/");
-        document.querySelector('#form-update-ingredient').setAttribute("method", "post");  
+    imgIngredient=(e)=>{
+        if(e.target.files[0]!==null){
+            this.setState({
+                img:e.target.files[0],
+                changedPicture:true
+            });
+        }
     }
     
-    submitIngredient(e){ 
+    editIngredient=(e)=>{ 
+        e.preventDefault();
         const {
             id ,
             name,
             img,
             changedPicture
         } =this.state;
-         e.preventDefault();
+        var formData=new FormData(),
+        _this=this;
         if(name===''){
             this.setState({
                 error:true
@@ -77,11 +72,23 @@ class EditIngredient extends Component{
                 name,
                 img
             }
-            console.log(infoIngredient);
             if(changedPicture===false){
+                console.log('changedPicture===false '+changedPicture);
+                console.log(infoIngredient);
                 this.props.editIngredient(infoIngredient);
-                this.props.history.push('/');
             } 
+            else{
+                console.log('changedPicture===true '+changedPicture);
+                
+                formData.append('id',id);
+                formData.append('name',name);
+                formData.append('img',img);
+                this.props.updateIngredient(formData);
+            }
+            this.props.getIngredients();
+            setTimeout(() => {
+                _this.props.history.push('/admin/ingredients');
+            }, 900);
         }
     }
     render(){
@@ -92,8 +99,7 @@ class EditIngredient extends Component{
                     <div className="card">
                         <div className="card-body">
                             <h2 className="text-center">Edit an Ingredient</h2>
-                            <form encType="multipart/form-data" onSubmit={this.submitIngredient} 
-                            id="form-update-ingredient">
+                            <form onSubmit={(e)=>this.editIngredient(e)} id="form-update-ingredient">
                                 <div className="form-group">
                                     <label>Name</label>
                                     <input type="text" defaultValue={this.state.id} 
@@ -109,7 +115,8 @@ class EditIngredient extends Component{
                                     <input type="file" id="picture_upload" defaultValue={img} 
                                     onChange={this.imgIngredient} className="form-control-file"
                                      placeholder="Picture" />
-                                <input type="text" defaultValue={img} className="form-control-file"
+                                    <img src={img} style={{maxWidth:'400px'}} alt={name}/> 
+                                    <input type="text" defaultValue={img} className="form-control-file"
                                     readOnly="readonly" name="img" id="picture_hidden" style={{display:"none"}}/>
                                 </div>
                             {error ? 
@@ -129,6 +136,7 @@ class EditIngredient extends Component{
     }
 }
 const mapStateToProps=state=>({
-    ingredient:state.ingredients.ingredient
+    ingredient:state.ingredients.ingredient,
+    ingredients:state.ingredients.ingredients
 })
-export default connect(mapStateToProps,{showIngredient,editIngredient})(EditIngredient);
+export default connect(mapStateToProps,{showIngredient,editIngredient,updateIngredient,getIngredients})(EditIngredient);

@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import axios from "axios";
+import api from "../../api/api";
 import {connect} from "react-redux";
 import {addStrongDish} from "../../actions/strongDishActions";
 class AddStrongDish extends Component{
@@ -14,46 +14,41 @@ class AddStrongDish extends Component{
             price:'',
             error:false
         }
-        this.nameDish=this.nameDish.bind(this);
-        this.descriptionDish=this.descriptionDish.bind(this);
-        this.pictureDish=this.pictureDish.bind(this);
-        this.categoryDish=this.categoryDish.bind(this);
-        this.priceDish=this.priceDish.bind(this);
-        this.addNewStrongDish=this.addNewStrongDish.bind(this);
-        this.id=this.id.bind(this);
     }
-    id(e){
+    id=(e)=>{
         this.setState({
             id:e.target.value
         });
     }
-    nameDish(e){
+    nameDish=(e)=>{
         this.setState({
             name:e.target.value
         });
     }
-    descriptionDish(e){
+    descriptionDish=(e)=>{
         this.setState({
             description:e.target.value
         });
     }
-    pictureDish(e){
-        this.setState({
-            picture:e.target.files[0]
-        });
-        console.log(e.target.files[0]);
+    pictureDish=(e)=>{
+        if(e.target.files[0]!==null ||e.target.files[0]!==undefined){
+            this.setState({
+                picture:e.target.files[0]
+            });
+        }
     }
-    categoryDish(e){
+    categoryDish=(e)=>{
         this.setState({
             category:e.target.value
         });
     }
-    priceDish(e){
+    priceDish=(e)=>{
         this.setState({
             price:e.target.value
         });
     }
-    addNewStrongDish(e){ 
+    addNewStrongDish=(e)=>{ 
+        e.preventDefault();
         const {
             id ,
             name,
@@ -62,34 +57,34 @@ class AddStrongDish extends Component{
             category,
             picture
         } =this.state;
+        var formData = new FormData(),
+        _this=this;
         if(name===''||price===''||description===''||category===''||picture===''){
             this.setState({
                 error:true
             });
-            e.preventDefault();
         }
         else{
             this.setState({
                 error:false
             }); 
-            const infoDish={
-                id,
-                name,
-                price,
-                description,
-                category,
-                picture
-            }
-            console.log(infoDish);
-            //this.props.addStrongDish(infoDish);
-            //this.props.history.push('/'); 
+            formData.append('id',id);
+            formData.append('name',name);
+            formData.append('price',price);
+            formData.append('description',description);
+            formData.append('picture',picture)
+            formData.append('category',category);
+            this.props.addStrongDish(formData);
+            setTimeout(() => {
+                _this.props.history.push('/admin/strongs-dishes'); 
+            }, 900); 
         }  
     }
     componentDidMount(){
-        var totalOfItems=0;var idString
-        axios.get('https://localhost:49652/api/strongs-dishes')
+        var totalOfItems=1;var idString
+        api.get('/api/strongs-dishes')
             .then(response => {
-                for(var i = 0; i < response.data.length; ++i){
+                for(var i = 0; i <= response.data.length; ++i){
                         ++totalOfItems;
                 }
             }).then(()=>{
@@ -113,9 +108,8 @@ class AddStrongDish extends Component{
                 <div className="col-md-8">
                     <div className="card">
                         <div className="card-body">
-                            <h2 className="text-center">Add New Dish</h2>
-                            <form encType="multipart/form-data" onSubmit={this.addNewStrongDish} 
-                            method="post" action="/api/strong-dish/add/">
+                            <h2 className="text-center">Add New Strong Dish</h2>
+                            <form onSubmit={this.addNewStrongDish}>
                                 <div className="form-group">
                                     <label>Name</label>
                                     <input type="text" defaultValue={this.state.id} 

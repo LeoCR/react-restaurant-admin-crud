@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import api from "../../api/api"
+import api from "../../api/api";
 import {connect} from "react-redux";
 import {addDessert} from "../../actions/dessertActions";
 class AddDessert extends Component{
@@ -31,9 +31,11 @@ class AddDessert extends Component{
         });
     }
     pictureDessert=(e)=>{
-        this.setState({
-            picture:e.target.files[0]
-        });
+        if(e.target.files[0]!==null ||e.target.files[0]!==undefined){
+            this.setState({
+                picture:e.target.files[0]
+            });
+        }
     }
     priceDessert=(e)=>{
         this.setState({
@@ -72,11 +74,11 @@ class AddDessert extends Component{
         }  
     }
     componentDidMount(){
-        var totalOfItems=0,
+        var totalOfItems=1,
         idString;
         api.get('/api/desserts')
             .then(response => {
-                for(var i = 0; i < response.data.length; ++i){
+                for(var i = 0; i <= response.data.length; ++i){
                     ++totalOfItems;
                 }
             }).then(()=>{

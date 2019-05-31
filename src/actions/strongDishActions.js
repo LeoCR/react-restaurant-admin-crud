@@ -1,39 +1,51 @@
-import { SHOW_STRONGS_DISHES,DELETE_STRONG_DISH,
-    ADD_STRONG_DISH, SHOW_STRONG_DISH,
-    EDIT_STRONG_DISH
-} from "../constants/strongDishTypes"
-import axios from 'axios';
+import { SHOW_STRONGS_DISHES,DELETE_STRONG_DISH,ADD_STRONG_DISH, SHOW_STRONG_DISH, EDIT_STRONG_DISH} from "../constants/strongDishTypes"
+import api from '../api/api';
 export  const getStrongsDishes=()=>async dispatch=>{
-    const response = await axios.get('https://localhost:49652/api/strongs-dishes');
+    const response = await api.get('/api/strongs-dishes');
     dispatch({
         type:SHOW_STRONGS_DISHES,
         payload:response.data
     })
 }
 export const deleteStrongDish =id=>async dispatch=>{
-    await axios.delete(`https://localhost:49652/api/strongs-dish/delete/${id}`);
+    await api.delete(`/api/strongs-dish/delete/${id}`);
     dispatch({
         type:DELETE_STRONG_DISH,
         payload:id
     })
 }
-export const addStrongDish=dish=>async dispatch=>{
-    const response = await axios.post('https://localhost:49652/api/strong-dish/add/',dish);
+export const addStrongDish=strongDish=>async dispatch=>{
+    const response = await api.post('/api/strong-dish/add/',strongDish,{
+        headers: {
+            'content-type': 'multipart/form-data'
+        }
+    });
     dispatch({
         type:ADD_STRONG_DISH,
         payload:response.data
     })
 }
 export const showStrongDish=id=>async dispatch=>{
-    const response=await axios.get(`https://localhost:49652/api/strong-dish/show/${id}`);
+    const response=await api.get(`/api/strong-dish/show/${id}`);
     dispatch({
         type:SHOW_STRONG_DISH,
         payload:response.data
     })
 }
 
-export const editStrongDish=dish=>async dispatch=>{
-    const response = await axios.put(`https://localhost:49652/api/strong-dish/update/${dish.id}`,dish);
+export const editStrongDish=strongDish=>async dispatch=>{
+    const response = await api.put(`/api/strong-dish/update/${strongDish.id}`,strongDish);
+    dispatch({
+        type:EDIT_STRONG_DISH,
+        payload:response.data
+    })
+}
+export const updateStrongDish=strongDish=>async dispatch=>{
+    const response = await api.put(`/api/strong-dish/update-img/${strongDish.id}`,strongDish,{
+        headers: {
+            'content-type': 'multipart/form-data'
+        }
+    });
     dispatch({
         type:EDIT_STRONG_DISH,
         payload:response.data
