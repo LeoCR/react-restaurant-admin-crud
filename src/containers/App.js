@@ -10,6 +10,7 @@ import ShowIngredients from "./show/ShowIngredients";
 import ShowEntrees from "./show/ShowEntrees";
 import ShowDesserts from "./show/ShowDesserts";
 import ShowDrinks from "./show/ShowDrinks";
+import ShowInvoices from "./show/ShowInvoices";
 import EditStrongDish from "../components/edit/EditStrongDish";
 import EditIngredient from "../components/edit/EditIngredient";
 import EditEntree from "../components/edit/EditEntree";
@@ -48,6 +49,8 @@ class App extends Component {
                       <Route exact path="/admin/drinks" render={() => <ShowDrinks/>}/>
                       <Route exact path="/admin/add/drink" component={AddDrink}/>
                       <Route exact path="/admin/edit/drink/:id" component={EditDrink}/>
+
+                      <Route exact path="/admin/invoices" render={() => <ShowInvoices/>}/>
                   </Switch>  
                 </div>
             </React.Fragment>
