@@ -3,7 +3,7 @@ import strongsDishesReducer from "./strongsDishesReducer";
 import entreesReducer from "./entreesReducer";
 import dessertsReducer from "./dessertsReducer";
 import drinksReducer from "./drinksReducer";
-import invoicesReducer from "./invoicesReducer"
+import invoicesReducer from "./invoicesReducer";
 import {combineReducers} from "redux";
 export default combineReducers({
     strongsDishes:strongsDishesReducer,

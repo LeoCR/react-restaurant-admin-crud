@@ -1,22 +1,7 @@
-import {GET_INVOICES} from "../constants/invoiceTypes";
+import {GET_INVOICES,SHOW_INVOICE,EDIT_INVOICE,SHOW_ORDER_PRODUCTS} from "../constants/invoiceTypes";
 
 const initialState={
-    invoices:[
-        {
-            "headerInvoices":[
-                {
-                "idHeader":1,"dateOfBilling":"2019-03-12T02:30:00.000Z","total":"15.0000","subTotal":"14.0000","salesTax":"10.0000","productId":"3ENTR","productQuantity":2},
-                {
-                "idHeader":2,"dateOfBilling":"2019-03-12T02:30:00.000Z","total":"15.0000","subTotal":"14.0000","salesTax":"10.0000","productId":"8DESRT","productQuantity":2}
-            ],
-            "invoicesDetails":[
-                {
-                "idInvoiceDetail":1,"clientRestaurant":1,"headerInvoice":1},
-                {
-                "idInvoiceDetail":2,"clientRestaurant":1,"headerInvoice":2}
-            ]
-    }
-    ]
+    invoices:[]
 }
 export default function invoicesReducer(state=initialState,action){
     switch (action.type) {
@@ -25,6 +10,25 @@ export default function invoicesReducer(state=initialState,action){
                 ...state,
                 invoices:action.payload
             }
+        case SHOW_INVOICE:
+            return{
+                ...state,
+                invoice:action.payload
+            }
+        case SHOW_ORDER_PRODUCTS:
+            return{
+                ...state,
+                orderProducts:action.payload
+            }
+        case EDIT_INVOICE:
+                return{
+                    ...state,
+                    invoices:state.invoices.map(
+                        invoice=>invoice.orderCode===action.payload.id
+                        ?(invoice=action.payload)
+                        :invoice
+                    )
+        }
         default:
             return state
     }

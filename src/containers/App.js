@@ -16,13 +16,14 @@ import EditIngredient from "../components/edit/EditIngredient";
 import EditEntree from "../components/edit/EditEntree";
 import EditDessert from "../components/edit/EditDessert";
 import EditDrink from "../components/edit/EditDrink";
-import {BrowserRouter as Router,Route,Switch} from "react-router-dom";
-
+import EditInvoice from "../components/edit/EditInvoice";
+import {Router,Route,Switch} from "react-router-dom";
+import history from '../history';
 class App extends Component {
   render() {
     return (
       <React.Fragment>
-          <Router>
+          <Router history={history}>
             <React.Fragment>
                 <Header/>
                 <div className="container">
@@ -51,6 +52,7 @@ class App extends Component {
                       <Route exact path="/admin/edit/drink/:id" component={EditDrink}/>
 
                       <Route exact path="/admin/invoices" render={() => <ShowInvoices/>}/>
+                      <Route exact path="/admin/edit/invoice/:orderCode" component={EditInvoice}/>
                   </Switch>  
                 </div>
             </React.Fragment>

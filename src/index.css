@@ -12,3 +12,16 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+.lbl-form{
+  min-width: 160px;
+}
+table th,table td,.table > thead > tr > th{
+  border:1px solid black !important;
+}
+.total-row{
+  background:#b00112 !important;
+}
+.table > thead > tr > th{
+  background: #000000 !important;
+  color: #ffffff !important;
+}

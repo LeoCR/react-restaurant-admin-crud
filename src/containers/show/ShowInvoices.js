@@ -3,15 +3,15 @@ import {getInvoices} from "../../actions/invoiceActions";
 import $ from 'jquery'; 
 import {connect} from "react-redux";
 import Invoice from '../../components/view/invoice';
+//import api from '../../api/api';
 class ShowInvoices extends React.Component{
     constructor(props){
         super(props);
         this.state={
             currentPage:1,
             totalItems:0,
-            maxItemsPerPage:4,
+            maxItemsPerPage:3,
             invoicesToShow:[{
-                "headerInvoices":[{
                     "idHeader":1,
                     "dateOfBilling":"2019-03-12T02:30:00.000Z",
                     "total":"15.0000",
@@ -27,17 +27,6 @@ class ShowInvoices extends React.Component{
                     "salesTax":"10.0000",
                     "productId":"8DESRT",
                     "productQuantity":2
-                }],
-                "invoicesDetails":[{
-                        "idInvoiceDetail":1,
-                        "clientRestaurant":1,
-                        "headerInvoice":1
-                },
-                {
-                        "idInvoiceDetail":2,
-                        "clientRestaurant":1,
-                        "headerInvoice":2
-                }]
             }],
             firstItemToShow:0,
             totalPagination:[1,2]
@@ -45,20 +34,22 @@ class ShowInvoices extends React.Component{
         this.getPrevPage = this.getPrevPage.bind(this);
         this.getNextPage = this.getNextPage.bind(this);
     }
-    setInvoicesItems=()=>{
+    setInvoicesItems= ()=>{
         const {invoices}=this.props;
         var tempInvoicesToShow=[];
         var maxItemsLenght=parseInt(this.state.maxItemsPerPage*this.state.currentPage);
+        var _this=this;
+        
         try {
             let index = this.state.firstItemToShow;
             if(maxItemsLenght>invoices.length){
                 maxItemsLenght=invoices.length;
             }
             do{ 
-                if(invoices[index].name!==null   ){
-                    tempInvoicesToShow.push(invoices[index]);
+                if(invoices[index]!==undefined){
+                        tempInvoicesToShow.push(invoices[index]);
                 }
-                this.setState({
+                _this.setState({
                     invoicesToShow:tempInvoicesToShow
                 })
                 index++;
@@ -66,16 +57,20 @@ class ShowInvoices extends React.Component{
             while(index <maxItemsLenght);
         } 
         catch (error) {
-            console.log('An error occurs');
+            console.log('An error occurs in setInvoicesItems');
             console.error(error);
         }
     }
     async componentDidMount(){
         await this.props.getInvoices(); 
         const {invoices}= this.props;
-        this.setState({
-            totalItems:invoices.length
-        });
+        try {
+            this.setState({
+                totalItems:invoices.length
+            });
+        } catch (error) {
+            console.log('An error occurs '+error);
+        }
         this.setInvoicesItems();
         var tempTotalPages=Math.round(this.state.totalItems/this.state.maxItemsPerPage);
         var tempItems=[];
@@ -133,7 +128,6 @@ class ShowInvoices extends React.Component{
             });
             this.setInvoicesItems(); 
         }, 300);
-        
     }
     getPagination=()=>{
         return(
@@ -170,8 +164,8 @@ class ShowInvoices extends React.Component{
         }
         else{
             return(
-                this.state.invoicesToShow.map(invoice=>
-                    <Invoice key={invoice.id} info={invoice}/> 
+                this.state.invoicesToShow.map(headerInvoice=>
+                    <Invoice key={headerInvoice.orderCode} info={headerInvoice}/> 
                 )
             )
         }
