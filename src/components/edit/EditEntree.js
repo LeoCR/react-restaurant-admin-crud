@@ -1,6 +1,10 @@
 import React,{Component} from 'react';
 import {connect} from "react-redux";
 import {showEntree,updateEntree,editEntree,getEntrees} from "../../actions/entreeActions";
+import {getIngredientsByDishId,deleteIngredientDish} from "../../actions/ingredientActions";
+import {setDishId,setAddIngredient,setNextIdDishIngredient} from '../../actions/modalActions';
+import {openModal} from '../../helper/modal.helper';
+import api from '../../api/api';
 class EditEntree extends Component{
     constructor(props){
         super(props);
@@ -12,8 +16,16 @@ class EditEntree extends Component{
             category:'',
             price:'',
             error:false,
-            changedPicture:false
+            changedPicture:false,
+            ingredientsByDish:[]
         }
+    }
+    onAddIngredient=(e)=>{
+        e.preventDefault();
+        this.props.setAddIngredient();
+        setTimeout(() => {
+            openModal();
+        }, 500);
     }
     id=(e)=>{
         this.setState({
@@ -23,17 +35,34 @@ class EditEntree extends Component{
     componentDidMount(){
         const {id}=this.props.match.params;
         this.props.showEntree(id);
+        this.props.setDishId(id);
+        this.props.getIngredientsByDishId(id);
+        var _this=this;
+        api.get('/api/ingredient-to-dish/count/')
+        .then((res)=>{
+            if(res.data.maxIngredientDishId){
+                var nextIdIngDish=parseInt(res.data.maxIngredientDishId)+1;
+                _this.props.setNextIdDishIngredient(nextIdIngDish)
+            }
+        })
     }
     componentWillReceiveProps(nextProps,nextState){
-        const {id, name,price,description,category,picture}=nextProps.entree;
-        this.setState({
-            id,
-            name,
-            description,
-            category,
-            picture,
-            price
-        })
+        if(nextProps.ingredientsByDish){
+            this.setState({
+                ingredientsByDish:nextProps.ingredientsByDish
+            })
+        }
+        if(nextProps.entree){
+            const {id, name,price,description,category,picture}=nextProps.entree;
+            this.setState({
+                id,
+                name,
+                description,
+                category,
+                picture,
+                price
+            })
+        }
     }
     nameEntree=(e)=>{
         this.setState({
@@ -65,15 +94,7 @@ class EditEntree extends Component{
     }
     editEntree=(e)=>{
         e.preventDefault();
-        const {
-            id ,
-            name,
-            description,
-            price,
-            category,
-            picture,
-            changedPicture
-        } =this.state;
+        const {id ,name,description,price,category,picture,changedPicture} =this.state;
         var formData=new FormData(),
         _this=this;
         if(name===''||price===''||description===''||category===''){
@@ -85,14 +106,7 @@ class EditEntree extends Component{
             this.setState({
                 error:false
             });
-             const infoEntree={
-                id,
-                name,
-                price,
-                description,
-                category,
-                picture
-            }
+            const infoEntree={id,name,price,description,category,picture}
             if(changedPicture===false){
                 this.props.editEntree(infoEntree);
             }
@@ -105,11 +119,59 @@ class EditEntree extends Component{
                 formData.append('category',category);
                 this.props.updateEntree(formData);
             }
+            if(this.state.ingredientsByDish.length>0 ){
+                this.state.ingredientsByDish.forEach(function(ing) {
+                    api.post('/api/ingredient-to-dish/add/',ing)
+                    .then((res)=>{
+                        console.log(res);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+                });
+            }
             this.props.getEntrees();
             setTimeout(() => {
                 _this.props.history.push('/admin/entrees/');
-            }, 900);
+            },2000);
         }
+    }
+    deleteIngredientDish=(e,ing)=>{
+        e.preventDefault();
+        this.props.deleteIngredientDish(ing.idIngredientDish);
+    }
+    getIngredientsByDishId=()=>{
+            if(this.state.ingredientsByDish.length>0 ){
+                return(
+                    <React.Fragment>
+                        <h1>Ingredients</h1>
+                        <button id="add-ingredient" className="btn btn-success" 
+                            onClick={(e)=>this.onAddIngredient(e)}>
+                                Add Ingredient
+                        </button>
+                        <div className="ingredients-container">
+                            {this.state.ingredientsByDish.map(ing=>
+                                <div className="ing-box">
+                                    <button className="btn btn-delete" onClick={(e)=>this.deleteIngredientDish(e,ing)}>X</button>
+                                    <h5>{ing.name}</h5>
+                                    <img src={ing.img} alt={ing.name} style={{maxWidth:'130px',float:'left',margin:'10px',maxHeight:'80px'}}/>
+                                </div>
+                            )}
+                        </div>
+                    </React.Fragment>
+                )
+            }  
+            else{
+                return(
+                    <React.Fragment>
+                        <button id="add-ingredient" className="btn btn-success" 
+                            onClick={(e)=>this.onAddIngredient(e)}>
+                                Add Ingredient
+                        </button>
+                        <p>No Ingredients</p>       
+                    </React.Fragment>
+                )
+            }    
     }
     render(){
         const {name,price,description,category,picture,error} = this.state;
@@ -131,12 +193,9 @@ class EditEntree extends Component{
                                      />
                                 </div>
                                 <div className="form-group">
-                                    <label>Description</label>
-                                    <input type="text" defaultValue={description} 
-                                    onChange={this.descriptionEntree} className="form-control" 
-                                    placeholder="Description"
-                                    name="description" 
-                                    />
+                                    <label style={{width:'100%'}}>Description</label> 
+                                    <textarea  value={description} className="form-control"
+                                    onChange={this.descriptionEntree} ></textarea>
                                 </div>
                                 <div className="form-group">
                                     <label>Picture</label>
@@ -164,6 +223,7 @@ class EditEntree extends Component{
                                      name="price"
                                      />
                                 </div>
+                            {this.getIngredientsByDishId()}
                             {error ? 
                             <div className="font-weight-bold alert-danger text-center mt-4">
                                 All the fields are required
@@ -181,6 +241,9 @@ class EditEntree extends Component{
 }
 const mapStateToProps=state=>({
     entree:state.entrees.entree,
-    entrees:state.entrees.entrees
+    entrees:state.entrees.entrees,
+    ingredientsByDish:state.ingredients.ingredientsByDish,
+    idDish:state.modals.idDish,
+    nextIdDishIngredient:state.modals.nextIdDishIngredient
 })
-export default connect(mapStateToProps,{showEntree,updateEntree,editEntree,getEntrees})(EditEntree);
+export default connect(mapStateToProps,{deleteIngredientDish,setNextIdDishIngredient,setDishId,setAddIngredient,showEntree,updateEntree,editEntree,getEntrees,getIngredientsByDishId})(EditEntree);

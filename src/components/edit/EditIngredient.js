@@ -22,17 +22,14 @@ class EditIngredient extends Component{
         this.props.showIngredient(id);
     }
     componentWillReceiveProps(nextProps,nextState){
-        const {
-            id, 
-            name,
-            img,
-        }=nextProps.ingredient;
-        this.setState({
-            id,
-            name,
-            img
-        })
-        console.log(nextProps.ingredient);   
+        if(nextProps.ingredient){
+            const {id, name,img}=nextProps.ingredient;
+            this.setState({
+                id,
+                name,
+                img
+            }) 
+        } 
     }
     nameIngredient=(e)=>{
         this.setState({

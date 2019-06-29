@@ -19,6 +19,7 @@ import EditDrink from "../components/edit/EditDrink";
 import EditInvoice from "../components/edit/EditInvoice";
 import {Router,Route,Switch} from "react-router-dom";
 import history from '../history';
+import Modal from "../components/Modal";
 class App extends Component {
   render() {
     return (
@@ -57,6 +58,7 @@ class App extends Component {
                 </div>
             </React.Fragment>
           </Router>
+          <Modal/>
       </React.Fragment>
     );
   }

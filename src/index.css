@@ -25,3 +25,66 @@ table th,table td,.table > thead > tr > th{
   background: #000000 !important;
   color: #ffffff !important;
 }
+.modal-title h1{
+  width: 80% ;
+  float: left;
+}
+.modal-header button.close{
+  font-size: 47px;  
+  background:#990a0a;
+  padding: 0px 10px 7px 10px;
+  opacity: 1;
+  color:#ffffff;
+  text-shadow: none;
+  line-height: 39px;
+}
+.modal-opened .modal{
+    display: block !important;
+    background: rgba(0, 0, 0, 0.73);
+}
+.ingredients-container {
+	width: 100%;
+	position: relative;
+	float: left;
+}
+.ing-box{
+  width: 150px;
+  float: left;
+  position: relative;
+  border: 1px solid #000;
+  height: 140px;
+  margin:5px;
+}
+.ing-box h5{
+  text-align: center;
+}
+.card-body .btn-primary{
+  float: left;
+}
+#addIngredientForm{
+  width: 90%;
+  margin: 3%;
+}
+#addIngredientForm select{
+  width: 100%;
+  float: left;
+}
+.card textarea{
+  width: 100%;
+  min-height: 150px;
+}
+#img-selected{
+  width: 100%;
+  position: relative;
+  float: left;
+}
+.btn-delete{
+  background: #990a0a;
+  padding: 0 5px 0px;
+  opacity: 1;
+  color: #fff;
+  text-shadow: none;
+  line-height: 26px;
+  font-size: 24px;
+  float: left;
+}

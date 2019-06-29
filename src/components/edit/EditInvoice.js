@@ -20,15 +20,17 @@ class EditInvoice extends React.Component{
         this.props.showOrderProducts(orderCode);
     }
     componentWillReceiveProps(nextProps,nextState){
-        const {orderCode, email,dateOfBilling,username}=nextProps.invoice[0];
-        this.setState({
-            invoice:{
-                orderCode,
-                email,
-                dateOfBilling,
-                username
-            }
-        })
+        if(nextProps.invoice){
+            const {orderCode, email,dateOfBilling,username}=nextProps.invoice[0];
+            this.setState({
+                invoice:{
+                    orderCode,
+                    email,
+                    dateOfBilling,
+                    username
+                }
+            })
+        }
     }
     renderOrder=()=>{
         var totalPrice=0;

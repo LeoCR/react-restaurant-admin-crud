@@ -2,7 +2,6 @@ import React,{Component} from 'react';
 import {Link} from "react-router-dom";
 import {deleteInvoice} from "../../actions/invoiceActions";
 import {connect} from "react-redux";
-//import api from "../../api/api";
 class Invoice extends Component{ 
     state={
         username:''
@@ -13,10 +12,6 @@ class Invoice extends Component{
         setTimeout(() => {
             window.location.reload();
         }, 1200);
-    }
-    componentDidMount(){
-        //var _this=this;
-        //console.log(this.props);
     }
     render(){
         const {idHeader,dateOfBilling,username,email,orderCode} = this.props.info;

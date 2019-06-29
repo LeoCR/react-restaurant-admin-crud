@@ -36,7 +36,6 @@ class ShowEntrees extends Component{
     }
     async componentDidMount(){
         await this.props.getEntrees();
-        console.log(this.props);
         const {entrees}=this.props;
         this.setState({
             totalItems:entrees.length

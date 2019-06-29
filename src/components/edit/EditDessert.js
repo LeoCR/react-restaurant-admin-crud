@@ -24,14 +24,16 @@ class EditDessert extends Component{
         this.props.showDessert(id);
     }
     componentWillReceiveProps(nextProps,nextState){
-        const {id, name,price,description,picture}=nextProps.dessert;
-        this.setState({
-            id,
-            name,
-            description,
-            picture,
-            price
-        })
+        if(nextProps.dessert){
+            const {id, name,price,description,picture}=nextProps.dessert;
+            this.setState({
+                id,
+                name,
+                description,
+                picture,
+                price
+            })
+        }
     }
     nameDessert=(e)=>{
         this.setState({

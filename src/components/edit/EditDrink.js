@@ -24,14 +24,16 @@ class EditDrink extends Component{
         this.props.showDrink(id);
     }
     componentWillReceiveProps(nextProps,nextState){
-        const {id, name,price,description,picture}=nextProps.drink;
-        this.setState({
-            id,
-            name,
-            description, 
-            picture,
-            price
-        })
+        if(nextProps.drink){
+            const {id, name,price,description,picture}=nextProps.drink;
+            this.setState({
+                id,
+                name,
+                description, 
+                picture,
+                price
+            })
+        }
     }
     nameDrink=(e)=>{
         this.setState({

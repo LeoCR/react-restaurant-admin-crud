@@ -19,23 +19,24 @@ class EditStrongDish extends Component{
         this.setState({
             id:e.target.value
         });
-
     }
     componentDidMount(){
         const {id}=this.props.match.params;
         this.props.showStrongDish(id);
     }
     componentWillReceiveProps(nextProps,nextState){
-        const {id, name,price,description,category,picture}=nextProps.strongDish;
-        this.setState({
-            id,
-            name,
-            description,
-            category,
-            picture,
-            price
-        })
-        console.log(nextProps.strongDish);
+        if(nextProps.strongDish){
+            const {id, name,price,description,category,picture}=nextProps.strongDish;
+            this.setState({
+                id,
+                name,
+                description,
+                category,
+                picture,
+                price
+            })
+            console.log(nextProps.strongDish);
+        }
     }
     nameDish=(e)=>{
         this.setState({
