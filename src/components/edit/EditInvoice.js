@@ -15,18 +15,18 @@ class EditInvoice extends React.Component{
         };
     }
     componentDidMount=()=>{
-        const {orderCode}=this.props.match.params;
-        this.props.showInvoice(orderCode);
-        this.props.showOrderProducts(orderCode);
+        const {order_code}=this.props.match.params;
+        this.props.showInvoice(order_code);
+        this.props.showOrderProducts(order_code);
     }
     componentWillReceiveProps(nextProps,nextState){
         if(nextProps.invoice){
-            const {orderCode, email,dateOfBilling,username}=nextProps.invoice[0];
+            const {order_code, email,date_of_billing,username}=nextProps.invoice[0];
             this.setState({
                 invoice:{
-                    orderCode,
+                    order_code,
                     email,
-                    dateOfBilling,
+                    date_of_billing,
                     username
                 }
             })
@@ -52,8 +52,8 @@ class EditInvoice extends React.Component{
                             {
                                 this.props.orderProducts.map((order)=>
                                         <tr>
-                                            <td>{order.productName}</td>
-                                            <td>{order.productQuantity}</td>
+                                            <td>{order.product_name}</td>
+                                            <td>{order.product_quantity}</td>
                                             <td>{order.total}</td>
                                         </tr>
                                 )
@@ -98,19 +98,19 @@ class EditInvoice extends React.Component{
         return true;
     }
     render(){
-        var {orderCode,email,dateOfBilling,username,error} = this.state.invoice;
+        var {order_code,email,date_of_billing,username,error} = this.state.invoice;
         return(
             <div className="row justify-content-center mt-5">
                 <div className="col-md-8">
                     <div className="card">
                         <div className="card-body">
-                            <h2 className="text-center">Invoice #{orderCode}</h2>
+                            <h2 className="text-center">Invoice #{order_code}</h2>
                             {/* <form onSubmit={(e)=>this.editInvoice(e)} id="form-update-ingredient"> */}
                                 <div className="form-group">
-                                    <label htmlFor="orderCode" className="lbl-form">Order Code:</label>
-                                    <input type="text" defaultValue={orderCode} 
-                                     readOnly id="orderCode"
-                                     name="orderCode"/>
+                                    <label htmlFor="order_code" className="lbl-form">Order Code:</label>
+                                    <input type="text" defaultValue={order_code} 
+                                     readOnly id="order_code"
+                                     name="order_code"/>
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="email" className="lbl-form">Email</label>
@@ -119,10 +119,10 @@ class EditInvoice extends React.Component{
                                      name="email"/>
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="dateOfBilling" className="lbl-form">Date of Billing</label>
-                                    <input type="text" defaultValue={dateOfBilling} 
+                                    <label htmlFor="date_of_billing" className="lbl-form">Date of Billing</label>
+                                    <input type="text" defaultValue={date_of_billing} 
                                      readOnly
-                                     name="dateOfBilling" id="dateOfBilling"/>
+                                     name="date_of_billing" id="date_of_billing"/>
                                 </div>
                                 {this.renderOrder()}
                                 <button className="btn btn-primary font-weight-bold text-uppercase d-block w-100" onClick={(e)=>this.goBack(e)}>Back</button>

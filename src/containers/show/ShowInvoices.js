@@ -12,21 +12,21 @@ class ShowInvoices extends React.Component{
             totalItems:0,
             maxItemsPerPage:3,
             invoicesToShow:[{
-                    "idHeader":1,
-                    "dateOfBilling":"2019-03-12T02:30:00.000Z",
+                    "id_header":1,
+                    "date_of_billing":"2019-03-12T02:30:00.000Z",
                     "total":"15.0000",
-                    "subTotal":"14.0000",
-                    "salesTax":"10.0000",
-                    "productId":"3ENTR",
-                    "productQuantity":2},
+                    "subtotal":"14.0000",
+                    "sales_tax":"10.0000",
+                    "product_id":"3ENTR",
+                    "product_quantity":2},
                     {
-                    "idHeader":2,
-                    "dateOfBilling":"2019-03-12T02:30:00.000Z",
+                    "id_header":2,
+                    "date_of_billing":"2019-03-12T02:30:00.000Z",
                     "total":"15.0000",
-                    "subTotal":"14.0000",
-                    "salesTax":"10.0000",
-                    "productId":"8DESRT",
-                    "productQuantity":2
+                    "subtotal":"14.0000",
+                    "sales_tax":"10.0000",
+                    "product_id":"8DESRT",
+                    "product_quantity":2
             }],
             firstItemToShow:0,
             totalPagination:[1,2]

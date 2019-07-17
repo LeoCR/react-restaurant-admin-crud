@@ -53,7 +53,7 @@ class App extends Component {
                       <Route exact path="/admin/edit/drink/:id" component={EditDrink}/>
 
                       <Route exact path="/admin/invoices" render={() => <ShowInvoices/>}/>
-                      <Route exact path="/admin/edit/invoice/:orderCode" component={EditInvoice}/>
+                      <Route exact path="/admin/edit/invoice/:order_code" component={EditInvoice}/>
                   </Switch>  
                 </div>
             </React.Fragment>
