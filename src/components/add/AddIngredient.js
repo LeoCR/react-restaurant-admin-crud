@@ -1,7 +1,7 @@
 import React from 'react';
 import api from "../../api/api";
 import {connect} from "react-redux";
-import {addIngredient} from "../../actions/ingredientActions";
+import {addIngredient,getIngredients} from "../../actions/ingredientActions";
 class AddIngredient extends React.Component{
     constructor(props){
         super(props);
@@ -52,6 +52,7 @@ class AddIngredient extends React.Component{
             formData.append('img',img); 
             this.props.addIngredient(formData);
             setTimeout(() => {
+                _this.props.getIngredients();
                 _this.props.history.push('/admin/ingredients'); 
             }, 900);
         } 
@@ -116,4 +117,7 @@ class AddIngredient extends React.Component{
         )
     }
 }
-export default connect(null,{addIngredient})(AddIngredient);
+const mapStateToProps=state=>({
+    ingredients:state.ingredients.ingredients
+})
+export default connect(mapStateToProps,{addIngredient,getIngredients})(AddIngredient);

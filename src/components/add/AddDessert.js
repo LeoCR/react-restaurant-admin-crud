@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import api from "../../api/api";
 import {connect} from "react-redux";
-import {addDessert} from "../../actions/dessertActions";
+import {addDessert,getDesserts} from "../../actions/dessertActions";
 class AddDessert extends Component{
     constructor(props){
         super(props);
@@ -147,4 +147,7 @@ class AddDessert extends Component{
         )
     }
 }
-export default connect(null,{addDessert})(AddDessert);
+const mapStateToProps=state=>({
+    desserts:state.desserts.desserts
+})
+export default connect(mapStateToProps,{addDessert,getDesserts})(AddDessert);

@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import api from "../../api/api";
 import {connect} from "react-redux";
-import {addEntree} from "../../actions/entreeActions";
+import {addEntree,getEntrees} from "../../actions/entreeActions";
 class AddEntree extends Component{
     constructor(props){
         super(props);
@@ -77,6 +77,7 @@ class AddEntree extends Component{
             formData.append('category',category);
             this.props.addEntree(formData);
             setTimeout(() => {
+                _this.props.getEntrees();
                 _this.props.history.push('/admin/entrees'); 
             }, 900);
         }  
@@ -162,4 +163,7 @@ class AddEntree extends Component{
         )
     }
 }
-export default connect(null,{addEntree})(AddEntree);
+const mapStateToProps=state=>({
+    entrees:state.entrees.entrees
+})
+export default connect(mapStateToProps,{addEntree,getEntrees})(AddEntree);

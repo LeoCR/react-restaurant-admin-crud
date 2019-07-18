@@ -37,27 +37,21 @@ class AddIngredientToDish extends React.Component{
     onChangeIngredient=(e)=>{
         e.preventDefault();
         var _this=this;
-        console.log('onChangeIngredient');
         var idIngredient=e.target.value;
-        console.log(e.target.value);
         if(idIngredient!=='none'){
             api.get('/api/ingredient/show/'+idIngredient)
             .then((res)=>{
                 var tempIngredientSelected=res.data
                 _this.setState({
                     ingredientSelected:{
-                        idIngredientDish:this.state.nextIdDishIngredient,
-                        idIngredient:tempIngredientSelected.id,
-                        idDish:this.state.dishSelected,
+                        id_ingredient_dish:this.state.nextIdDishIngredient,
+                        id_ingredient:tempIngredientSelected.id,
+                        id_dish:this.state.dishSelected,
                         name:tempIngredientSelected.name,
                         img:tempIngredientSelected.img,
                     }
                 })
             }) 
-            setTimeout(() => {
-                console.log('_this.state.ingredientSelected');
-                console.log(_this.state.ingredientSelected);
-            }, 2000);  
         }
     }
     onSubmit=(e)=>{

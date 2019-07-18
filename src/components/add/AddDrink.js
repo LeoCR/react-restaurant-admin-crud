@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import api from "../../api/api";
 import {connect} from "react-redux";
-import {addDrink} from "../../actions/drinkActions";
+import {addDrink,getDrinks} from "../../actions/drinkActions";
 class AddDrink extends Component{
     constructor(props){
         super(props);
@@ -68,6 +68,7 @@ class AddDrink extends Component{
             formData.append('picture',picture)
             this.props.addDrink(formData);
             setTimeout(() => {
+                _this.props.getDrinks();
                 _this.props.history.push('/admin/drinks'); 
             }, 900);
         }  
@@ -146,4 +147,7 @@ class AddDrink extends Component{
         )
     }
 }
-export default connect(null,{addDrink})(AddDrink);
+const mapStateToProps=state=>({
+    drinks:state.drinks.drinks
+})
+export default connect(mapStateToProps,{addDrink,getDrinks})(AddDrink);

@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import api from "../../api/api";
 import {connect} from "react-redux";
-import {addStrongDish} from "../../actions/strongDishActions";
+import {addStrongDish,getStrongsDishes} from "../../actions/strongDishActions";
 class AddStrongDish extends Component{
     constructor(props){
         super(props);
@@ -76,8 +76,9 @@ class AddStrongDish extends Component{
             formData.append('category',category);
             this.props.addStrongDish(formData);
             setTimeout(() => {
+                _this.props.getStrongsDishes();
                 _this.props.history.push('/admin/strongs-dishes'); 
-            }, 900); 
+            }, 1200); 
         }  
     }
     componentDidMount(){
@@ -161,4 +162,7 @@ class AddStrongDish extends Component{
         )
     }
 }
-export default connect(null,{addStrongDish})(AddStrongDish);
+const mapStateToProps=state=>({
+    strongsDishes:state.strongsDishes.strongsDishes
+})
+export default connect(mapStateToProps,{addStrongDish,getStrongsDishes})(AddStrongDish);
