@@ -69,6 +69,7 @@ class AddDessert extends Component{
             formData.append('picture',picture);
             this.props.addDessert(formData);
             setTimeout(() => {
+                _this.props.getDesserts();
                 _this.props.history.push('/admin/desserts'); 
             }, 900);
         }  

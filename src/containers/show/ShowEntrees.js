@@ -2,7 +2,8 @@ import React,{Component} from 'react';
 import {connect} from "react-redux";
 import $ from 'jquery';
 import Entree from "../../components/view/entree";
-import {getEntrees} from "../../actions/entreeActions"
+import {getEntrees} from "../../actions/entreeActions";
+import { Link } from 'react-router-dom';
 class ShowEntrees extends Component{
     constructor(props){
         super(props);
@@ -31,16 +32,14 @@ class ShowEntrees extends Component{
             firstItemToShow:0,
             totalPagination:[1,2]
         }
-        this.getPrevPage = this.getPrevPage.bind(this);
-        this.getNextPage = this.getNextPage.bind(this);
     }
+    
     async componentDidMount(){
         await this.props.getEntrees();
         const {entrees}=this.props;
         this.setState({
             totalItems:entrees.length
         });
-        this.setEntreesItems();
         var tempTotalPages=Math.round(this.state.totalItems/this.state.maxItemsPerPage);
         var tempItems=[];
         for (let index = 1; index <= tempTotalPages; index++) {
@@ -49,6 +48,100 @@ class ShowEntrees extends Component{
         this.setState({
             totalPagination:tempItems
         });
+        this.setEntreesItems();
+    }
+    componentWillReceiveProps(nextProps) {
+        try {
+            if(nextProps.match.params.page!==null){
+                const {page}=nextProps.match.params;
+                if(isNaN(page)===false){
+                    this.setState({
+                        currentPage:page 
+                    });
+                    this.getPage(page); 
+                    setTimeout(() => {    
+                        document.querySelector("#page-item-"+page).classList.add("active");
+                    }, 1200);
+                }
+            }
+        } 
+        catch (error) {
+            console.log('An error occurs in ShowEntrees.componentWillReceiveProps(),but don\'t worry about it :) ');
+            console.log(error);
+        }
+    }
+    renderEntrees=()=>{
+        if(this.state.entreesToShow.length===0){
+            return(
+                <div>
+                    Loading
+                </div>
+            )
+        }
+        else{
+            return(
+                this.state.entreesToShow.map(entree=>
+                    <Entree key={entree.id} info={entree}/> 
+                )
+            )
+        }
+    }
+    getNextPage=()=>{ 
+        try {
+            if(this.state.currentPage<this.state.totalPagination.length){
+                if($('.page-nav').hasClass('active')){
+                    $('.page-nav').removeClass('active');
+                }
+                var tempCurrentPage=parseInt(this.state.currentPage)+1;
+                var tempFirstItemToShow=(tempCurrentPage*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
+                this.setState({
+                    currentPage:tempCurrentPage,
+                    firstItemToShow:tempFirstItemToShow
+                });
+                this.props.history.push("/admin/entrees/"+tempCurrentPage);
+            }
+        } catch (error) {
+            console.log("An error occurs in ShowEntrees.getNextPage(),but don\'t worry about it :)");
+            console.log(error);
+        }
+    }
+    getPrevPage=()=>{
+        try {
+            if(this.state.currentPage>1){
+                if($('.page-nav').hasClass('active')){
+                    $('.page-nav').removeClass('active');
+                }
+                var tempCurrentPage=parseInt(this.state.currentPage)-1;
+                var tempFirstItemToShow=(tempCurrentPage*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
+                this.setState({
+                    firstItemToShow:tempFirstItemToShow,
+                    currentPage:tempCurrentPage
+                });
+                this.props.history.push("/admin/entrees/"+tempCurrentPage); 
+            }
+        } catch (error) {
+            console.log("An error occurs in ShowEntrees.getPrevPage(),but don\'t worry about it :)");
+            console.log(error);
+        }
+    }
+    getPage=(index)=>{
+        try {
+            var tempFirstItemToShow=(index*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
+            if($('.page-nav').hasClass('active')){
+                $('.page-nav').removeClass('active');
+            }
+            setTimeout(() => {
+                $('.page-nav:nth-child('+ parseInt(index+1)+')').addClass('active');
+                this.setState({
+                    currentPage:index,
+                    firstItemToShow:tempFirstItemToShow
+                });
+                this.setEntreesItems(); 
+            }, 300);
+        } catch (error) {
+            console.log('An error occurs in ShowEntrees.getPage() , but don\'t worry about it');
+            console.log(error);
+        }
     }
     setEntreesItems=()=>{
         const {entrees}=this.props;
@@ -74,55 +167,6 @@ class ShowEntrees extends Component{
             console.log('An error occurs dont worry about');
         }
     }
-    getNextPage(){ 
-        if($('.page-nav').hasClass('active')){
-            $('.page-nav').removeClass('active');
-        }
-        if(this.state.currentPage<=this.state.totalPagination.length){
-            var tempCurrentPage=this.state.currentPage+1;
-            var tempFirstItemToShow=(tempCurrentPage*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
-            this.setState({
-                currentPage:tempCurrentPage,
-                firstItemToShow:tempFirstItemToShow
-            });
-            setTimeout(() => {
-                $('.page-nav:nth-child('+ parseInt(this.state.currentPage+1)+')').addClass('active');
-                this.setEntreesItems();
-            },300);
-        }
-    }
-    getPrevPage(){
-        if($('.page-nav').hasClass('active')){
-            $('.page-nav').removeClass('active');
-        }
-        if(this.state.currentPage>1){
-            var tempCurrentPage=this.state.currentPage-1;
-            var tempFirstItemToShow=(tempCurrentPage*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
-            this.setState({
-                firstItemToShow:tempFirstItemToShow,
-                currentPage:tempCurrentPage
-            });
-            setTimeout(() => {
-                $('.page-nav:nth-child('+ parseInt(this.state.currentPage+1)+')').addClass('active');
-                this.setEntreesItems();
-            }, 300); 
-        }
-    }
-    getPage=(e,index)=>{
-        var tempFirstItemToShow=(index*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
-        if($('.page-nav').hasClass('active')){
-            $('.page-nav').removeClass('active');
-        }
-        setTimeout(() => {
-            $('.page-nav:nth-child('+ parseInt(index+1)+')').addClass('active');
-            this.setState({
-                currentPage:index,
-                firstItemToShow:tempFirstItemToShow
-            });
-            this.setEntreesItems(); 
-        }, 300);
-        
-    }
     getPagination=()=>{
         return(
             <React.Fragment>
@@ -134,8 +178,8 @@ class ShowEntrees extends Component{
                             </li> 
                             {
                                 this.state.totalPagination.map((index,key)=> 
-                                    <li className="page-item page-nav">
-                                        <a className="page-link" onClick={(e)=>this.getPage(e,index)}>{index}</a>
+                                    <li className="page-item page-nav" id={`page-item-${index}`} key={key}>
+                                        <Link to={`/admin/entrees/${index}`} className="page-link" onClick={()=>this.getPage(index)}>{index}</Link>
                                     </li>
                                 )
                             }
@@ -148,22 +192,7 @@ class ShowEntrees extends Component{
             </React.Fragment>
         )
     }
-    renderEntrees=()=>{
-        if(this.state.entreesToShow.length===0){
-            return(
-                <div>
-                    Loading
-                </div>
-            )
-        }
-        else{
-            return(
-                this.state.entreesToShow.map(entree=>
-                    <Entree key={entree.id} info={entree}/> 
-                )
-            )
-        }
-    }
+    
     render(){
         const {entrees}=this.props;
         if(!entrees){
@@ -178,12 +207,8 @@ class ShowEntrees extends Component{
                 <div className="row justify-content-center">
                     <div className="col-md-9">
                         <ul>
-                        {
-                                this.renderEntrees()
-                            }
-                            {
-                                this.getPagination()
-                            }
+                        {this.renderEntrees()}
+                        {this.getPagination()}
                         </ul>
                     </div>
                 </div> 

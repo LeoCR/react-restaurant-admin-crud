@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import Drink from "../../components/view/drink";
 import {getDrinks} from "../../actions/drinkActions";
 import $ from 'jquery';
+import { Link } from 'react-router-dom';
 class ShowDrinks extends React.Component{
     constructor(props){
         super(props);
@@ -29,18 +30,15 @@ class ShowDrinks extends React.Component{
             firstItemToShow:0,
             totalPagination:[1,2]
         }
-        this.getPrevPage = this.getPrevPage.bind(this);
-        this.getNextPage = this.getNextPage.bind(this);
     }
     async componentDidMount(){
         await this.props.getDrinks();
-        console.log(this.props);
+        
         const {drinks}=this.props;
         this.setState({
             totalItems:drinks.length
         });
-        this.setDrinksItems();
-        var tempTotalPages=Math.round(this.state.totalItems/this.state.maxItemsPerPage);
+        var tempTotalPages=Math.round(drinks.length/this.state.maxItemsPerPage);
         var tempItems=[];
         for (let index = 1; index <= tempTotalPages; index++) {
             tempItems.push(index);
@@ -48,6 +46,100 @@ class ShowDrinks extends React.Component{
         this.setState({
             totalPagination:tempItems
         });
+        this.setDrinksItems();
+    }
+    componentWillReceiveProps(nextProps) {
+        try {
+            if(nextProps.match.params.page!==null){
+                const {page}=nextProps.match.params;
+                if(isNaN(page)===false){
+                    this.setState({
+                        currentPage:page 
+                    });
+                    this.getPage(page); 
+                    setTimeout(() => {    
+                        document.querySelector("#page-item-"+page).classList.add("active");
+                    }, 1200);
+                }
+            }
+        } 
+        catch (error) {
+            console.log('An error occurs in ShowDrinks.componentWillReceiveProps(),but don\'t worry about it :) ');
+            console.log(error);
+        }
+    }
+    renderDrinks=()=>{
+        if(this.state.drinksToShow.length===0){
+            return(
+                <div>
+                    Loading
+                </div>
+            )
+        }
+        else{
+            return(
+                this.state.drinksToShow.map(drink=>
+                    <Drink key={drink.id} info={drink}/> 
+                )
+            )
+        }
+    }
+    getNextPage=()=>{ 
+        try {
+            if(this.state.currentPage<this.state.totalPagination.length){
+                if($('.page-nav').hasClass('active')){
+                    $('.page-nav').removeClass('active');
+                }
+                var tempCurrentPage=parseInt(this.state.currentPage)+1;
+                var tempFirstItemToShow=(tempCurrentPage*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
+                this.setState({
+                    currentPage:tempCurrentPage,
+                    firstItemToShow:tempFirstItemToShow
+                });
+                this.props.history.push("/admin/drinks/"+tempCurrentPage)
+            }
+        } catch (error) {
+            console.log("An error occurs in ShowDrinks.getNextPage(),but don\'t worry about it :)");
+            console.log(error);
+        }
+    }
+    getPrevPage=()=>{
+        try {
+            if(this.state.currentPage>1){
+                if($('.page-nav').hasClass('active')){
+                    $('.page-nav').removeClass('active');
+                }
+                var tempCurrentPage=parseInt(this.state.currentPage)-1;
+                var tempFirstItemToShow=(tempCurrentPage*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
+                this.setState({
+                    firstItemToShow:tempFirstItemToShow,
+                    currentPage:tempCurrentPage
+                });
+                this.props.history.push("/admin/drinks/"+tempCurrentPage)
+            }
+        } catch (error) {
+            console.log("An error occurs in ShowDrinks.getPrevPage(),but don\'t worry about it :)");
+            console.log(error);
+        }
+    }
+    getPage=(index)=>{
+        try {
+            var tempFirstItemToShow=(index*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
+            if($('.page-nav').hasClass('active')){
+                $('.page-nav').removeClass('active');
+            }
+            setTimeout(() => {
+                $('.page-nav:nth-child('+ parseInt(index+1)+')').addClass('active');
+                this.setState({
+                    currentPage:index,
+                    firstItemToShow:tempFirstItemToShow
+                });
+                this.setDrinksItems(); 
+            }, 300);
+        } catch (error) {
+            console.log('An error occurs in ShowDrinks.getPage() , but don\'t worry about it');
+            console.log(error);
+        }
     }
     setDrinksItems=()=>{
         const {drinks}=this.props;
@@ -73,71 +165,6 @@ class ShowDrinks extends React.Component{
             console.log('An error occurs dont worry about');
         }
     }
-    renderDrinks=()=>{
-        if(this.state.drinksToShow.length===0){
-            return(
-                <div>
-                    Loading
-                </div>
-            )
-        }
-        else{
-            return(
-                this.state.drinksToShow.map(drink=>
-                    <Drink key={drink.id} info={drink}/> 
-                )
-            )
-        }
-    }
-    getNextPage(){ 
-        if($('.page-nav').hasClass('active')){
-            $('.page-nav').removeClass('active');
-        }
-        if(this.state.currentPage<=this.state.totalPagination.length){
-            var tempCurrentPage=this.state.currentPage+1;
-            var tempFirstItemToShow=(tempCurrentPage*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
-            this.setState({
-                currentPage:tempCurrentPage,
-                firstItemToShow:tempFirstItemToShow
-            });
-            setTimeout(() => {
-                $('.page-nav:nth-child('+ parseInt(this.state.currentPage+1)+')').addClass('active');
-                this.setDrinksItems();
-            },300);
-        }
-    }
-    getPrevPage(){
-        if($('.page-nav').hasClass('active')){
-            $('.page-nav').removeClass('active');
-        }
-        if(this.state.currentPage>1){
-            var tempCurrentPage=this.state.currentPage-1;
-            var tempFirstItemToShow=(tempCurrentPage*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
-            this.setState({
-                firstItemToShow:tempFirstItemToShow,
-                currentPage:tempCurrentPage
-            });
-            setTimeout(() => {
-                $('.page-nav:nth-child('+ parseInt(this.state.currentPage+1)+')').addClass('active');
-                this.setDrinksItems();
-            }, 300); 
-        }
-    }
-    getPage=(e,index)=>{
-        var tempFirstItemToShow=(index*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
-        if($('.page-nav').hasClass('active')){
-            $('.page-nav').removeClass('active');
-        }
-        setTimeout(() => {
-            $('.page-nav:nth-child('+ parseInt(index+1)+')').addClass('active');
-            this.setState({
-                currentPage:index,
-                firstItemToShow:tempFirstItemToShow
-            });
-            this.setDrinksItems(); 
-        }, 300);
-        
-    }
     getPagination=()=>{
         return(
             <React.Fragment>
@@ -149,8 +176,8 @@ class ShowDrinks extends React.Component{
                             </li> 
                             {
                                 this.state.totalPagination.map((index,key)=> 
-                                    <li className="page-item page-nav">
-                                        <a className="page-link" onClick={(e)=>this.getPage(e,index)}>{index}</a>
+                                    <li className="page-item page-nav" id={`page-item-${index}`} key={key}>
+                                        <Link to={`/admin/drinks/${index}`} className="page-link" onClick={()=>this.getPage(index)}>{index}</Link>
                                     </li>
                                 )
                             }

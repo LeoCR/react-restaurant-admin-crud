@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import Dessert from "../../components/view/dessert";
 import {getDesserts} from "../../actions/dessertActions";
 import $ from 'jquery'; 
+import { Link } from 'react-router-dom';
 class ShowDesserts extends Component{
     constructor(props){
         super(props);
@@ -12,7 +13,8 @@ class ShowDesserts extends Component{
             maxItemsPerPage:4,
             dessertsToShow:[
                 { 
-                    id: "1DESRT", name: "Rice with Milk", 
+                    id: "1DESRT", 
+                    name: "Rice with Milk", 
                     description: "Sweet rice with cinnamon and sweet cream",
                     picture:'/img/desserts/rice-with-milk.jpg' ,
                     price:5.50
@@ -35,8 +37,6 @@ class ShowDesserts extends Component{
             firstItemToShow:0,
             totalPagination:[1,2]
         }
-        this.getPrevPage = this.getPrevPage.bind(this);
-        this.getNextPage = this.getNextPage.bind(this); 
     }
     async componentDidMount(){
         await this.props.getDesserts();
@@ -44,8 +44,7 @@ class ShowDesserts extends Component{
         this.setState({
             totalItems:desserts.length
         });
-        this.setDessertsItems();
-        var tempTotalPages=Math.round(this.state.totalItems/this.state.maxItemsPerPage);
+        var tempTotalPages=Math.round(desserts.length/this.state.maxItemsPerPage);
         var tempItems=[];
         for (let index = 1; index <= tempTotalPages; index++) {
             tempItems.push(index);
@@ -53,6 +52,100 @@ class ShowDesserts extends Component{
         this.setState({
             totalPagination:tempItems
         });
+        this.setDessertsItems();
+    }
+    componentWillReceiveProps(nextProps) {
+        try {
+            if(nextProps.match.params.page!==null){
+                const {page}=nextProps.match.params;
+                if(isNaN(page)===false){
+                    this.setState({
+                        currentPage:page 
+                    });
+                    this.getPage(page); 
+                    setTimeout(() => {    
+                        document.querySelector("#page-item-"+page).classList.add("active");
+                    }, 1200);
+                }
+            }
+        } 
+        catch (error) {
+            console.log('An error occurs in ShowDesserts.componentWillReceiveProps(),but don\'t worry about it :) ');
+            console.log(error);
+        }
+    }
+    renderDesserts=()=>{
+        if(this.state.dessertsToShow.length===0){
+            return(
+                <div>
+                    Loading
+                </div>
+            )
+        }
+        else{
+            return(
+                this.state.dessertsToShow.map(dessert=>
+                    <Dessert key={dessert.id} info={dessert}/> 
+                )
+            )
+        }
+    }
+    getNextPage=()=>{ 
+        try {
+            if(this.state.currentPage<this.state.totalPagination.length){
+                if($('.page-nav').hasClass('active')){
+                    $('.page-nav').removeClass('active');
+                }
+                var tempCurrentPage=parseInt(this.state.currentPage)+1;
+                var tempFirstItemToShow=(tempCurrentPage*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
+                this.setState({
+                    currentPage:tempCurrentPage,
+                    firstItemToShow:tempFirstItemToShow
+                });
+                this.props.history.push("/admin/desserts/"+tempCurrentPage);
+            }
+        } catch (error) {
+            console.log("An error occurs in ShowSDesserts.getNextPage(),but don\'t worry about it :)");
+            console.log(error);
+        }
+    }
+    getPrevPage=()=>{
+        try {
+            if(this.state.currentPage>1){
+                if($('.page-nav').hasClass('active')){
+                    $('.page-nav').removeClass('active');
+                }
+                var tempCurrentPage=parseInt(this.state.currentPage)-1;
+                var tempFirstItemToShow=(tempCurrentPage*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
+                this.setState({
+                    firstItemToShow:tempFirstItemToShow,
+                    currentPage:tempCurrentPage
+                });
+                this.props.history.push("/admin/desserts/"+tempCurrentPage);
+            }
+        } catch (error) {
+            console.log("An error occurs in ShowSDesserts.getPrevPage(),but don\'t worry about it :)");
+            console.log(error);
+        }
+    }
+    getPage=(index)=>{
+        try {
+            var tempFirstItemToShow=(index*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
+            if($('.page-nav').hasClass('active')){
+                $('.page-nav').removeClass('active');
+            }
+            setTimeout(() => {
+                $('.page-nav:nth-child('+ parseInt(index+1)+')').addClass('active');
+                this.setState({
+                    currentPage:index,
+                    firstItemToShow:tempFirstItemToShow
+                });
+                this.setDessertsItems(); 
+            }, 300);
+        } catch (error) {
+            console.log('An error occurs in ShowDesserts.getPage() , but don\'t worry about it');
+            console.log(error);
+        }
     }
     setDessertsItems=()=>{
         const {desserts}=this.props;
@@ -79,71 +172,6 @@ class ShowDesserts extends Component{
             console.log(error);
         }
     }
-    renderDesserts=()=>{
-        if(this.state.dessertsToShow.length===0){
-            return(
-                <div>
-                    Loading
-                </div>
-            )
-        }
-        else{
-            return(
-                this.state.dessertsToShow.map(dessert=>
-                    <Dessert key={dessert.id} info={dessert}/> 
-                )
-            )
-        }
-    }
-    getNextPage(){ 
-        if($('.page-nav').hasClass('active')){
-            $('.page-nav').removeClass('active');
-        }
-        if(this.state.currentPage<=this.state.totalPagination.length){
-            var tempCurrentPage=this.state.currentPage+1;
-            var tempFirstItemToShow=(tempCurrentPage*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
-            this.setState({
-                currentPage:tempCurrentPage,
-                firstItemToShow:tempFirstItemToShow
-            });
-            setTimeout(() => {
-                $('.page-nav:nth-child('+ parseInt(this.state.currentPage+1)+')').addClass('active');
-                this.setDessertsItems();
-            }, 200);
-        }
-    }
-    getPrevPage(){
-        if($('.page-nav').hasClass('active')){
-            $('.page-nav').removeClass('active');
-        }
-        if(this.state.currentPage>1){
-            var tempCurrentPage=this.state.currentPage-1;
-            var tempFirstItemToShow=(tempCurrentPage*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
-            this.setState({
-                firstItemToShow:tempFirstItemToShow,
-                currentPage:tempCurrentPage
-            });
-            setTimeout(() => {
-                $('.page-nav:nth-child('+ parseInt(this.state.currentPage+1)+')').addClass('active');
-                this.setDessertsItems();
-            }, 300); 
-        }
-    }
-    getPage=(e,index)=>{
-        var tempFirstItemToShow=(index*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
-        if($('.page-nav').hasClass('active')){
-            $('.page-nav').removeClass('active');
-        }
-        setTimeout(() => {
-            $('.page-nav:nth-child('+ parseInt(index+1)+')').addClass('active');
-            this.setState({
-                currentPage:index,
-                firstItemToShow:tempFirstItemToShow
-            });
-            this.setDessertsItems(); 
-        }, 300);
-        
-    }
     getPagination=()=>{
         return(
             <React.Fragment>
@@ -155,8 +183,8 @@ class ShowDesserts extends Component{
                             </li> 
                             {
                                 this.state.totalPagination.map((index,key)=> 
-                                    <li className="page-item page-nav">
-                                        <a className="page-link" onClick={(e)=>this.getPage(e,index)}>{index}</a>
+                                    <li className="page-item page-nav" id={`page-item-${index}`} key={key}>
+                                        <Link to={`/admin/desserts/${index}`} className="page-link" onClick={()=>this.getPage(index)}>{index}</Link>
                                     </li>
                                 )
                             }
@@ -183,12 +211,8 @@ class ShowDesserts extends Component{
                 <div className="row justify-content-center">
                     <div className="col-md-9">
                         <ul>
-                            {
-                                this.renderDesserts()
-                            }
-                            {
-                                this.getPagination()
-                            }
+                            {this.renderDesserts()}
+                            {this.getPagination()}
                         </ul>
                     </div>
                 </div>

@@ -78,7 +78,7 @@ class AddStrongDish extends Component{
             setTimeout(() => {
                 _this.props.getStrongsDishes();
                 _this.props.history.push('/admin/strongs-dishes'); 
-            }, 1200); 
+            }, 900); 
         }  
     }
     componentDidMount(){

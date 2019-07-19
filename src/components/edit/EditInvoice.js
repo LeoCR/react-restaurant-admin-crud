@@ -98,7 +98,7 @@ class EditInvoice extends React.Component{
         return true;
     }
     render(){
-        var {order_code,email,date_of_billing,username,error} = this.state.invoice;
+        var {order_code,email,date_of_billing} = this.state.invoice;
         return(
             <div className="row justify-content-center mt-5">
                 <div className="col-md-8">

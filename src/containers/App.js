@@ -32,23 +32,28 @@ class App extends Component {
                       <Route exact path="/admin/" 
                       render={() => <ShowStrongsDishes/>}
                       />
-                      <Route exact path="/admin/strongs-dishes" render={() => <ShowStrongsDishes/>}/>
+                      <Route exact path="/admin/strongs-dishes" component={ShowStrongsDishes}/>
+                      <Route exact path="/admin/strongs-dishes/:page" component={ShowStrongsDishes}/>
                       <Route exact path="/admin/add/strong-dish" component={AddStrongDish}/>
                       <Route exact path="/admin/edit/strong-dish/:id" component={EditStrongDish}/>
 
                       <Route exact path="/admin/entrees" render={() => <ShowEntrees/>}/>
+                      <Route exact path="/admin/entrees/:page" component={ShowEntrees}/>
                       <Route exact path="/admin/add/entree" component={AddEntree}/>
                       <Route exact path="/admin/edit/entree/:id" component={EditEntree}/>
 
                       <Route exact path="/admin/ingredients" render={() => <ShowIngredients/>} />
+                      <Route exact path="/admin/ingredients/:page" component={ShowIngredients} />
                       <Route exact path="/admin/add/ingredient" component={AddIngredient}/>
                       <Route exact path="/admin/edit/ingredient/:id" component={EditIngredient}/>
 
                       <Route exact path="/admin/desserts" render={() => <ShowDesserts/>}/>
+                      <Route exact path="/admin/desserts/:page" component={ShowDesserts}/>
                       <Route exact path="/admin/add/dessert" component={AddDessert}/>
                       <Route exact path="/admin/edit/dessert/:id" component={EditDessert}/>
 
                       <Route exact path="/admin/drinks" render={() => <ShowDrinks/>}/>
+                      <Route exact path="/admin/drinks/:page" component={ShowDrinks}/>
                       <Route exact path="/admin/add/drink" component={AddDrink}/>
                       <Route exact path="/admin/edit/drink/:id" component={EditDrink}/>
 

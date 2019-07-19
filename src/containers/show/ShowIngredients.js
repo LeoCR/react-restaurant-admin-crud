@@ -3,13 +3,14 @@ import {connect} from "react-redux";
 import Ingredient from "../../components/view/ingredient";
 import {getIngredients} from "../../actions/ingredientActions";
 import $ from 'jquery'; 
+import { Link } from 'react-router-dom';
 class ShowIngredients extends Component{
     constructor(props){
         super(props);
         this.state={
             currentPage:1,
             totalItems:0,
-            maxItemsPerPage:10,
+            maxItemsPerPage:5,
             ingredientsToShow:[
                 {
                     "id": "17ING",
@@ -35,42 +36,15 @@ class ShowIngredients extends Component{
             firstItemToShow:0,
             totalPagination:[1,2]
         }
-        this.getPrevPage = this.getPrevPage.bind(this);
-        this.getNextPage = this.getNextPage.bind(this);
-    }
-    setIngredientsItems=()=>{
-        const {ingredients}=this.props;
-        var tempIngredientsToShow=[];
-        var maxItemsLenght=parseInt(this.state.maxItemsPerPage*this.state.currentPage);
-        try {
-            let index = this.state.firstItemToShow;
-            if(maxItemsLenght>ingredients.length){
-                maxItemsLenght=ingredients.length;
-            }
-            do{ 
-                if(ingredients[index].name!==null   ){
-                    tempIngredientsToShow.push(ingredients[index]);
-                }
-                this.setState({
-                    ingredientsToShow:tempIngredientsToShow
-                })
-                index++;
-            }
-            while(index <maxItemsLenght);
-        } 
-        catch (error) {
-            console.log('An error occurs');
-            console.error(error);
-        }
     }
     async componentDidMount(){
         await this.props.getIngredients(); 
+
         const {ingredients}= this.props;
         this.setState({
             totalItems:ingredients.length
         });
-        this.setIngredientsItems();
-        var tempTotalPages=Math.round(this.state.totalItems/this.state.maxItemsPerPage);
+        var tempTotalPages=Math.round(ingredients.length/this.state.maxItemsPerPage);
         var tempItems=[];
         for (let index = 1; index <= tempTotalPages; index++) {
             tempItems.push(index);
@@ -78,6 +52,27 @@ class ShowIngredients extends Component{
         this.setState({
             totalPagination:tempItems
         });
+        this.setIngredientsItems();
+    }
+    componentWillReceiveProps(nextProps) {
+        try {
+            if(nextProps.match.params.page!==null){
+                const {page}=nextProps.match.params;
+                if(isNaN(page)===false){
+                    this.setState({
+                        currentPage:page 
+                    });
+                    this.getPage(page); 
+                    setTimeout(() => {    
+                        document.querySelector("#page-item-"+page).classList.add("active");
+                    }, 1200);
+                }
+            }
+        } 
+        catch (error) {
+            console.log('An error occurs in ShowIngredients.componentWillReceiveProps(),but don\'t worry about it :) ');
+            console.log(error);
+        }
     } 
     renderIngredients=()=>{
         if(this.state.ingredientsToShow.length===0){
@@ -95,54 +90,87 @@ class ShowIngredients extends Component{
             )
         }
     }
-    getNextPage(){ 
-        if($('.page-nav').hasClass('active')){
-            $('.page-nav').removeClass('active');
-        }
-        if(this.state.currentPage<=this.state.totalPagination.length){
-            var tempCurrentPage=this.state.currentPage+1;
-            var tempFirstItemToShow=(tempCurrentPage*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
-            this.setState({
-                currentPage:tempCurrentPage,
-                firstItemToShow:tempFirstItemToShow
-            });
-            setTimeout(() => {
-                $('.page-nav:nth-child('+ parseInt(this.state.currentPage+1)+')').addClass('active');
-                this.setIngredientsItems();
-            }, 200);
-        }
-    }
-    getPrevPage(){
-        if($('.page-nav').hasClass('active')){
-            $('.page-nav').removeClass('active');
-        }
-        if(this.state.currentPage>1){
-            var tempCurrentPage=this.state.currentPage-1;
-            var tempFirstItemToShow=(tempCurrentPage*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
-            this.setState({
-                firstItemToShow:tempFirstItemToShow,
-                currentPage:tempCurrentPage
-            });
-            setTimeout(() => {
-                $('.page-nav:nth-child('+ parseInt(this.state.currentPage+1)+')').addClass('active');
-                this.setIngredientsItems();
-            }, 300); 
+    getNextPage=()=>{ 
+        try {
+            if(this.state.currentPage<this.state.totalPagination.length){
+                if($('.page-nav').hasClass('active')){
+                    $('.page-nav').removeClass('active');
+                }
+                var tempCurrentPage=parseInt(this.state.currentPage)+1;
+                var tempFirstItemToShow=(tempCurrentPage*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
+                this.setState({
+                    currentPage:tempCurrentPage,
+                    firstItemToShow:tempFirstItemToShow
+                });
+                this.props.history.push("/admin/ingredients/"+tempCurrentPage)
+            }
+        } catch (error) {
+            console.log('An error occurs in ShowIngredients.getNextPage(),but don\'t worry about it :) ');
+            console.log(error);
         }
     }
-    getPage=(e,index)=>{
-        var tempFirstItemToShow=(index*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
-        if($('.page-nav').hasClass('active')){
-            $('.page-nav').removeClass('active');
+    getPrevPage=()=>{
+        try {
+            if(this.state.currentPage>1){
+                if($('.page-nav').hasClass('active')){
+                    $('.page-nav').removeClass('active');
+                }
+                var tempCurrentPage=parseInt(this.state.currentPage)-1;
+                var tempFirstItemToShow=(tempCurrentPage*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
+                this.setState({
+                    firstItemToShow:tempFirstItemToShow,
+                    currentPage:tempCurrentPage
+                });
+                this.props.history.push("/admin/ingredients/"+tempCurrentPage);
+            }
+        } catch (error) {
+            console.log("An error occurs in ShowIngredients.getPrevPage(),but don\'t worry about it :)");
+            console.log(error);
         }
-        setTimeout(() => {
-            $('.page-nav:nth-child('+ parseInt(index+1)+')').addClass('active');
-            this.setState({
-                currentPage:index,
-                firstItemToShow:tempFirstItemToShow
-            });
-            this.setIngredientsItems(); 
-        }, 300);
-        
+    }
+    getPage=(index)=>{
+        try {
+            var tempFirstItemToShow=(index*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
+            if($('.page-nav').hasClass('active')){
+                $('.page-nav').removeClass('active');
+            }
+            setTimeout(() => {
+                $('.page-nav:nth-child('+ parseInt(index+1)+')').addClass('active');
+                this.setState({
+                    currentPage:index,
+                    firstItemToShow:tempFirstItemToShow
+                });
+                this.setIngredientsItems(); 
+            },200);
+        } catch (error) {
+            console.log('An error occurs in ShowIngredients.getPage() , but don\'t worry about it');
+            console.log(error);
+        }
+    }
+    setIngredientsItems=()=>{
+        const {ingredients}=this.props;
+        var tempIngredientsToShow=[];
+        var maxItemsLenght=parseInt(this.state.maxItemsPerPage*this.state.currentPage);
+        try {
+            let index = this.state.firstItemToShow;
+            do{ 
+                if(maxItemsLenght>ingredients.length){
+                    maxItemsLenght=ingredients.length;
+                }
+                if(ingredients[index].name!==null   ){
+                    tempIngredientsToShow.push(ingredients[index]);
+                }
+                this.setState({
+                    ingredientsToShow:tempIngredientsToShow
+                })
+                index++;
+            }
+            while(index <maxItemsLenght);
+        } 
+        catch (error) {
+            console.log('An error occurs ShowIngredients.setIngredientsItems() , but don\'t worried about :)');
+            console.error(error);
+        }
     }
     getPagination=()=>{
         return(
@@ -155,8 +183,8 @@ class ShowIngredients extends Component{
                             </li> 
                             {
                                 this.state.totalPagination.map((index,key)=> 
-                                    <li className="page-item page-nav">
-                                        <a className="page-link" onClick={(e)=>this.getPage(e,index)}>{index}</a>
+                                    <li className="page-item page-nav" id={`page-item-${index}`} key={key}>
+                                        <Link to={`/admin/ingredients/${index}`} className="page-link" onClick={()=>this.getPage(index)}>{index}</Link>
                                     </li>
                                 )
                             }
