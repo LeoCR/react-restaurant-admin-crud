@@ -2,13 +2,40 @@ import React,{Component} from 'react';
 import {Link} from "react-router-dom";
 import {deleteEntree} from "../../actions/entreeActions";
 import {connect} from "react-redux";
+import api from "../../api/api";
 class Entree extends Component{ 
-    deleteEntree=()=>{
+    deleteEntree=async()=>{
         const id=this.props.info.id;
-        this.props.deleteEntree(id);
-        setTimeout(() => {
-            window.location.reload();
-        }, 1200);
+        var _this=this;
+        try {
+            await api.get('/api/ingredients/'+id)
+            .then(async(res)=>{
+                for (let index = 0; index < res.data.length; index++) {
+                    if(res.data[index].id_ingredient!=='undefined'){
+                        console.log('Deleting id_ingredient_dish: '+res.data[index].id_ingredient_dish);
+                        await api.delete('/api/ingredient-to-dish/delete/'+res.data[index].id_ingredient_dish)
+                        .then((resp)=>{
+                            console.log(resp);
+                        })
+                    }
+                }
+            })
+            .then(()=>{
+                _this.props.deleteEntree(id);
+            })
+            .catch((err)=>{
+                console.log(err);
+            })
+        } 
+        catch (error) {
+            console.log('An error occurs in Entree.deleteEntree()');
+            console.log(error);
+        }
+        finally{
+            setTimeout(() => {
+                window.location.reload();
+            }, 1200);
+        }
     }
     render(){
         const {id,name,price,picture} = this.props.info;
