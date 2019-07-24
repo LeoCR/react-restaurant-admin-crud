@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {getIngredients,addIngredientToDish} from '../../actions/ingredientActions';
+import {getIngredients} from '../../actions/ingredientActions';
+import {addIngredientToDish,updateIngredientToDish} from '../../actions/ingredientByDishActions';
 import {setNextIdDishIngredient} from '../../actions/modalActions';
 import {closeModal} from '../../helper/modal.helper';
 import api from '../../api/api';
@@ -57,13 +58,23 @@ class AddIngredientToDish extends React.Component{
     onSubmit=(e)=>{
         e.preventDefault();
         var _this=this;
-        if(this.state.ingredientSelected!==null){
-            closeModal(e);
-            _this.props.addIngredientToDish(this.state.ingredientSelected);
-            setTimeout(() => {
-                _this.props.getIngredients();
-                _this.props.setNextIdDishIngredient(parseInt(this.state.nextIdDishIngredient)+1);
-            }, 1000);
+        try {
+            if(this.state.ingredientSelected!==null){
+                closeModal(e);
+                if(typeof _this.props.ingredientsByDish!=='undefined'){
+                    _this.props.updateIngredientToDish(this.state.ingredientSelected);
+                }
+                else{
+                    _this.props.addIngredientToDish(this.state.ingredientSelected);
+                }
+                setTimeout(() => {
+                    _this.props.getIngredients();
+                    _this.props.setNextIdDishIngredient(parseInt(this.state.nextIdDishIngredient)+1);
+                }, 1000);
+            }
+        } catch (error) {
+            console.log('An error occurs in AddIngredientToDish.onSubmit()');
+            console.log(error);
         }
     }
     render(){
@@ -87,17 +98,18 @@ class AddIngredientToDish extends React.Component{
                 </React.Fragment>
             )
         }
-        return(
-            <React.Fragment>
-                AddIngredientToDish
-            </React.Fragment>
-        )
+        else{
+            return(
+                <React.Fragment>
+                </React.Fragment>
+            )
+        }
     }
 }
 const mapStateToProps=state=>({
-    ingredientsByDish:state.ingredients.ingredientsByDish,
+    ingredientsByDish:state.ingredientsByDish.ingredientsByDish,
     ingredients:state.ingredients.ingredients,
     idDish:state.modals.idDish,
     nextIdDishIngredient:state.modals.nextIdDishIngredient
 })
-export default connect(mapStateToProps,{getIngredients,addIngredientToDish,setNextIdDishIngredient})(AddIngredientToDish)
+export default connect(mapStateToProps,{getIngredients,addIngredientToDish,setNextIdDishIngredient,updateIngredientToDish})(AddIngredientToDish)

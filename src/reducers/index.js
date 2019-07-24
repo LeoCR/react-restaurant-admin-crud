@@ -1,11 +1,12 @@
+import {combineReducers} from "redux";
 import ingredientsReducer from "./ingredientsReducer";
 import strongsDishesReducer from "./strongsDishesReducer";
 import entreesReducer from "./entreesReducer";
 import dessertsReducer from "./dessertsReducer";
 import drinksReducer from "./drinksReducer";
 import invoicesReducer from "./invoicesReducer";
-import {combineReducers} from "redux";
 import modalsReducer from "./modalsReducer";
+import ingredientByDishReducer from "./ingredientByDishReducer"
 export default combineReducers({
     strongsDishes:strongsDishesReducer,
     entrees:entreesReducer,
@@ -13,5 +14,6 @@ export default combineReducers({
     desserts:dessertsReducer,
     drinks:drinksReducer,
     invoices:invoicesReducer,
-    modals:modalsReducer
+    modals:modalsReducer,
+    ingredientsByDish:ingredientByDishReducer
 });

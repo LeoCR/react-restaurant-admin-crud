@@ -2,6 +2,9 @@ import React,{Component} from 'react';
 import api from "../../api/api";
 import {connect} from "react-redux";
 import {addEntree,getEntrees} from "../../actions/entreeActions";
+import {deleteIngredientDish,clearIngredientsByDish} from "../../actions/ingredientByDishActions";
+import {setDishId,setAddIngredient,setNextIdDishIngredient} from '../../actions/modalActions';
+import {openModal} from '../../helper/modal.helper';
 class AddEntree extends Component{
     constructor(props){
         super(props);
@@ -12,8 +15,16 @@ class AddEntree extends Component{
             picture:'',
             category:'',
             price:'',
-            error:false
+            error:false,
+            ingredientsByDish:[]
         }
+    }
+    onAddIngredient=(e)=>{
+        e.preventDefault();
+        this.props.setAddIngredient();
+        setTimeout(() => {
+            openModal();
+        }, 500);
     }
     id=(e)=>{
         this.setState({
@@ -47,6 +58,11 @@ class AddEntree extends Component{
             price:e.target.value
         });
     }
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.ingredientsByDish !== this.state.ingredientsByDish) {
+          this.setState({ ingredientsByDish: nextProps.ingredientsByDish });
+        }
+    }
     addNewEntree=(e)=>{
         e.preventDefault();
         const {
@@ -68,7 +84,6 @@ class AddEntree extends Component{
             this.setState({
                 error:false
             });
-            
             formData.append('id',id);
             formData.append('name',name);
             formData.append('price',price);
@@ -76,15 +91,66 @@ class AddEntree extends Component{
             formData.append('picture',picture)
             formData.append('category',category);
             this.props.addEntree(formData);
+            if(typeof this.props.ingredientsByDish!=='undefined' && this.props.ingredientsByDish.length > 0){
+                setTimeout(() => {
+                        _this.props.ingredientsByDish.forEach(function(ing) {
+                            api.post('/api/ingredient-to-dish/add/',ing)
+                            .then((res)=>{
+                                console.log(res);
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                        });
+                }, 500);
+            }
             setTimeout(() => {
                 _this.props.getEntrees();
                 _this.props.history.push('/admin/entrees'); 
-            }, 900);
+            }, 1500);
         }  
     }
-    componentDidMount(){
-        var totalOfItems=1;var idString;
-        api.get('/api/entrees')
+    deleteIngredientDish=(e,ing)=>{
+        e.preventDefault();
+        this.props.deleteIngredientDish(ing.id_ingredient_dish);
+    }
+    getIngredientsByDishId=()=>{
+        if(this.state.ingredientsByDish.length>0 ){
+            return(
+                <React.Fragment>
+                    <h1>Ingredients</h1>
+                    <button id="add-ingredient" className="btn btn-success" 
+                        onClick={(e)=>this.onAddIngredient(e)}>
+                            Add Ingredient
+                    </button>
+                    <div className="ingredients-container">
+                        {this.state.ingredientsByDish.map(ing=>
+                            <div className="ing-box">
+                                <button className="btn btn-delete" onClick={(e)=>this.deleteIngredientDish(e,ing)}>X</button>
+                                <h5>{ing.name}</h5>
+                                <img src={ing.img} alt={ing.name} style={{maxWidth:'130px',float:'left',margin:'10px',maxHeight:'80px'}}/>
+                            </div>
+                        )}
+                    </div>
+                </React.Fragment>
+            )
+        }  
+        else{
+            return(
+                <React.Fragment>
+                    <button id="add-ingredient" className="btn btn-success" 
+                        onClick={(e)=>this.onAddIngredient(e)}>
+                            Add Ingredient
+                    </button>
+                    <p>No Ingredients</p>       
+                </React.Fragment>
+            )
+        }  
+    }
+    componentDidMount=async()=>{
+        var totalOfItems=1;var idString,_this=this;
+        _this.props.clearIngredientsByDish();
+        await api.get('/api/entrees')
             .then(response => {
                 for(var i = 0; i <=response.data.length; ++i){
                     ++totalOfItems;
@@ -95,10 +161,18 @@ class AddEntree extends Component{
             .catch(error => {
                 console.log(error);
         });
+        await api.get('/api/ingredient-to-dish/count/')
+        .then((res)=>{
+            if(res.data.maxIngredientDishId){
+                var nextIdIngDish=parseInt(res.data.maxIngredientDishId)+1;
+                _this.props.setNextIdDishIngredient(nextIdIngDish)
+            }
+        })
         setTimeout(() => {
-            this.setState({
+            _this.setState({
                 id:idString
             });
+            _this.props.setDishId(idString);
             console.log('this.state.id '+this.state.id);
         }, 300);
         
@@ -147,6 +221,7 @@ class AddEntree extends Component{
                                     name="price"
                                     placeholder="Price" />
                                 </div>
+                            {this.getIngredientsByDishId()}
                             {error ? 
                             <div className="font-weight-bold alert-danger text-center mt-4">
                                 All the fields are required
@@ -164,6 +239,9 @@ class AddEntree extends Component{
     }
 }
 const mapStateToProps=state=>({
-    entrees:state.entrees.entrees
+    entrees:state.entrees.entrees,
+    ingredientsByDish:state.ingredientsByDish.ingredientsByDish,
+    idDish:state.modals.idDish,
+    nextIdDishIngredient:state.modals.nextIdDishIngredient
 })
-export default connect(mapStateToProps,{addEntree,getEntrees})(AddEntree);
+export default connect(mapStateToProps,{clearIngredientsByDish,deleteIngredientDish,setNextIdDishIngredient,setDishId,setAddIngredient,addEntree,getEntrees})(AddEntree);

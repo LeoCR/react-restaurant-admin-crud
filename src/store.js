@@ -1,7 +1,6 @@
 import { createStore, applyMiddleware,compose} from 'redux';
 import thunk from 'redux-thunk';
 import rootReducer from './reducers';
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const middleware = [thunk];
 const initialState = {
     strongsDishes:[],
@@ -9,9 +8,11 @@ const initialState = {
     ingredients:[],
     desserts:[],
     drinks:[],
-    invoices:[]
+    invoices:[],
+    ingredientsByDish:[]
 };
-const store = createStore(rootReducer, initialState, composeEnhancers(
-    applyMiddleware(...middleware)
+const store = createStore(rootReducer, initialState, compose(
+    applyMiddleware(...middleware),
+    window.devToolsExtension ? window.devToolsExtension() : ''
 ));
 export default store;

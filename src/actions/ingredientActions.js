@@ -7,15 +7,16 @@ export  const getIngredients=()=>async dispatch=>{
         payload:response.data
     })
 }
-export  const getIngredientsByDishId=(id)=>async dispatch=>{
-    const response = await api.get(`/api/ingredients/${id}`);
-    dispatch({
-        type:GET_INGREDIENTS_BY_DISH_ID,
-        payload:response.data
-    })
-}
 export const deleteIngredient =id=>async dispatch=>{
-    await api.delete(`/api/ingredient/delete/${id}`);
+    await api.delete(`/api/ingredient/delete/${id}`)
+    .then((res)=>{
+        console.log('Deleted Ingredient');
+        console.log(res);
+    })
+    .catch((err)=>{
+        console.log('An error occurs in deleteIngredient()');
+        console.log(err);
+    })
     dispatch({
         type:DELETE_INGREDIENT,
         payload:id
@@ -44,19 +45,6 @@ export const editIngredient=ingredient=>async dispatch=>{
     dispatch({
         type:EDIT_INGREDIENT,
         payload:response.data
-    })
-}
-export const addIngredientToDish=ingredient=>dispatch=>{
-    dispatch({
-        type:ADD_INGREDIENT_TO_DISH,
-        ingredient
-    })
-}
-export const deleteIngredientDish=(idIngredientDish)=>async dispatch=>{
-    await api.delete(`/api/ingredient-to-dish/delete/${idIngredientDish}`);
-    dispatch({
-        type:DELETE_INGREDIENT_TO_DISH,
-        payload:idIngredientDish
     })
 }
 export const updateIngredient=ingredient=>async dispatch=>{

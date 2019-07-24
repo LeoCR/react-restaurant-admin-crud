@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import {connect} from "react-redux";
 import {showEntree,updateEntree,editEntree,getEntrees} from "../../actions/entreeActions";
-import {getIngredientsByDishId,deleteIngredientDish} from "../../actions/ingredientActions";
+import {getIngredientsByDishId,deleteIngredientDish} from "../../actions/ingredientByDishActions";
 import {setDishId,setAddIngredient,setNextIdDishIngredient} from '../../actions/modalActions';
 import {openModal} from '../../helper/modal.helper';
 import api from '../../api/api';
@@ -119,8 +119,8 @@ class EditEntree extends Component{
                 formData.append('category',category);
                 this.props.updateEntree(formData);
             }
-            if(this.state.ingredientsByDish.length>0 ){
-                this.state.ingredientsByDish.forEach(function(ing) {
+            if(this.props.ingredientsByDish.length>0 ){
+                this.props.ingredientsByDish.forEach(function(ing) {
                     api.post('/api/ingredient-to-dish/add/',ing)
                     .then((res)=>{
                         console.log(res);
@@ -138,7 +138,7 @@ class EditEntree extends Component{
     }
     deleteIngredientDish=(e,ing)=>{
         e.preventDefault();
-        this.props.deleteIngredientDish(ing.idIngredientDish);
+        this.props.deleteIngredientDish(ing.id_ingredient_dish);
     }
     getIngredientsByDishId=()=>{
             if(this.state.ingredientsByDish.length>0 ){
@@ -204,7 +204,7 @@ class EditEntree extends Component{
                                      placeholder="Picture" />
                                     <img src={picture} style={{maxWidth:'400px'}} alt={name}/>
                                     <input type="text" defaultValue={picture} className="form-control-file"
-                                    readonly="readonly" name="picture" id="picture_hidden" style={{display:"none"}}/>
+                                    readOnly="readOnly" name="picture" id="picture_hidden" style={{display:"none"}}/>
                                 </div>
                                 <div className="form-group">
                                     <label>Category</label>
@@ -242,7 +242,7 @@ class EditEntree extends Component{
 const mapStateToProps=state=>({
     entree:state.entrees.entree,
     entrees:state.entrees.entrees,
-    ingredientsByDish:state.ingredients.ingredientsByDish,
+    ingredientsByDish:state.ingredientsByDish.ingredientsByDish,
     idDish:state.modals.idDish,
     nextIdDishIngredient:state.modals.nextIdDishIngredient
 })
