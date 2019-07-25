@@ -175,7 +175,6 @@ class AddEntree extends Component{
             _this.props.setDishId(idString);
             console.log('this.state.id '+this.state.id);
         }, 300);
-        
     }
     render(){
         const {error} = this.state;

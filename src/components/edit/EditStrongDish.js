@@ -1,6 +1,10 @@
 import React,{Component} from 'react';
 import {connect} from "react-redux";
 import {showStrongDish,editStrongDish,updateStrongDish,getStrongsDishes} from "../../actions/strongDishActions";
+import {getIngredientsByDishId,deleteIngredientDish} from "../../actions/ingredientByDishActions";
+import {setDishId,setAddIngredient,setNextIdDishIngredient} from '../../actions/modalActions';
+import {openModal} from '../../helper/modal.helper';
+import api from '../../api/api';
 class EditStrongDish extends Component{
     constructor(props){
         super(props);
@@ -12,19 +16,42 @@ class EditStrongDish extends Component{
             category:'',
             price:'',
             error:false,
-            changedPicture:false
+            changedPicture:false,
+            ingredientsByDish:[]
         }
+    }
+    onAddIngredient=(e)=>{
+        e.preventDefault();
+        this.props.setAddIngredient();
+        setTimeout(() => {
+            openModal();
+        }, 500);
     }
     id=(e)=>{
         this.setState({
             id:e.target.value
         });
     }
-    componentDidMount(){
+    componentDidMount=async()=>{
         const {id}=this.props.match.params;
         this.props.showStrongDish(id);
+        this.props.setDishId(id);
+        this.props.getIngredientsByDishId(id);
+        var _this=this;
+        await api.get('/api/ingredient-to-dish/count/')
+        .then((res)=>{
+            if(res.data.maxIngredientDishId){
+                var nextIdIngDish=parseInt(res.data.maxIngredientDishId)+1;
+                _this.props.setNextIdDishIngredient(nextIdIngDish)
+            }
+        })
     }
     componentWillReceiveProps(nextProps,nextState){
+        if(nextProps.ingredientsByDish){
+            this.setState({
+                ingredientsByDish:nextProps.ingredientsByDish
+            })
+        }
         if(nextProps.strongDish){
             const {id, name,price,description,category,picture}=nextProps.strongDish;
             this.setState({
@@ -108,11 +135,59 @@ class EditStrongDish extends Component{
                 formData.append('category',category);
                 this.props.updateStrongDish(formData);
             }
+            if(this.props.ingredientsByDish.length>0 ){
+                this.props.ingredientsByDish.forEach(function(ing) {
+                    api.post('/api/ingredient-to-dish/add/',ing)
+                    .then((res)=>{
+                        console.log(res);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+                });
+            }
             this.props.getStrongsDishes();
             setTimeout(() => {
                 _this.props.history.push('/admin/strongs-dishes'); 
             }, 900); 
         }
+    }
+    deleteIngredientDish=(e,ing)=>{
+        e.preventDefault();
+        this.props.deleteIngredientDish(ing.id_ingredient_dish);
+    }
+    getIngredientsByDish=()=>{
+        if(this.state.ingredientsByDish.length>0 ){
+            return(
+                <React.Fragment>
+                    <h1>Ingredients</h1>
+                    <button id="add-ingredient" className="btn btn-success" 
+                        onClick={(e)=>this.onAddIngredient(e)}>
+                            Add Ingredient
+                    </button>
+                    <div className="ingredients-container">
+                        {this.state.ingredientsByDish.map(ing=>
+                            <div className="ing-box">
+                                <button className="btn btn-delete" onClick={(e)=>this.deleteIngredientDish(e,ing)}>X</button>
+                                <h5>{ing.name}</h5>
+                                <img src={ing.img} alt={ing.name} style={{maxWidth:'130px',float:'left',margin:'10px',maxHeight:'80px'}}/>
+                            </div>
+                        )}
+                    </div>
+                </React.Fragment>
+            )
+        }  
+        else{
+            return(
+                <React.Fragment>
+                    <button id="add-ingredient" className="btn btn-success" 
+                        onClick={(e)=>this.onAddIngredient(e)}>
+                            Add Ingredient
+                    </button>
+                    <p>No Ingredients</p>       
+                </React.Fragment>
+            )
+        }    
     }
     render(){
         const {name,price,description,category,picture,error} = this.state;
@@ -168,6 +243,7 @@ class EditStrongDish extends Component{
                                      name="price"
                                      />
                                 </div>
+                            {this.getIngredientsByDish()}
                             {error ? 
                             <div className="font-weight-bold alert-danger text-center mt-4">
                                 All the fields are required
@@ -186,6 +262,9 @@ class EditStrongDish extends Component{
 }
 const mapStateToProps=state=>({
     strongDish:state.strongsDishes.strongDish,
-    strongsDishes:state.strongsDishes.strongsDishes
+    strongsDishes:state.strongsDishes.strongsDishes,
+    ingredientsByDish:state.ingredientsByDish.ingredientsByDish,
+    idDish:state.modals.idDish,
+    nextIdDishIngredient:state.modals.nextIdDishIngredient
 })
-export default connect(mapStateToProps,{showStrongDish,editStrongDish,updateStrongDish,getStrongsDishes})(EditStrongDish);
+export default connect(mapStateToProps,{deleteIngredientDish,setNextIdDishIngredient,setDishId,setAddIngredient,getIngredientsByDishId,showStrongDish,editStrongDish,updateStrongDish,getStrongsDishes})(EditStrongDish);

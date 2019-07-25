@@ -32,13 +32,13 @@ class EditEntree extends Component{
             name:e.target.value
         });
     }
-    componentDidMount(){
+    componentDidMount=async()=>{
         const {id}=this.props.match.params;
         this.props.showEntree(id);
         this.props.setDishId(id);
         this.props.getIngredientsByDishId(id);
         var _this=this;
-        api.get('/api/ingredient-to-dish/count/')
+        await api.get('/api/ingredient-to-dish/count/')
         .then((res)=>{
             if(res.data.maxIngredientDishId){
                 var nextIdIngDish=parseInt(res.data.maxIngredientDishId)+1;
@@ -133,14 +133,14 @@ class EditEntree extends Component{
             this.props.getEntrees();
             setTimeout(() => {
                 _this.props.history.push('/admin/entrees/');
-            },2000);
+            },900);
         }
     }
     deleteIngredientDish=(e,ing)=>{
         e.preventDefault();
         this.props.deleteIngredientDish(ing.id_ingredient_dish);
     }
-    getIngredientsByDishId=()=>{
+    getIngredientsByDish=()=>{
             if(this.state.ingredientsByDish.length>0 ){
                 return(
                     <React.Fragment>
@@ -223,7 +223,7 @@ class EditEntree extends Component{
                                      name="price"
                                      />
                                 </div>
-                            {this.getIngredientsByDishId()}
+                            {this.getIngredientsByDish()}
                             {error ? 
                             <div className="font-weight-bold alert-danger text-center mt-4">
                                 All the fields are required
@@ -246,4 +246,4 @@ const mapStateToProps=state=>({
     idDish:state.modals.idDish,
     nextIdDishIngredient:state.modals.nextIdDishIngredient
 })
-export default connect(mapStateToProps,{deleteIngredientDish,setNextIdDishIngredient,setDishId,setAddIngredient,showEntree,updateEntree,editEntree,getEntrees,getIngredientsByDishId})(EditEntree);
+export default connect(mapStateToProps,{deleteIngredientDish,setNextIdDishIngredient,setDishId,setAddIngredient,getIngredientsByDishId,showEntree,updateEntree,editEntree,getEntrees})(EditEntree);
