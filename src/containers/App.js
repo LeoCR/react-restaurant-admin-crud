@@ -11,6 +11,7 @@ import ShowEntrees from "./show/ShowEntrees";
 import ShowDesserts from "./show/ShowDesserts";
 import ShowDrinks from "./show/ShowDrinks";
 import ShowInvoices from "./show/ShowInvoices";
+import ShowUsers from "./show/ShowUsers";
 import EditStrongDish from "../components/edit/EditStrongDish";
 import EditIngredient from "../components/edit/EditIngredient";
 import EditEntree from "../components/edit/EditEntree";
@@ -20,6 +21,8 @@ import EditInvoice from "../components/edit/EditInvoice";
 import {Router,Route,Switch} from "react-router-dom";
 import history from '../history';
 import Modal from "../components/Modal";
+import EditUser from '../components/edit/EditUser';
+import AddUser from '../components/add/AddUser';
 class App extends Component {
   render() {
     return (
@@ -32,6 +35,11 @@ class App extends Component {
                       <Route exact path="/admin/" 
                       render={() => <ShowStrongsDishes/>}
                       />
+                      <Route exact path="/admin/users" component={ShowUsers}/>
+                      <Route exact path="/admin/users/:page" component={ShowUsers}/>
+                      <Route exact path="/admin/edit/user/:id" component={EditUser}/>
+                      <Route exact path="/admin/add/user" component={AddUser}/>
+                      
                       <Route exact path="/admin/strongs-dishes" component={ShowStrongsDishes}/>
                       <Route exact path="/admin/strongs-dishes/:page" component={ShowStrongsDishes}/>
                       <Route exact path="/admin/add/strong-dish" component={AddStrongDish}/>

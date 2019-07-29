@@ -7,6 +7,7 @@ import drinksReducer from "./drinksReducer";
 import invoicesReducer from "./invoicesReducer";
 import modalsReducer from "./modalsReducer";
 import ingredientByDishReducer from "./ingredientByDishReducer"
+import usersReducer from "./usersReducer";
 export default combineReducers({
     strongsDishes:strongsDishesReducer,
     entrees:entreesReducer,
@@ -15,5 +16,6 @@ export default combineReducers({
     drinks:drinksReducer,
     invoices:invoicesReducer,
     modals:modalsReducer,
-    ingredientsByDish:ingredientByDishReducer
+    ingredientsByDish:ingredientByDishReducer,
+    users:usersReducer
 });
