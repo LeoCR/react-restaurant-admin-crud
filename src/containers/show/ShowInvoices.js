@@ -72,7 +72,7 @@ class ShowInvoices extends React.Component{
             console.log('An error occurs '+error);
         }
         this.setInvoicesItems();
-        var tempTotalPages=Math.round(this.state.totalItems/this.state.maxItemsPerPage);
+        var tempTotalPages=Math.ceil(this.state.totalItems/this.state.maxItemsPerPage);
         var tempItems=[];
         for (let index = 1; index <= tempTotalPages; index++) {
             tempItems.push(index);

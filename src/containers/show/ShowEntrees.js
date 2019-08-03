@@ -40,7 +40,7 @@ class ShowEntrees extends Component{
         this.setState({
             totalItems:entrees.length
         });
-        var tempTotalPages=Math.round(this.state.totalItems/this.state.maxItemsPerPage);
+        var tempTotalPages=Math.ceil(this.state.totalItems/this.state.maxItemsPerPage);
         var tempItems=[];
         for (let index = 1; index <= tempTotalPages; index++) {
             tempItems.push(index);

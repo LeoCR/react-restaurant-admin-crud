@@ -38,7 +38,7 @@ class ShowDrinks extends React.Component{
         this.setState({
             totalItems:drinks.length
         });
-        var tempTotalPages=Math.round(drinks.length/this.state.maxItemsPerPage);
+        var tempTotalPages=Math.ceil(drinks.length/this.state.maxItemsPerPage);
         var tempItems=[];
         for (let index = 1; index <= tempTotalPages; index++) {
             tempItems.push(index);

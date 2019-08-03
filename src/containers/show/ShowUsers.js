@@ -38,7 +38,7 @@ class ShowUsers extends React.Component{
         this.setState({
             totalItems:users.length
         }); 
-        var tempTotalPages=Math.round(users.length/this.state.maxItemsPerPage);
+        var tempTotalPages=Math.ceil(users.length/this.state.maxItemsPerPage);
         var tempItems=[];
         for (let index = 1; index <= tempTotalPages; index++) {
             tempItems.push(index);

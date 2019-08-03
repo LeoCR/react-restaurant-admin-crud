@@ -44,7 +44,7 @@ class ShowDesserts extends Component{
         this.setState({
             totalItems:desserts.length
         });
-        var tempTotalPages=Math.round(desserts.length/this.state.maxItemsPerPage);
+        var tempTotalPages=Math.ceil(desserts.length/this.state.maxItemsPerPage);
         var tempItems=[];
         for (let index = 1; index <= tempTotalPages; index++) {
             tempItems.push(index);

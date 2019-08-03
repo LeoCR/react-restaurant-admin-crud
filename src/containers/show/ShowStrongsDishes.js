@@ -47,7 +47,7 @@ class ShowStrongsDishes extends Component{
         this.setState({
             totalItems:strongsDishes.length
         }); 
-        var tempTotalPages=Math.round(strongsDishes.length/this.state.maxItemsPerPage);
+        var tempTotalPages=Math.ceil(strongsDishes.length/this.state.maxItemsPerPage);
         var tempItems=[];
         for (let index = 1; index <= tempTotalPages; index++) {
             tempItems.push(index);
