@@ -19,16 +19,16 @@ class Header extends Component{
                         <span className="icon-bar"></span>
                         <span className="icon-bar"></span>
                     </button>
-                    <Link className="navbar-brand" to="/admin">React Redux CRUD</Link>
+                    <Link className="navbar-brand" to="/admin">React + Redux CRUD</Link>
                     </div>
                     <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
                         <ul className="nav navbar-nav">
                             <li className="dropdown" onClick={this.toggleSubmenu}>
-                                <Link to="/admin/strongs-dishes" className="dropdown-toggle">Strong's Dishes <span className="caret"></span>
+                                <Link to="/admin/main-courses" className="dropdown-toggle">Main Courses <span className="caret"></span>
                                 </Link>
                                 <ul className="dropdown-menu" role="menu">
                                     <li>
-                                        <Link to="/admin/add/strong-dish">Add</Link>
+                                        <Link to="/admin/add/main-course">Add</Link>
                                     </li>
                                 </ul>
                             </li>
@@ -42,11 +42,11 @@ class Header extends Component{
                                 </ul> 
                             </li>
                             <li className="dropdown" onClick={this.toggleSubmenu}>
-                                <Link to="/admin/entrees" className="dropdown-toggle">Entrees <span className="caret"></span>
+                                <Link to="/admin/appetizers" className="dropdown-toggle">Appetizers <span className="caret"></span>
                                 </Link>
                                 <ul className="dropdown-menu" role="menu">
                                     <li>
-                                        <Link to="/admin/add/entree">Add</Link>
+                                        <Link to="/admin/add/appetizer">Add</Link>
                                     </li>
                                 </ul> 
                             </li>

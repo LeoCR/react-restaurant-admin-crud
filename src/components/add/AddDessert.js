@@ -151,7 +151,7 @@ class AddDessert extends Component{
                     ++totalOfItems;
                 }
             }).then(()=>{
-                idString=totalOfItems+1+'DESRT';//console.log(idString); 
+                idString=totalOfItems+1+'ADDDESRT';//console.log(idString); 
             })
             .catch(error => {
                 console.log(error);

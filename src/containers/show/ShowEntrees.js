@@ -98,7 +98,7 @@ class ShowEntrees extends Component{
                     currentPage:tempCurrentPage,
                     firstItemToShow:tempFirstItemToShow
                 });
-                this.props.history.push("/admin/entrees/"+tempCurrentPage);
+                this.props.history.push("/admin/appetizers/"+tempCurrentPage);
             }
         } catch (error) {
             console.log("An error occurs in ShowEntrees.getNextPage(),but don\'t worry about it :)");
@@ -117,7 +117,7 @@ class ShowEntrees extends Component{
                     firstItemToShow:tempFirstItemToShow,
                     currentPage:tempCurrentPage
                 });
-                this.props.history.push("/admin/entrees/"+tempCurrentPage); 
+                this.props.history.push("/admin/appetizers/"+tempCurrentPage); 
             }
         } catch (error) {
             console.log("An error occurs in ShowEntrees.getPrevPage(),but don\'t worry about it :)");
@@ -179,7 +179,7 @@ class ShowEntrees extends Component{
                             {
                                 this.state.totalPagination.map((index,key)=> 
                                     <li className="page-item page-nav" id={`page-item-${index}`} key={key}>
-                                        <Link to={`/admin/entrees/${index}`} className="page-link" onClick={()=>this.getPage(index)}>{index}</Link>
+                                        <Link to={`/admin/appetizers/${index}`} className="page-link" onClick={()=>this.getPage(index)}>{index}</Link>
                                     </li>
                                 )
                             }

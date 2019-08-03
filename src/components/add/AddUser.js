@@ -18,11 +18,11 @@ class AddUser extends React.Component{
     }
     componentDidMount=async()=>{
         var idUser=0,totalOfItems=0,_this=this;
-        await api.get('/api/users')
+        await api.get('/api/count-users')
             .then(response => {
-                for(var i = 0; i <= response.data.length; ++i){
-                        ++totalOfItems;
-                }
+                totalOfItems=response.data.MaxIdUser;
+                console.log(totalOfItems);
+                
             }).then(()=>{
                 idUser=parseInt(totalOfItems)+1;//console.log(idString); 
             })

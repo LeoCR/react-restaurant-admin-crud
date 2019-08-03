@@ -106,7 +106,7 @@ class AddEntree extends Component{
             }
             setTimeout(() => {
                 _this.props.getEntrees();
-                _this.props.history.push('/admin/entrees'); 
+                _this.props.history.push('/admin/appetizers'); 
             }, 1500);
         }  
     }

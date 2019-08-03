@@ -148,7 +148,7 @@ class EditStrongDish extends Component{
             }
             this.props.getStrongsDishes();
             setTimeout(() => {
-                _this.props.history.push('/admin/strongs-dishes'); 
+                _this.props.history.push('/admin/main-courses'); 
             }, 900); 
         }
     }

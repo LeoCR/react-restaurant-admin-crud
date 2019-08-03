@@ -81,7 +81,7 @@ class AddDrink extends Component{
                     ++totalOfItems;
                 }
             }).then(()=>{
-                idString=totalOfItems+1+'DRK';//console.log(idString); 
+                idString=totalOfItems+1+'ADDDRK';//console.log(idString); 
             })
             .catch(error => {
                 console.log(error);

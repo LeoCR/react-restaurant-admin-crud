@@ -132,7 +132,7 @@ class EditEntree extends Component{
             }
             this.props.getEntrees();
             setTimeout(() => {
-                _this.props.history.push('/admin/entrees/');
+                _this.props.history.push('/admin/appetizers/');
             },900);
         }
     }

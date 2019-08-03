@@ -40,15 +40,15 @@ class App extends Component {
                       <Route exact path="/admin/edit/user/:id" component={EditUser}/>
                       <Route exact path="/admin/add/user" component={AddUser}/>
                       
-                      <Route exact path="/admin/strongs-dishes" component={ShowStrongsDishes}/>
-                      <Route exact path="/admin/strongs-dishes/:page" component={ShowStrongsDishes}/>
-                      <Route exact path="/admin/add/strong-dish" component={AddStrongDish}/>
-                      <Route exact path="/admin/edit/strong-dish/:id" component={EditStrongDish}/>
+                      <Route exact path="/admin/main-courses" component={ShowStrongsDishes}/>
+                      <Route exact path="/admin/main-courses/:page" component={ShowStrongsDishes}/>
+                      <Route exact path="/admin/add/main-course" component={AddStrongDish}/>
+                      <Route exact path="/admin/edit/main-course/:id" component={EditStrongDish}/>
 
-                      <Route exact path="/admin/entrees" render={() => <ShowEntrees/>}/>
-                      <Route exact path="/admin/entrees/:page" component={ShowEntrees}/>
-                      <Route exact path="/admin/add/entree" component={AddEntree}/>
-                      <Route exact path="/admin/edit/entree/:id" component={EditEntree}/>
+                      <Route exact path="/admin/appetizers" render={() => <ShowEntrees/>}/>
+                      <Route exact path="/admin/appetizers/:page" component={ShowEntrees}/>
+                      <Route exact path="/admin/add/appetizer" component={AddEntree}/>
+                      <Route exact path="/admin/edit/appetizer/:id" component={EditEntree}/>
 
                       <Route exact path="/admin/ingredients" render={() => <ShowIngredients/>} />
                       <Route exact path="/admin/ingredients/:page" component={ShowIngredients} />

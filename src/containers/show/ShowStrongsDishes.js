@@ -105,7 +105,7 @@ class ShowStrongsDishes extends Component{
                     currentPage:tempCurrentPage,
                     firstItemToShow:tempFirstItemToShow
                 });
-                this.props.history.push("/admin/strongs-dishes/"+tempCurrentPage)
+                this.props.history.push("/admin/main-courses/"+tempCurrentPage)
             }
         } catch (error) {
             console.log("An error occurs in ShowStrongsDishes.getNextPage(),but don\'t worry about it :)");
@@ -124,7 +124,7 @@ class ShowStrongsDishes extends Component{
                     firstItemToShow:tempFirstItemToShow,
                     currentPage:tempCurrentPage
                 });
-                this.props.history.push("/admin/strongs-dishes/"+tempCurrentPage);
+                this.props.history.push("/admin/main-courses/"+tempCurrentPage);
             } 
         } catch (error) {
             console.log("An error occurs in ShowStrongsDishes.getPrevPage(),but don\'t worry about it :)");
@@ -187,7 +187,7 @@ class ShowStrongsDishes extends Component{
                             {
                                 this.state.totalPagination.map((index,key)=> 
                                     <li className="page-item page-nav" id={`page-item-${index}`} key={key}>
-                                        <Link to={`/admin/strongs-dishes/${index}`} className="page-link" onClick={()=>this.getPage(index)}>{index}</Link>
+                                        <Link to={`/admin/main-courses/${index}`} className="page-link" onClick={()=>this.getPage(index)}>{index}</Link>
                                     </li>
                                 )
                             }

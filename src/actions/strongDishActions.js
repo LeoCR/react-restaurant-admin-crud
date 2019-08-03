@@ -19,6 +19,10 @@ export const addStrongDish=strongDish=>async dispatch=>{
         headers: {
             'content-type': 'multipart/form-data'
         }
+    })
+    .catch((err)=>{
+        console.log('An error occurs in strongDishActions.addStrongDish');
+        console.log(err);
     });
     dispatch({
         type:ADD_STRONG_DISH,

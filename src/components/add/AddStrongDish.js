@@ -106,7 +106,7 @@ class AddStrongDish extends Component{
             }
             setTimeout(() => {
                 _this.props.getStrongsDishes();
-                _this.props.history.push('/admin/strongs-dishes'); 
+                _this.props.history.push('/admin/main-courses'); 
             }, 1900); 
         }  
     }
@@ -156,7 +156,7 @@ class AddStrongDish extends Component{
                         ++totalOfItems;
                 }
             }).then(()=>{
-                idString=totalOfItems+1+'BGD';//console.log(idString); 
+                idString=totalOfItems+1+'ADDEDBGD';//console.log(idString); 
             })
             .catch(error => {
                 console.log(error);
