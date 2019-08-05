@@ -9,7 +9,8 @@ const initialState = {
     desserts:[],
     drinks:[],
     invoices:[],
-    ingredientsByDish:[]
+    ingredientsByDish:[],
+    users:[]
 };
 const store = createStore(rootReducer, initialState, compose(
     applyMiddleware(...middleware),

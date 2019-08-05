@@ -12,6 +12,7 @@ class EditUser extends React.Component{
             about:'',
             email:'',
             password:'',
+            retypePassword:'',
             error:false,
         }
     }
@@ -28,7 +29,7 @@ class EditUser extends React.Component{
                 username,
                 about,
                 email,
-                password,
+               // password,
             }=nextProps.user;
             this.setState({
                 id,
@@ -37,7 +38,7 @@ class EditUser extends React.Component{
                 username,
                 about,
                 email,
-                password,
+                //password,
             })
         }
     }
@@ -76,6 +77,11 @@ class EditUser extends React.Component{
             password:e.target.value
         });
     }
+    retypePasswordUser=(e)=>{
+        this.setState({
+            retypePassword:e.target.value
+        });
+    }
     editUser=(e)=>{
         e.preventDefault();
         const {
@@ -86,12 +92,15 @@ class EditUser extends React.Component{
             about,
             email,
             password,
+            retypePassword
         }=this.state;
         var _this=this;
-        if(firstname===''||email===''){
+        if(username===''||firstname===''||email===''||password===''||username===''||lastname===''
+            || password!==retypePassword){
             this.setState({
                 error:true
             });
+            console.log('Can not send the Form beacuase we  have an error');
         }
         else{
             this.setState({
@@ -107,11 +116,11 @@ class EditUser extends React.Component{
                 password
             }
             this.props.editUser(infoUser);
+            this.props.getUsers();
+            setTimeout(() => {
+                _this.props.history.push('/admin/users/');
+            },900);
         }
-        this.props.getUsers();
-        setTimeout(() => {
-            _this.props.history.push('/admin/users/');
-        },900);
     }
     render(){
         const {
@@ -122,7 +131,18 @@ class EditUser extends React.Component{
             about,
             email,
             error,
+            password,
+            retypePassword
         }=this.state;
+        var errorMessage=<div className="font-weight-bold alert-danger text-center mt-4">
+            All the fields are required except About
+        </div>;
+        if(password!==retypePassword){
+            errorMessage=<div className="font-weight-bold alert-danger text-center mt-4">
+            All the fields are required except About<br/>
+            The password Should be the same in Re-type Password Field
+        </div>;
+        }
         return(
             <div className="row justify-content-center mt-5">
                 <div className="col-md-8">
@@ -169,17 +189,25 @@ class EditUser extends React.Component{
                                 </div> 
                                 <div className="form-group">
                                     <label>Password</label>
-                                    <input type="text" 
+                                    <input type="password" 
                                     onChange={this.passwordUser} 
                                     className="form-control"
                                      placeholder="Password" 
                                      name="password"
                                      />
                                 </div> 
+                                <div className="form-group">
+                                    <label>Re-type Password</label>
+                                    <input type="password" 
+                                    onChange={this.retypePasswordUser} 
+                                    className="form-control"
+                                     placeholder="Password" 
+                                     name="password"
+                                     />
+                                </div> 
+                                
                             {error ? 
-                            <div className="font-weight-bold alert-danger text-center mt-4">
-                                All the fields are required
-                            </div>
+                            errorMessage
                             :''
                             }
                                 <button type="submit" className="btn btn-primary font-weight-bold text-uppercase d-block w-100">Update</button>
