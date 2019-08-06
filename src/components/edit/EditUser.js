@@ -100,7 +100,6 @@ class EditUser extends React.Component{
             this.setState({
                 error:true
             });
-            console.log('Can not send the Form beacuase we  have an error');
         }
         else{
             this.setState({

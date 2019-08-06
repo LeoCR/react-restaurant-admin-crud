@@ -2,6 +2,7 @@ import React from 'react';
 import api from "../../api/api";
 import {connect} from "react-redux";
 import {addIngredient,getIngredients} from "../../actions/ingredientActions";
+import {randomString} from '../../helper/randomString.helper';
 class AddIngredient extends React.Component{
     constructor(props){
         super(props);
@@ -58,21 +59,22 @@ class AddIngredient extends React.Component{
         } 
         
     }
-    componentDidMount(){
-        var totalOfItems=1;var idString;
-        api.get('/api/ingredients')
+    componentDidMount=async()=>{
+        var totalOfItems=1;var idString,_this=this;;
+        var customRandomString=randomString(4);
+        await api.get('/api/ingredients')
             .then(response => {
                 for(var i = 0; i <= response.data.length; ++i){
                         ++totalOfItems;
                 }
             }).then(()=>{
-                idString=totalOfItems+1+'ADDING';//console.log(idString); 
+                idString=totalOfItems+1+'ADDEDING_'+customRandomString;//console.log(idString); 
             })
             .catch(error => {
                 console.log(error);
         });
         setTimeout(() => {
-            this.setState({
+            _this.setState({
                 id:idString
             });
             console.log('this.state.id '+this.state.id);

@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 import api from "../../api/api";
 import {connect} from "react-redux";
 import {addDrink,getDrinks} from "../../actions/drinkActions";
+import {randomString} from '../../helper/randomString.helper';
 class AddDrink extends Component{
     constructor(props){
         super(props);
@@ -73,15 +74,16 @@ class AddDrink extends Component{
             }, 900);
         }  
     }
-    componentDidMount(){
-        var totalOfItems=1;var idString
-        api.get('/api/drinks')
+    componentDidMount=async()=>{
+        var totalOfItems=1;var idString;
+        var customRandomString=randomString(4);
+        await api.get('/api/drinks')
             .then(response => {
                 for(var i = 0; i <= response.data.length; ++i){
                     ++totalOfItems;
                 }
             }).then(()=>{
-                idString=totalOfItems+1+'ADDDRK';//console.log(idString); 
+                idString=totalOfItems+1+'ADDEDDRK_'+customRandomString;//console.log(idString); 
             })
             .catch(error => {
                 console.log(error);

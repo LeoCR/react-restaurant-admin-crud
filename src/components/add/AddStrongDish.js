@@ -5,6 +5,7 @@ import {addStrongDish,getStrongsDishes} from "../../actions/strongDishActions";
 import {deleteIngredientDish,clearIngredientsByDish} from "../../actions/ingredientByDishActions";
 import {setDishId,setAddIngredient,setNextIdDishIngredient} from '../../actions/modalActions';
 import {openModal} from '../../helper/modal.helper';
+import {randomString} from '../../helper/randomString.helper';
 class AddStrongDish extends Component{
     constructor(props){
         super(props);
@@ -150,13 +151,14 @@ class AddStrongDish extends Component{
     componentDidMount=async()=>{
         var totalOfItems=1, idString='',_this=this;
         _this.props.clearIngredientsByDish();
+        var customRandomString=randomString(4);
         await api.get('/api/strongs-dishes')
             .then(response => {
                 for(var i = 0; i <= response.data.length; ++i){
                         ++totalOfItems;
                 }
             }).then(()=>{
-                idString=totalOfItems+1+'ADDEDBGD';//console.log(idString); 
+                idString=totalOfItems+1+'ADDEDBGD_'+customRandomString;//console.log(idString); 
             })
             .catch(error => {
                 console.log(error);

@@ -125,14 +125,14 @@ class AddUser extends React.Component{
             errorMessage=<div className="font-weight-bold alert-danger text-center mt-4">
             All the fields are required except About<br/>
             The password Should be the same in Re-type Password Field
-        </div>;
+            </div>;
         }
         return(
             <div className="row justify-content-center mt-5">
                 <div className="col-md-8">
                     <div className="card">
                         <div className="card-body">
-                            <h2 className="text-center">Edit an Entree</h2>
+                            <h2 className="text-center">Add New User</h2>
                             <form onSubmit={this.submitAddUser} id="form-entree-update" >
                                 <div className="form-group">
                                     <label>First Name</label>

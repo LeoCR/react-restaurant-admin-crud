@@ -5,6 +5,7 @@ import {addDessert,getDesserts} from "../../actions/dessertActions";
 import {deleteIngredientDish,clearIngredientsByDish} from "../../actions/ingredientByDishActions";
 import {setDishId,setAddIngredient,setNextIdDishIngredient} from '../../actions/modalActions';
 import {openModal} from '../../helper/modal.helper';
+import {randomString} from '../../helper/randomString.helper';
 class AddDessert extends Component{
     constructor(props){
         super(props);
@@ -145,13 +146,14 @@ class AddDessert extends Component{
         idString,
         _this=this;
         _this.props.clearIngredientsByDish();
+        var customRandomString=randomString(4);
         await api.get('/api/desserts')
             .then(response => {
                 for(var i = 0; i <= response.data.length; ++i){
                     ++totalOfItems;
                 }
             }).then(()=>{
-                idString=totalOfItems+1+'ADDDESRT';//console.log(idString); 
+                idString=totalOfItems+1+'ADDEDDESRT_'+customRandomString;//console.log(idString); 
             })
             .catch(error => {
                 console.log(error);
