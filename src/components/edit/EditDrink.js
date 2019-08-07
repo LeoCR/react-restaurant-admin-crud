@@ -21,6 +21,7 @@ class EditDrink extends Component{
     }
     componentDidMount(){
         const {id}=this.props.match.params;
+        this.props.getDrinks();
         this.props.showDrink(id);
     }
     componentWillReceiveProps(nextProps,nextState){
@@ -86,25 +87,23 @@ class EditDrink extends Component{
                 description,
                 picture
             }
-            console.log(infoDrink); 
+            formData.append('id',id);
+            formData.append('name',name);
+            formData.append('price',price);
+            formData.append('description',description);
+            formData.append('picture',picture); 
             if(changedPicture===false){
-                this.props.editDrink(infoDrink);
+                this.props.editDrink(infoDrink,id);
             }
             else{
-                formData.append('id',id);
-                formData.append('name',name);
-                formData.append('price',price);
-                formData.append('description',description);
-                formData.append('picture',picture);
-                this.props.updateDrink(formData);
+                this.props.updateDrink(formData,id);
             }
-            this.props.getDrinks();
             setTimeout(() => {
+                this.props.getDrinks();
                 _this.props.history.push('/admin/drinks/');
             }, 900);
         }
     }
-    
     render(){
         const {name,price,description,picture,error} = this.state;
         return(

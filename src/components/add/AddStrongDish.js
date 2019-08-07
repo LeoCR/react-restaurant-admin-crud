@@ -103,7 +103,7 @@ class AddStrongDish extends Component{
                                 console.log(error);
                             });
                         });
-                }, 800);
+                },900);
             }
             setTimeout(() => {
                 _this.props.getStrongsDishes();
@@ -177,7 +177,6 @@ class AddStrongDish extends Component{
             _this.props.setDishId(idString);
             console.log('this.state.id '+this.state.id);
         }, 300);
-        
     }
     render(){
         const {error} = this.state;
@@ -186,7 +185,7 @@ class AddStrongDish extends Component{
                 <div className="col-md-8">
                     <div className="card">
                         <div className="card-body">
-                            <h2 className="text-center">Add New Strong Dish</h2>
+                            <h2 className="text-center">Add New Main Course</h2>
                             <form onSubmit={this.addNewStrongDish}>
                                 <div className="form-group">
                                     <label>Name</label>

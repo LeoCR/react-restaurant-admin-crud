@@ -94,14 +94,14 @@ class AddDessert extends Component{
                             })
                             .catch(function (error) {
                                 console.log(error);
-                            });
+                            }); 
                         });
-                }, 500);
+                }, 900);
             }
-            setTimeout(() => {
+             setTimeout(() => {
                 _this.props.getDesserts();
                 _this.props.history.push('/admin/desserts'); 
-            }, 1500);
+            }, 1900); 
         }  
     }
     deleteIngredientDish=(e,ing)=>{
@@ -143,7 +143,7 @@ class AddDessert extends Component{
     }
     componentDidMount=async()=>{
         var totalOfItems=1,
-        idString,
+        idString='',
         _this=this;
         _this.props.clearIngredientsByDish();
         var customRandomString=randomString(4);

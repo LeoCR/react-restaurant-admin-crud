@@ -33,6 +33,7 @@ class EditDessert extends Component{
     }
     componentDidMount=async()=>{
         const {id}=this.props.match.params;
+        this.props.getDesserts();
         this.props.showDessert(id);
         this.props.setDishId(id);
         this.props.getIngredientsByDishId(id);
@@ -113,32 +114,34 @@ class EditDessert extends Component{
                 description,
                 picture
             }
+            formData.append('id',id);
+            formData.append('name',name);
+            formData.append('price',price);
+            formData.append('description',description);
+            formData.append('picture',picture);
             if(changedPicture===false){
-                this.props.editDessert(infoDessert);
+                this.props.editDessert(infoDessert,id);
             }
             else{
-                formData.append('id',id);
-                formData.append('name',name);
-                formData.append('price',price);
-                formData.append('description',description);
-                formData.append('picture',picture);
-                this.props.updateDessert(formData);
+                this.props.updateDessert(formData,id);
             }
-            if(this.props.ingredientsByDish.length>0 ){
-                this.props.ingredientsByDish.forEach(function(ing) {
-                    api.post('/api/ingredient-to-dish/add/',ing)
-                    .then((res)=>{
-                        console.log(res);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
+            if(_this.props.ingredientsByDish.length>0 ){
+                setTimeout(() => {
+                    _this.props.ingredientsByDish.forEach(function(ing) {
+                        api.post('/api/ingredient-to-dish/add/',ing)
+                        .then((res)=>{
+                            console.log(res);
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
                     });
-                });
+                }, 900);
             }
-            this.props.getDesserts();
             setTimeout(() => {
+                _this.props.getDesserts();
                 _this.props.history.push('/admin/desserts/');
-            }, 900);
+            }, 1900);
         }
     }
     deleteIngredientDish=(e,ing)=>{

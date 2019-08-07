@@ -22,7 +22,7 @@ class AddIngredientToDish extends React.Component{
             })
         }, 900);
     }
-    shouldComponentUpdate(nextProps, nextState){
+    componentWillReceiveProps(nextProps) {
         if(nextProps.idDish!==this.state.dishSelected){
             this.setState({
                 dishSelected:nextProps.idDish
@@ -33,7 +33,6 @@ class AddIngredientToDish extends React.Component{
                 nextIdDishIngredient:nextProps.nextIdDishIngredient
             })
         }
-        return true;
     }
     onChangeIngredient=(e)=>{
         e.preventDefault();

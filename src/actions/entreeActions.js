@@ -32,18 +32,34 @@ export const addEntree=entree=>async dispatch=>{
         payload:response.data
     })
 }
-export const editEntree=entree=>async dispatch=>{
-    const response = await api.put(`/api/entree/update/${entree.id}`,entree);
+export const editEntree=(entree,id)=>async dispatch=>{
+    const response = await api.put(`/api/entree/update/${id}`,entree)
+    .then((res)=>{
+        console.log('Response entreeActions.editEntree()');
+        console.log(res);
+    })
+    .catch((err)=>{
+        console.log('An error occurs in entreeActions.editEntree');
+        console.log(err);
+    });
     dispatch({
         type:EDIT_ENTREE,
         payload:response.data
     })
 }
-export const updateEntree=entree=>async dispatch=>{
-    const response = await api.put(`/api/entree/update-img/${entree.id}`,entree,{
+export const updateEntree=(entree,id)=>async dispatch=>{
+    const response = await api.put(`/api/entree/update-img/${id}`,entree,{
         headers: {
             'content-type': 'multipart/form-data'
         }
+    })
+    .then((res)=>{
+        console.log('Response entreeActions.updateEntree()');
+        console.log(res);
+    })
+    .catch((err)=>{
+        console.log('An error occurs in entreeActions.updateEntree');
+        console.log(err);
     });
     dispatch({
         type:EDIT_ENTREE,

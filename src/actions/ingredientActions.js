@@ -40,18 +40,34 @@ export const addIngredient=ingredient=>async dispatch=>{
         payload:response.data
     })
 }
-export const editIngredient=ingredient=>async dispatch=>{
-    const response = await api.put(`/api/ingredient/update/${ingredient.id}`,ingredient);
+export const editIngredient=(ingredient,id)=>async dispatch=>{
+    const response = await api.put(`/api/ingredient/update/${id}`,ingredient)
+    .then((res)=>{
+        console.log('Response ingredientActions.editIngredient');
+        console.log(res);
+    })
+    .catch((err)=>{
+        console.log('An error occurs in ingredientActions.editIngredient');
+        console.log(err);
+    });
     dispatch({
         type:EDIT_INGREDIENT,
         payload:response.data
     })
 }
-export const updateIngredient=ingredient=>async dispatch=>{
-    const response = await api.put(`/api/ingredient/update-img/${ingredient.id}`,ingredient,{
+export const updateIngredient=(ingredient,id)=>async dispatch=>{
+    const response = await api.put(`/api/ingredient/update-img/${id}`,ingredient,{
         headers: {
             'content-type': 'multipart/form-data'
         }
+    })
+    .then((res)=>{
+        console.log('Response ingredientActions.updateIngredient');
+        console.log(res);
+    })
+    .catch((err)=>{
+        console.log('An error occurs in ingredientActions.updateIngredient');
+        console.log(err);
     });
     dispatch({
         type:EDIT_INGREDIENT,

@@ -19,6 +19,7 @@ class EditIngredient extends Component{
     }
     componentDidMount(){
         const {id}=this.props.match.params;
+        this.props.getIngredients();
         this.props.showIngredient(id);
     }
     componentWillReceiveProps(nextProps,nextState){
@@ -44,7 +45,6 @@ class EditIngredient extends Component{
             });
         }
     }
-    
     editIngredient=(e)=>{ 
         e.preventDefault();
         const {
@@ -69,21 +69,17 @@ class EditIngredient extends Component{
                 name,
                 img
             }
+            formData.append('id',id);
+            formData.append('name',name);
+            formData.append('img',img);
             if(changedPicture===false){
-                console.log('changedPicture===false '+changedPicture);
-                console.log(infoIngredient);
-                this.props.editIngredient(infoIngredient);
+                this.props.editIngredient(infoIngredient,id);
             } 
             else{
-                console.log('changedPicture===true '+changedPicture);
-                
-                formData.append('id',id);
-                formData.append('name',name);
-                formData.append('img',img);
-                this.props.updateIngredient(formData);
+                this.props.updateIngredient(formData,id);
             }
-            this.props.getIngredients();
             setTimeout(() => {
+                _this.props.getIngredients();
                 _this.props.history.push('/admin/ingredients');
             }, 900);
         }

@@ -103,12 +103,12 @@ class AddEntree extends Component{
                                 console.log(error);
                             });
                         });
-                }, 500);
+                },900);
             }
             setTimeout(() => {
                 _this.props.getEntrees();
                 _this.props.history.push('/admin/appetizers'); 
-            }, 1500);
+            }, 1900);
         }  
     }
     deleteIngredientDish=(e,ing)=>{
@@ -185,7 +185,7 @@ class AddEntree extends Component{
                 <div className="col-md-8">
                     <div className="card">
                         <div className="card-body">
-                            <h2 className="text-center">Add New Entree</h2>
+                            <h2 className="text-center">Add New Appetizer</h2>
                             <form onSubmit={this.addNewEntree} >
                                 <div className="form-group">
                                     <label>Name</label>

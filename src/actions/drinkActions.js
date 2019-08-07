@@ -33,18 +33,34 @@ export const showDrink=id=>async dispatch=>{
     })
 }
 
-export const editDrink=drink=>async dispatch=>{
-    const response = await api.put(`/api/drink/update/${drink.id}`,drink);
+export const editDrink=(drink,id)=>async dispatch=>{
+    const response = await api.put(`/api/drink/update/${id}`,drink)
+    .then((res)=>{
+        console.log('Response drinkActions.editDrink');
+        console.log(res);
+    })
+    .catch((err)=>{
+        console.log('An error occurs in drinkActions.editDrink');
+        console.log(err);
+    });
     dispatch({
         type:EDIT_DRINK,
         payload:response.data
     })
 }
-export const updateDrink=drink=>async dispatch=>{
-    const response = await api.put(`/api/drink/update-img/${drink.id}`,drink,{
+export const updateDrink=(drink,id)=>async dispatch=>{
+    const response = await api.put(`/api/drink/update-img/${id}`,drink,{
         headers: {
             'content-type': 'multipart/form-data'
         }
+    })
+    .then((res)=>{
+        console.log('Response drinkActions.updateDrink');
+        console.log(res);
+    })
+    .catch((err)=>{
+        console.log('An error occurs in drinkActions.updateDrink');
+        console.log(err);
     });
     dispatch({
         type:EDIT_DRINK,

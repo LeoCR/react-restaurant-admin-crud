@@ -34,6 +34,7 @@ class EditStrongDish extends Component{
     }
     componentDidMount=async()=>{
         const {id}=this.props.match.params;
+        this.props.getStrongsDishes();
         this.props.showStrongDish(id);
         this.props.setDishId(id);
         this.props.getIngredientsByDishId(id);
@@ -123,33 +124,35 @@ class EditStrongDish extends Component{
                 category,
                 picture
             }
+            formData.append('id',id);
+            formData.append('name',name);
+            formData.append('price',price);
+            formData.append('description',description);
+            formData.append('picture',picture);
+            formData.append('category',category);
             if(changedPicture===false){
-                this.props.editStrongDish(infoDish);
+                this.props.editStrongDish(infoDish,id);
             }
             else{
-                formData.append('id',id);
-                formData.append('name',name);
-                formData.append('price',price);
-                formData.append('description',description);
-                formData.append('picture',picture);
-                formData.append('category',category);
-                this.props.updateStrongDish(formData);
+                this.props.updateStrongDish(formData,id);
             }
             if(this.props.ingredientsByDish.length>0 ){
-                this.props.ingredientsByDish.forEach(function(ing) {
-                    api.post('/api/ingredient-to-dish/add/',ing)
-                    .then((res)=>{
-                        console.log(res);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
+                setTimeout(() => {
+                    _this.props.ingredientsByDish.forEach(function(ing) {
+                        api.post('/api/ingredient-to-dish/add/',ing)
+                        .then((res)=>{
+                            console.log(res);
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
                     });
-                });
+                }, 900);
             }
-            this.props.getStrongsDishes();
             setTimeout(() => {
+                this.props.getStrongsDishes();
                 _this.props.history.push('/admin/main-courses'); 
-            }, 900); 
+            }, 1900); 
         }
     }
     deleteIngredientDish=(e,ing)=>{
@@ -196,7 +199,7 @@ class EditStrongDish extends Component{
                 <div className="col-md-8">
                     <div className="card">
                         <div className="card-body">
-                            <h2 className="text-center">Edit a Strong Dish</h2>
+                            <h2 className="text-center">Edit a Main Course</h2>
                             <form encType="multipart/form-data" onSubmit={this.editStrongDish} 
                             id="form-strong-dish-update">
                                 <div className="form-group">
@@ -252,7 +255,6 @@ class EditStrongDish extends Component{
                             }
                                 <button type="submit" className="btn btn-primary font-weight-bold text-uppercase d-block w-100">Update</button>
                             </form>
-                            
                         </div>
                     </div>
                 </div>
