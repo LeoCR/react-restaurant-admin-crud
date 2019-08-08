@@ -121,7 +121,6 @@ class EditEntree extends Component{
                 this.props.updateEntree(formData,id);
             }
             if(_this.props.ingredientsByDish.length>0 ){
-                setTimeout(() => {
                     _this.props.ingredientsByDish.forEach(function(ing) {
                         api.post('/api/ingredient-to-dish/add/',ing)
                         .then((res)=>{
@@ -131,7 +130,6 @@ class EditEntree extends Component{
                             console.log(error);
                         });
                     });
-                }, 900);
             }
             setTimeout(() => {
                 _this.props.getEntrees();
@@ -183,7 +181,7 @@ class EditEntree extends Component{
                 <div className="col-md-8">
                     <div className="card">
                         <div className="card-body">
-                            <h2 className="text-center">Edit an Appetizer</h2>
+                            <h2 className="text-center">Edit Appetizer</h2>
                             <form onSubmit={this.editEntree} id="form-entree-update" >
                                 <div className="form-group">
                                     <label>Name</label>

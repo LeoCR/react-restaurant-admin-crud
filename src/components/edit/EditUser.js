@@ -147,7 +147,7 @@ class EditUser extends React.Component{
                 <div className="col-md-8">
                     <div className="card">
                         <div className="card-body">
-                            <h2 className="text-center">Edit an Entree</h2>
+                            <h2 className="text-center">Edit User</h2>
                             <form onSubmit={this.editUser} id="form-entree-update" >
                                 <div className="form-group">
                                     <label>First Name</label>

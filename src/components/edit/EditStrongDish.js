@@ -137,7 +137,6 @@ class EditStrongDish extends Component{
                 this.props.updateStrongDish(formData,id);
             }
             if(this.props.ingredientsByDish.length>0 ){
-                setTimeout(() => {
                     _this.props.ingredientsByDish.forEach(function(ing) {
                         api.post('/api/ingredient-to-dish/add/',ing)
                         .then((res)=>{
@@ -147,10 +146,9 @@ class EditStrongDish extends Component{
                             console.log(error);
                         });
                     });
-                }, 900);
             }
             setTimeout(() => {
-                this.props.getStrongsDishes();
+                _this.props.getStrongsDishes();
                 _this.props.history.push('/admin/main-courses'); 
             }, 1900); 
         }

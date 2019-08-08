@@ -152,6 +152,7 @@ class AddStrongDish extends Component{
         var totalOfItems=1, idString='',_this=this;
         _this.props.clearIngredientsByDish();
         var customRandomString=randomString(4);
+        this.props.getStrongsDishes();
         await api.get('/api/strongs-dishes')
             .then(response => {
                 for(var i = 0; i <= response.data.length; ++i){

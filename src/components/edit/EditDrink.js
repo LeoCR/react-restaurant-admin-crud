@@ -111,7 +111,7 @@ class EditDrink extends Component{
                 <div className="col-md-8">
                     <div className="card">
                         <div className="card-body">
-                            <h2 className="text-center">Edit a Drink</h2>
+                            <h2 className="text-center">Edit Drink</h2>
                             <form encType="multipart/form-data" onSubmit={this.editDrink} 
                             id="form-drink-update">
                                 <div className="form-group">

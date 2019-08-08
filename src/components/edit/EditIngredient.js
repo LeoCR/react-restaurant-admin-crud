@@ -91,7 +91,7 @@ class EditIngredient extends Component{
                 <div className="col-md-8">
                     <div className="card">
                         <div className="card-body">
-                            <h2 className="text-center">Edit an Ingredient</h2>
+                            <h2 className="text-center">Edit Ingredient</h2>
                             <form onSubmit={(e)=>this.editIngredient(e)} id="form-update-ingredient">
                                 <div className="form-group">
                                     <label>Name</label>
