@@ -3,7 +3,7 @@ import {getInvoices} from "../../actions/invoiceActions";
 import $ from 'jquery'; 
 import {connect} from "react-redux";
 import Invoice from '../../components/view/invoice';
-//import api from '../../api/api';
+import { Link } from 'react-router-dom';
 class ShowInvoices extends React.Component{
     constructor(props){
         super(props);
@@ -34,12 +34,125 @@ class ShowInvoices extends React.Component{
         this.getPrevPage = this.getPrevPage.bind(this);
         this.getNextPage = this.getNextPage.bind(this);
     }
+    async componentDidMount(){
+        await this.props.getInvoices(); 
+        const {invoices}= this.props;
+        try {
+            this.setState({
+                totalItems:invoices.length
+            });
+        } catch (error) {
+            console.log('An error occurs '+error);
+        }
+        var tempTotalPages=Math.ceil(this.state.totalItems/this.state.maxItemsPerPage);
+        var tempItems=[];
+        for (let index = 1; index <= tempTotalPages; index++) {
+            tempItems.push(index);
+        }
+        this.setState({
+            totalPagination:tempItems
+        });
+        this.setInvoicesItems();
+    }
+    componentWillReceiveProps(nextProps){
+        try {
+            if(nextProps.match.params.page!==null){
+                const {page}=nextProps.match.params;
+                if(isNaN(page)===false){
+                    this.setState({
+                        currentPage:page 
+                    });
+                    this.getPage(page); 
+                    setTimeout(() => {    
+                        document.querySelector("#page-item-"+page).classList.add("active");
+                    }, 1200);
+                }
+            }
+        } 
+        catch (error) {
+            console.log('An error occurs in ShowDesserts.componentWillReceiveProps(),but don\'t worry about it :) ');
+            console.log(error);
+        }
+    }
+    renderInvoices=()=>{
+        if(this.state.invoicesToShow.length===0){
+            return(
+                <div>
+                    Loading
+                </div>
+            )
+        }
+        else{
+            return(
+                this.state.invoicesToShow.map(headerInvoice=>
+                    <Invoice key={headerInvoice.orderCode} info={headerInvoice}/> 
+                )
+            )
+        }
+    }
+    getNextPage(){ 
+        try {
+            if(this.state.currentPage<=this.state.totalPagination.length){
+                if($('.page-nav').hasClass('active')){
+                    $('.page-nav').removeClass('active');
+                }
+                var tempCurrentPage=this.state.currentPage+1;
+                var tempFirstItemToShow=(tempCurrentPage*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
+                this.setState({
+                    currentPage:tempCurrentPage,
+                    firstItemToShow:tempFirstItemToShow
+                });
+                this.props.history.push("/admin/invoices/"+tempCurrentPage);
+            }
+        } catch (error) {
+            console.log('An error occurs in ShowInvoices,getNextPage()');
+            console.log(error);
+        }
+    }
+    getPrevPage(){
+        try {
+            if(this.state.currentPage>1){
+                if($('.page-nav').hasClass('active')){
+                    $('.page-nav').removeClass('active');
+                }
+                var tempCurrentPage=this.state.currentPage-1;
+                var tempFirstItemToShow=(tempCurrentPage*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
+                this.setState({
+                    firstItemToShow:tempFirstItemToShow,
+                    currentPage:tempCurrentPage
+                });
+                this.props.history.push("/admin/invoices/"+tempCurrentPage);
+            }
+        } catch (error) {
+            console.log('An error occurs in ShowInvoices.getPrevPage()');
+            console.log(error);
+        }
+    }
+    getPage=(index)=>{
+        try {
+            var tempFirstItemToShow=(index*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
+            if($('.page-nav').hasClass('active')){
+                $('.page-nav').removeClass('active');
+            }
+            setTimeout(() => {
+                $('.page-nav:nth-child('+ parseInt(index+1)+')').addClass('active');
+                this.setState({
+                    currentPage:index,
+                    firstItemToShow:tempFirstItemToShow
+                });
+                this.setInvoicesItems(); 
+            }, 300);
+        } 
+        catch (error) {
+            console.log('An error occurs in ShowInvoices.getPage()');
+            console.log(error);
+        }
+    }
     setInvoicesItems= ()=>{
         const {invoices}=this.props;
         var tempInvoicesToShow=[];
         var maxItemsLenght=parseInt(this.state.maxItemsPerPage*this.state.currentPage);
         var _this=this;
-        
         try {
             let index = this.state.firstItemToShow;
             if(maxItemsLenght>invoices.length){
@@ -61,74 +174,6 @@ class ShowInvoices extends React.Component{
             console.error(error);
         }
     }
-    async componentDidMount(){
-        await this.props.getInvoices(); 
-        const {invoices}= this.props;
-        try {
-            this.setState({
-                totalItems:invoices.length
-            });
-        } catch (error) {
-            console.log('An error occurs '+error);
-        }
-        this.setInvoicesItems();
-        var tempTotalPages=Math.ceil(this.state.totalItems/this.state.maxItemsPerPage);
-        var tempItems=[];
-        for (let index = 1; index <= tempTotalPages; index++) {
-            tempItems.push(index);
-        }
-        this.setState({
-            totalPagination:tempItems
-        });
-    }
-    getNextPage(){ 
-        if($('.page-nav').hasClass('active')){
-            $('.page-nav').removeClass('active');
-        }
-        if(this.state.currentPage<=this.state.totalPagination.length){
-            var tempCurrentPage=this.state.currentPage+1;
-            var tempFirstItemToShow=(tempCurrentPage*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
-            this.setState({
-                currentPage:tempCurrentPage,
-                firstItemToShow:tempFirstItemToShow
-            });
-            setTimeout(() => {
-                $('.page-nav:nth-child('+ parseInt(this.state.currentPage+1)+')').addClass('active');
-                this.setInvoicesItems();
-            }, 200);
-        }
-    }
-    getPrevPage(){
-        if($('.page-nav').hasClass('active')){
-            $('.page-nav').removeClass('active');
-        }
-        if(this.state.currentPage>1){
-            var tempCurrentPage=this.state.currentPage-1;
-            var tempFirstItemToShow=(tempCurrentPage*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
-            this.setState({
-                firstItemToShow:tempFirstItemToShow,
-                currentPage:tempCurrentPage
-            });
-            setTimeout(() => {
-                $('.page-nav:nth-child('+ parseInt(this.state.currentPage+1)+')').addClass('active');
-                this.setInvoicesItems();
-            }, 300); 
-        }
-    }
-    getPage=(e,index)=>{
-        var tempFirstItemToShow=(index*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
-        if($('.page-nav').hasClass('active')){
-            $('.page-nav').removeClass('active');
-        }
-        setTimeout(() => {
-            $('.page-nav:nth-child('+ parseInt(index+1)+')').addClass('active');
-            this.setState({
-                currentPage:index,
-                firstItemToShow:tempFirstItemToShow
-            });
-            this.setInvoicesItems(); 
-        }, 300);
-    }
     getPagination=()=>{
         return(
             <React.Fragment>
@@ -141,7 +186,7 @@ class ShowInvoices extends React.Component{
                             {
                                 this.state.totalPagination.map((index,key)=> 
                                     <li className="page-item page-nav">
-                                        <a className="page-link" onClick={(e)=>this.getPage(e,index)}>{index}</a>
+                                        <Link to={`/admin/invoices/${index}`} className="page-link" onClick={()=>this.getPage(index)}>{index}</Link>
                                     </li>
                                 )
                             }
@@ -153,22 +198,6 @@ class ShowInvoices extends React.Component{
                 </div>
             </React.Fragment>
         )
-    }
-    renderInvoices=()=>{
-        if(this.state.invoicesToShow.length===0){
-            return(
-                <div>
-                    Loading
-                </div>
-            )
-        }
-        else{
-            return(
-                this.state.invoicesToShow.map(headerInvoice=>
-                    <Invoice key={headerInvoice.orderCode} info={headerInvoice}/> 
-                )
-            )
-        }
     }
     render(){
         const {invoices}=this.props;
