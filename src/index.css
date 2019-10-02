@@ -91,3 +91,6 @@ table th,table td,.table > thead > tr > th{
 #root .col-md-8 img.responsive-img.col-md-3{
   max-width: 100px;
  }
+ .form-group img{
+   max-height: 100px;
+ }

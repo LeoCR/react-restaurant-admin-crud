@@ -6,8 +6,15 @@ class User extends React.Component{
     deletingUser=()=>{
         const id=this.props.info.id;
         try {
-            console.log('User id '+ id);
-            this.props.deleteUser(id);
+            if (!(window.confirm('Are you sure you want to delete this User?'))){
+                console.log('Dont Delete User');
+            }
+            else{
+                this.props.deleteUser(id);
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1200);
+            }
         } catch (error) {
             console.log('An error occurs in User.deletingUser()');
             console.error(error);

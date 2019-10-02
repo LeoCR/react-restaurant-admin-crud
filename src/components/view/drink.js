@@ -5,10 +5,15 @@ import {connect} from "react-redux";
 class Drink extends Component{ 
     deleteDrink=()=>{
         const id=this.props.info.id;
-        this.props.deleteDrink(id);
-        setTimeout(() => {
-            window.location.reload();
-        }, 1200);
+        if (!(window.confirm('Are you sure you want to delete this Drink?'))){
+            console.log('Dont Delete Drink');
+        }
+        else{
+            this.props.deleteDrink(id);
+            setTimeout(() => {
+                window.location.reload();
+            }, 1200);
+        }
     }
     render(){
         const {id,name,price,picture} = this.props.info;

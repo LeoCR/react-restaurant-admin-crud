@@ -81,7 +81,8 @@ class AddIngredientToDish extends React.Component{
             return(
                 <React.Fragment>
                     <form onSubmit={(e)=>this.onSubmit(e)} id="addIngredientForm">
-                        <select onChange={(e)=>this.onChangeIngredient(e)}>
+                        <label htmlFor="select-add-ingredient-to-dish" style={{float:'left'}}>Please Select One Ingredient</label>
+                        <select onChange={(e)=>this.onChangeIngredient(e)} id="select-add-ingredient-to-dish">
                                 <option id="selected" value="none">Select One Ingredient</option>
                                 {this.state.ingredientsToAdd.map(function(item, i){
                                     return <option key={i} value={item.id}>{item.name}</option>

@@ -5,10 +5,15 @@ import {connect} from "react-redux";
 class StrongDish extends Component{ 
     deleteMainCourse=()=>{
         const id=this.props.info.id;
-        this.props.deleteStrongDish(id);
-        setTimeout(() => {
-            window.location.reload();
-        }, 1200);
+        if (!(window.confirm('Are you sure you want to delete this Main Course?'))){
+            console.log('Dont Delete Main Course');
+        }
+        else{
+            this.props.deleteStrongDish(id);
+            setTimeout(() => {
+                window.location.reload();
+            }, 1200);
+        }
     }
     render(){
         const {id,name,price,picture} = this.props.info;

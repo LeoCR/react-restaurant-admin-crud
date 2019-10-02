@@ -8,33 +8,37 @@ class Entree extends Component{
         const id=this.props.info.id;
         var _this=this;
         try {
-            await api.get('/api/ingredients/'+id)
-            .then(async(res)=>{
-                for (let index = 0; index < res.data.length; index++) {
-                    if(res.data[index].id_ingredient!=='undefined'){
-                        console.log('Deleting id_ingredient_dish: '+res.data[index].id_ingredient_dish);
-                        await api.delete('/api/ingredient-to-dish/delete/'+res.data[index].id_ingredient_dish)
-                        .then((resp)=>{
-                            console.log(resp);
-                        })
+            if (!(window.confirm('Are you sure you want to delete this Appetizer?'))){
+                console.log('Dont Delete Appetizer');
+            }
+            else{
+                await api.get('/api/ingredients/'+id)
+                .then(async(res)=>{
+                    for (let index = 0; index < res.data.length; index++) {
+                        if(res.data[index].id_ingredient!=='undefined'){
+                            console.log('Deleting id_ingredient_dish: '+res.data[index].id_ingredient_dish);
+                            await api.delete('/api/ingredient-to-dish/delete/'+res.data[index].id_ingredient_dish)
+                            .then((resp)=>{
+                                console.log(resp);
+                            })
+                        }
                     }
-                }
-            })
-            .then(()=>{
-                _this.props.deleteEntree(id);
-            })
-            .catch((err)=>{
-                console.log(err);
-            })
+                })
+                .then(()=>{
+                    _this.props.deleteEntree(id);
+                })
+                .catch((err)=>{
+                    console.log(err);
+                })
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1200);
+            }
+            
         } 
         catch (error) {
             console.log('An error occurs in Entree.deleteEntree()');
             console.log(error);
-        }
-        finally{
-            setTimeout(() => {
-                window.location.reload();
-            }, 1200);
         }
     }
     render(){
