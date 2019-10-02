@@ -1,7 +1,7 @@
 # react-restaurant-admin-crud
 React + Redux + Nodejs +Mysql 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project require another project as backend [Server Nodejs](https://github.com/LeoCR/server-nodejs-restaurant).
 
 ## Available Scripts
 
@@ -12,15 +12,34 @@ In the project directory, you can run:
 Runs the app in the development mode.<br>
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
 
 ### `npm run build`
 
 Builds the app for production to the `build` folder.<br>
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+## User Interfaces
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### View Main Courses
+
+<img src="screenshots/main_courses.png" alt="Main Courses"/>
+
+### Edit Main Course
+
+<img src="screenshots/edit_main_course.png" alt="Edit Main Courses"/>
+
+### Add ingredient to Main Course
+
+<img src="screenshots/add_ingredients_to_dish.png" alt="Add Ingredient to Main Course"/>
+
+### React Router Pagination
+
+<img src="screenshots/ingredients_pagination.png" alt="Pagination"/>
+
+### View Invoices
+
+<img src="screenshots/view_invoices.png" alt="View Invoices"/>
+
+### View Invoice
+
+<img src="screenshots/view_invoice.png" alt="View Invoice"/>
