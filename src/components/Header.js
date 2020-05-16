@@ -18,17 +18,15 @@ class Header extends Component{
                 <div className="container-fluid">
                     <div className="navbar-header">
                     <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
-                        <span className="sr-only">Toggle navigation</span>
                         <span className="icon-bar"></span>
                         <span className="icon-bar"></span>
                         <span className="icon-bar"></span>
                     </button>
-                    <Link className="navbar-brand" to="/admin">React + Redux CRUD</Link>
                     </div>
                     <div className="collapse navbar-collapse" style={{maxWidth: '800px',float: 'left'}}>
                         <ul className="nav navbar-nav">
                             <li className="dropdown" onClick={this.toggleSubmenu}>
-                                <Link to="/admin/main-courses" className="dropdown-toggle">Main Courses <span className="caret"></span>
+                                <Link to="/admin/main-courses" className="dropdown-toggle menu-main-item">Main Courses<span className="caret"></span>
                                 </Link>
                                 <ul className="dropdown-menu" role="menu">
                                     <li>
@@ -37,7 +35,7 @@ class Header extends Component{
                                 </ul>
                             </li>
                             <li className="dropdown" onClick={this.toggleSubmenu}>
-                                <Link to="/admin/desserts" className="dropdown-toggle">Desserts <span className="caret"></span>
+                                <Link to="/admin/desserts" className="dropdown-toggle menu-main-item">Desserts<span className="caret"></span>
                                 </Link>
                                 <ul className="dropdown-menu" role="menu">
                                     <li>
@@ -46,7 +44,7 @@ class Header extends Component{
                                 </ul> 
                             </li>
                             <li className="dropdown" onClick={this.toggleSubmenu}>
-                                <Link to="/admin/appetizers" className="dropdown-toggle">Appetizers <span className="caret"></span>
+                                <Link to="/admin/appetizers" className="dropdown-toggle menu-main-item">Appetizers<span className="caret"></span>
                                 </Link>
                                 <ul className="dropdown-menu" role="menu">
                                     <li>
@@ -55,7 +53,7 @@ class Header extends Component{
                                 </ul> 
                             </li>
                             <li className="dropdown" onClick={this.toggleSubmenu}>
-                                <Link to="/admin/ingredients" className="dropdown-toggle">Ingredients <span className="caret"></span>
+                                <Link to="/admin/ingredients" className="dropdown-toggle menu-main-item">Ingredients<span className="caret"></span>
                                 </Link>
                                 <ul className="dropdown-menu" role="menu">
                                     <li>
@@ -64,7 +62,7 @@ class Header extends Component{
                                 </ul>
                             </li>
                             <li className="dropdown" onClick={this.toggleSubmenu}>
-                                <Link to="/admin/drinks" className="dropdown-toggle">Drinks <span className="caret"></span>
+                                <Link to="/admin/drinks" className="dropdown-toggle menu-main-item">Drinks<span className="caret"></span>
                                 </Link>
                                 <ul className="dropdown-menu" role="menu">
                                     <li>
@@ -73,10 +71,10 @@ class Header extends Component{
                                 </ul>
                             </li>
                             <li className="dropdown" onClick={this.toggleSubmenu}>
-                                <Link to="/admin/invoices" className="dropdown-toggle">Invoices</Link> 
+                                <Link to="/admin/invoices" className="dropdown-toggle menu-main-item">Invoices</Link> 
                             </li>
                             <li className="dropdown" onClick={this.toggleSubmenu}>
-                                <Link to="/admin/users">Users <span className="caret"></span>
+                                <Link to="/admin/users" className="dropdown-toggle menu-main-item">Users<span className="caret"></span>
                                 </Link>
                                 <ul className="dropdown-menu" role="menu">
                                     <li>
