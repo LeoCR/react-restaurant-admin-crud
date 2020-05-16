@@ -6,7 +6,11 @@ class Header extends Component{
         this.toggleSubmenu=this.toggleSubmenu.bind(this);
     }
     toggleSubmenu(e){
-        e.currentTarget.classList.toggle("open");
+        try {
+            e.currentTarget.classList.toggle("open");
+        } catch (error) {
+            
+        }
     }
     render(){
         return(
