@@ -26,7 +26,6 @@
     "axios": "^0.19.2",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
-    "jest": "^26.0.1",
     "jquery": "^3.5.1",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.2.0",
