@@ -73,14 +73,7 @@ class Header extends Component{
                                 </ul>
                             </li>
                             <li className="dropdown" onClick={this.toggleSubmenu}>
-                                <Link to="/admin/invoices" className="dropdown-toggle">Invoices</Link>
-                                {/* 
-                                <ul className="dropdown-menu" role="menu">
-                                    <li>
-                                        <Link to="/admin/add/invoice">Add</Link>
-                                    </li>
-                                </ul> 
-                                */}
+                                <Link to="/admin/invoices" className="dropdown-toggle">Invoices</Link> 
                             </li>
                             <li className="dropdown" onClick={this.toggleSubmenu}>
                                 <Link to="/admin/users">Users <span className="caret"></span>
