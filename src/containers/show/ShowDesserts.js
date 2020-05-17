@@ -70,7 +70,7 @@ class ShowDesserts extends Component{
             }
         } 
         catch (error) {
-            console.log('An error occurs in ShowDesserts.componentWillReceiveProps(),but don\'t worry about it :) ');
+            console.log('An error occurs in ShowDesserts.componentWillReceiveProps(),but dont worry about it :) ');
             console.log(error);
         }
     }
@@ -105,7 +105,7 @@ class ShowDesserts extends Component{
                 this.props.history.push("/admin/desserts/"+tempCurrentPage);
             }
         } catch (error) {
-            console.log("An error occurs in ShowSDesserts.getNextPage(),but don\'t worry about it :)");
+            console.log("An error occurs in ShowSDesserts.getNextPage(),but dont worry about it :)");
             console.log(error);
         }
     }
@@ -124,7 +124,7 @@ class ShowDesserts extends Component{
                 this.props.history.push("/admin/desserts/"+tempCurrentPage);
             }
         } catch (error) {
-            console.log("An error occurs in ShowSDesserts.getPrevPage(),but don\'t worry about it :)");
+            console.log("An error occurs in ShowSDesserts.getPrevPage(),but dont worry about it :)");
             console.log(error);
         }
     }
@@ -143,7 +143,7 @@ class ShowDesserts extends Component{
                 this.setDessertsItems(); 
             }, 300);
         } catch (error) {
-            console.log('An error occurs in ShowDesserts.getPage() , but don\'t worry about it');
+            console.log('An error occurs in ShowDesserts.getPage() , but dont worry about it');
             console.log(error);
         }
     }
@@ -179,7 +179,7 @@ class ShowDesserts extends Component{
                     <nav id="pagination-bottom">
                         <ul className="pagination">
                             <li className="page-item">
-                                <a className="page-link" onClick={()=>this.getPrevPage()}>Previous</a>
+                                <a className="page-link" onClick={()=>this.getPrevPage()} href="#previous">Previous</a>
                             </li> 
                             {
                                 this.state.totalPagination.map((index,key)=> 
@@ -189,7 +189,7 @@ class ShowDesserts extends Component{
                                 )
                             }
                             <li className="page-item">
-                                <a className="page-link" onClick={()=>this.getNextPage()}>Next</a>
+                                <a className="page-link" onClick={()=>this.getNextPage()} href="#next">Next</a>
                             </li> 
                         </ul>
                     </nav>

@@ -73,7 +73,7 @@ class ShowStrongsDishes extends Component{
             }
         } 
         catch (error) {
-            console.log('An error occurs in ShowStrongsDishes.componentWillReceiveProps(),but don\'t worry about it :) ');
+            console.log('An error occurs in ShowStrongsDishes.componentWillReceiveProps(),but dont worry about it :) ');
             console.log(error);
         }
     }
@@ -108,7 +108,7 @@ class ShowStrongsDishes extends Component{
                 this.props.history.push("/admin/main-courses/"+tempCurrentPage)
             }
         } catch (error) {
-            console.log("An error occurs in ShowStrongsDishes.getNextPage(),but don\'t worry about it :)");
+            console.log("An error occurs in ShowStrongsDishes.getNextPage(),but dont worry about it :)");
             console.log(error);
         }
     }
@@ -127,7 +127,7 @@ class ShowStrongsDishes extends Component{
                 this.props.history.push("/admin/main-courses/"+tempCurrentPage);
             } 
         } catch (error) {
-            console.log("An error occurs in ShowStrongsDishes.getPrevPage(),but don\'t worry about it :)");
+            console.log("An error occurs in ShowStrongsDishes.getPrevPage(),but dont worry about it :)");
             console.log(error);
         }
     }
@@ -146,7 +146,7 @@ class ShowStrongsDishes extends Component{
                 this.setStrongDishesItems(); 
             }, 200);
         } catch (error) {
-            console.log('An error occurs in ShowStrongsDishes.getPage() , but don\'t worry about it');
+            console.log('An error occurs in ShowStrongsDishes.getPage() , but dont worry about it');
             console.log(error);
         }
     }
@@ -171,7 +171,7 @@ class ShowStrongsDishes extends Component{
             while(index <=maxItemsLenght);
         } 
         catch (error) {
-            console.log('An error occurs in ShowStrongsDishes.setStrongDishesItems(), but don\'t worried about :)');
+            console.log('An error occurs in ShowStrongsDishes.setStrongDishesItems(), but dont worried about :)');
             console.log(error);
         }
     }
@@ -182,7 +182,7 @@ class ShowStrongsDishes extends Component{
                     <nav id="pagination-bottom">
                         <ul className="pagination">
                             <li className="page-item">
-                                <a className="page-link" onClick={()=>this.getPrevPage()}>Previous</a>
+                                <a className="page-link" onClick={()=>this.getPrevPage()} href="#previous">Previous</a>
                             </li> 
                             {
                                 this.state.totalPagination.map((index,key)=> 
@@ -192,7 +192,7 @@ class ShowStrongsDishes extends Component{
                                 )
                             }
                             <li className="page-item">
-                                <a className="page-link" onClick={()=>this.getNextPage()}>Next</a>
+                                <a className="page-link" onClick={()=>this.getNextPage()} href="#next">Next</a>
                             </li> 
                         </ul>
                     </nav>

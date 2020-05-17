@@ -70,7 +70,7 @@ class ShowIngredients extends Component{
             }
         } 
         catch (error) {
-            console.log('An error occurs in ShowIngredients.componentWillReceiveProps(),but don\'t worry about it :) ');
+            console.log('An error occurs in ShowIngredients.componentWillReceiveProps(),but dont worry about it :) ');
             console.log(error);
         }
     } 
@@ -105,7 +105,7 @@ class ShowIngredients extends Component{
                 this.props.history.push("/admin/ingredients/"+tempCurrentPage)
             }
         } catch (error) {
-            console.log('An error occurs in ShowIngredients.getNextPage(),but don\'t worry about it :) ');
+            console.log('An error occurs in ShowIngredients.getNextPage(),but dont worry about it :) ');
             console.log(error);
         }
     }
@@ -124,7 +124,7 @@ class ShowIngredients extends Component{
                 this.props.history.push("/admin/ingredients/"+tempCurrentPage);
             }
         } catch (error) {
-            console.log("An error occurs in ShowIngredients.getPrevPage(),but don\'t worry about it :)");
+            console.log("An error occurs in ShowIngredients.getPrevPage(),but dont worry about it :)");
             console.log(error);
         }
     }
@@ -143,7 +143,7 @@ class ShowIngredients extends Component{
                 this.setIngredientsItems(); 
             },200);
         } catch (error) {
-            console.log('An error occurs in ShowIngredients.getPage() , but don\'t worry about it');
+            console.log('An error occurs in ShowIngredients.getPage() , but dont worry about it');
             console.log(error);
         }
     }
@@ -168,7 +168,7 @@ class ShowIngredients extends Component{
             while(index <maxItemsLenght);
         } 
         catch (error) {
-            console.log('An error occurs ShowIngredients.setIngredientsItems() , but don\'t worried about :)');
+            console.log('An error occurs ShowIngredients.setIngredientsItems() , but dont worried about :)');
             console.error(error);
         }
     }
@@ -179,7 +179,7 @@ class ShowIngredients extends Component{
                     <nav id="pagination-bottom">
                         <ul className="pagination">
                             <li className="page-item">
-                                <a className="page-link" onClick={()=>this.getPrevPage()}>Previous</a>
+                                <a className="page-link" onClick={()=>this.getPrevPage()} href="#previous">Previous</a>
                             </li> 
                             {
                                 this.state.totalPagination.map((index,key)=> 
@@ -189,7 +189,7 @@ class ShowIngredients extends Component{
                                 )
                             }
                             <li className="page-item">
-                                <a className="page-link" onClick={()=>this.getNextPage()}>Next</a>
+                                <a className="page-link" onClick={()=>this.getNextPage()} href="#next">Next</a>
                             </li> 
                         </ul>
                     </nav>

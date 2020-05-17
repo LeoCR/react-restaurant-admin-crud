@@ -66,7 +66,7 @@ class ShowEntrees extends Component{
             }
         } 
         catch (error) {
-            console.log('An error occurs in ShowEntrees.componentWillReceiveProps(),but don\'t worry about it :) ');
+            console.log('An error occurs in ShowEntrees.componentWillReceiveProps(),but dont worry about it :) ');
             console.log(error);
         }
     }
@@ -101,7 +101,7 @@ class ShowEntrees extends Component{
                 this.props.history.push("/admin/appetizers/"+tempCurrentPage);
             }
         } catch (error) {
-            console.log("An error occurs in ShowEntrees.getNextPage(),but don\'t worry about it :)");
+            console.log("An error occurs in ShowEntrees.getNextPage(),but dont worry about it :)");
             console.log(error);
         }
     }
@@ -120,7 +120,7 @@ class ShowEntrees extends Component{
                 this.props.history.push("/admin/appetizers/"+tempCurrentPage); 
             }
         } catch (error) {
-            console.log("An error occurs in ShowEntrees.getPrevPage(),but don\'t worry about it :)");
+            console.log("An error occurs in ShowEntrees.getPrevPage(),but dont worry about it :)");
             console.log(error);
         }
     }
@@ -139,7 +139,7 @@ class ShowEntrees extends Component{
                 this.setEntreesItems(); 
             }, 300);
         } catch (error) {
-            console.log('An error occurs in ShowEntrees.getPage() , but don\'t worry about it');
+            console.log('An error occurs in ShowEntrees.getPage() , but dont worry about it');
             console.log(error);
         }
     }
@@ -174,7 +174,7 @@ class ShowEntrees extends Component{
                     <nav id="pagination-bottom">
                         <ul className="pagination">
                             <li className="page-item">
-                                <a className="page-link" onClick={()=>this.getPrevPage()}>Previous</a>
+                                <a className="page-link" onClick={()=>this.getPrevPage()}  href="#previous">Previous</a>
                             </li> 
                             {
                                 this.state.totalPagination.map((index,key)=> 
@@ -184,7 +184,7 @@ class ShowEntrees extends Component{
                                 )
                             }
                             <li className="page-item">
-                                <a className="page-link" onClick={()=>this.getNextPage()}>Next</a>
+                                <a className="page-link" onClick={()=>this.getNextPage()} href="#next">Next</a>
                             </li> 
                         </ul>
                     </nav>

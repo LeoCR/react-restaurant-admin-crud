@@ -1,4 +1,4 @@
-import { SHOW_INGREDIENTS,DELETE_INGREDIENT, ADD_INGREDIENT,SHOW_INGREDIENT,EDIT_INGREDIENT,GET_INGREDIENTS_BY_DISH_ID,ADD_INGREDIENT_TO_DISH,DELETE_INGREDIENT_TO_DISH} from "../constants/ingredientTypes";
+import { SHOW_INGREDIENTS,DELETE_INGREDIENT, ADD_INGREDIENT,SHOW_INGREDIENT,EDIT_INGREDIENT} from "../constants/ingredientTypes";
 import api from '../api/api';
 export  const getIngredients=()=>async dispatch=>{
     const response = await api.get('/api/ingredients');
