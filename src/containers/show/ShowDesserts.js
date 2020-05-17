@@ -70,7 +70,7 @@ class ShowDesserts extends Component{
             }
         } 
         catch (error) {
-            console.log('An error occurs in ShowDesserts.componentWillReceiveProps(),but don\'t worry about it :) ');
+            console.log('An error occurs in ShowDesserts.componentWillReceiveProps(),but dont worry about it :) ');
             console.log(error);
         }
     }
@@ -124,7 +124,7 @@ class ShowDesserts extends Component{
                 this.props.history.push("/admin/desserts/"+tempCurrentPage);
             }
         } catch (error) {
-            console.log("An error occurs in ShowSDesserts.getPrevPage(),but don\'t worry about it :)");
+            console.log("An error occurs in ShowSDesserts.getPrevPage(),but dont worry about it :)");
             console.log(error);
         }
     }
@@ -143,7 +143,7 @@ class ShowDesserts extends Component{
                 this.setDessertsItems(); 
             }, 300);
         } catch (error) {
-            console.log('An error occurs in ShowDesserts.getPage() , but don\'t worry about it');
+            console.log('An error occurs in ShowDesserts.getPage() , but dont worry about it');
             console.log(error);
         }
     }

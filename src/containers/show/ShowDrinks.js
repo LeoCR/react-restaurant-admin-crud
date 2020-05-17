@@ -99,7 +99,7 @@ class ShowDrinks extends React.Component{
                 this.props.history.push("/admin/drinks/"+tempCurrentPage)
             }
         } catch (error) {
-            console.log("An error occurs in ShowDrinks.getNextPage(),but don\'t worry about it :)");
+            console.log("An error occurs in ShowDrinks.getNextPage(),but dont worry about it :)");
             console.log(error);
         }
     }
@@ -118,7 +118,7 @@ class ShowDrinks extends React.Component{
                 this.props.history.push("/admin/drinks/"+tempCurrentPage)
             }
         } catch (error) {
-            console.log("An error occurs in ShowDrinks.getPrevPage(),but don\'t worry about it :)");
+            console.log("An error occurs in ShowDrinks.getPrevPage(),but dont worry about it :)");
             console.log(error);
         }
     }
@@ -137,7 +137,7 @@ class ShowDrinks extends React.Component{
                 this.setDrinksItems(); 
             }, 300);
         } catch (error) {
-            console.log('An error occurs in ShowDrinks.getPage() , but don\'t worry about it');
+            console.log('An error occurs in ShowDrinks.getPage() , but dont worry about it');
             console.log(error);
         }
     }

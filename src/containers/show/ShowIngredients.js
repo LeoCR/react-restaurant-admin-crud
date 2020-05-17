@@ -105,7 +105,7 @@ class ShowIngredients extends Component{
                 this.props.history.push("/admin/ingredients/"+tempCurrentPage)
             }
         } catch (error) {
-            console.log('An error occurs in ShowIngredients.getNextPage(),but don\'t worry about it :) ');
+            console.log('An error occurs in ShowIngredients.getNextPage(),but dont worry about it :) ');
             console.log(error);
         }
     }
@@ -124,7 +124,7 @@ class ShowIngredients extends Component{
                 this.props.history.push("/admin/ingredients/"+tempCurrentPage);
             }
         } catch (error) {
-            console.log("An error occurs in ShowIngredients.getPrevPage(),but don\'t worry about it :)");
+            console.log("An error occurs in ShowIngredients.getPrevPage(),but dont worry about it :)");
             console.log(error);
         }
     }
@@ -143,7 +143,7 @@ class ShowIngredients extends Component{
                 this.setIngredientsItems(); 
             },200);
         } catch (error) {
-            console.log('An error occurs in ShowIngredients.getPage() , but don\'t worry about it');
+            console.log('An error occurs in ShowIngredients.getPage() , but dont worry about it');
             console.log(error);
         }
     }
@@ -168,7 +168,7 @@ class ShowIngredients extends Component{
             while(index <maxItemsLenght);
         } 
         catch (error) {
-            console.log('An error occurs ShowIngredients.setIngredientsItems() , but don\'t worried about :)');
+            console.log('An error occurs ShowIngredients.setIngredientsItems() , but dont worried about :)');
             console.error(error);
         }
     }

@@ -99,7 +99,7 @@ class ShowUsers extends React.Component{
                 this.props.history.push("/admin/users/"+tempCurrentPage)
             }
         } catch (error) {
-            console.log("An error occurs in ShowUsers.getNextPage(),but don\'t worry about it :)");
+            console.log("An error occurs in ShowUsers.getNextPage(),but dont worry about it :)");
             console.log(error);
         }
     }
@@ -118,7 +118,7 @@ class ShowUsers extends React.Component{
                 this.props.history.push("/admin/users/"+tempCurrentPage);
             } 
         } catch (error) {
-            console.log("An error occurs in ShowUsers.getPrevPage(),but don\'t worry about it :)");
+            console.log("An error occurs in ShowUsers.getPrevPage(),but dont worry about it :)");
             console.log(error);
         }
     }
@@ -137,7 +137,7 @@ class ShowUsers extends React.Component{
                 this.setUsersItems(); 
             }, 200);
         } catch (error) {
-            console.log('An error occurs in ShowUsers.getPage() , but don\'t worry about it');
+            console.log('An error occurs in ShowUsers.getPage() , but dont worry about it');
             console.log(error);
         }
     }
@@ -162,7 +162,7 @@ class ShowUsers extends React.Component{
             while(index <=maxItemsLenght);
         } 
         catch (error) {
-            console.log('An error occurs in ShowUsers.setUsersItems(), but don\'t worried about :)');
+            console.log('An error occurs in ShowUsers.setUsersItems(), but dont worried about :)');
             console.log(error);
         }
     }

@@ -29,8 +29,7 @@ describe('Desserts Actions', () => {
           status: 200
         }); 
         /**
-        * @see https://github.com/axios/moxios 
-        * testing CI
+        * @see https://github.com/axios/moxios  
         **/
         store.dispatch(getDesserts()).then(() => {
             let expectedActions = [{
