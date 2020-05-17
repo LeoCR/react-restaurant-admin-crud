@@ -182,7 +182,7 @@ class ShowStrongsDishes extends Component{
                     <nav id="pagination-bottom">
                         <ul className="pagination">
                             <li className="page-item">
-                                <a className="page-link" onClick={()=>this.getPrevPage()}>Previous</a>
+                                <a className="page-link" onClick={()=>this.getPrevPage()} href="#previous">Previous</a>
                             </li> 
                             {
                                 this.state.totalPagination.map((index,key)=> 
@@ -192,7 +192,7 @@ class ShowStrongsDishes extends Component{
                                 )
                             }
                             <li className="page-item">
-                                <a className="page-link" onClick={()=>this.getNextPage()}>Next</a>
+                                <a className="page-link" onClick={()=>this.getNextPage()} href="#next">Next</a>
                             </li> 
                         </ul>
                     </nav>
