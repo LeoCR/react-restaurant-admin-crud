@@ -30,6 +30,7 @@ describe('Desserts Actions', () => {
         }); 
         /**
         * @see https://github.com/axios/moxios 
+        * testing CI
         **/
         store.dispatch(getDesserts()).then(() => {
             let expectedActions = [{
