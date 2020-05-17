@@ -105,7 +105,7 @@ class ShowDesserts extends Component{
                 this.props.history.push("/admin/desserts/"+tempCurrentPage);
             }
         } catch (error) {
-            console.log("An error occurs in ShowSDesserts.getNextPage(),but don\'t worry about it :)");
+            console.log("An error occurs in ShowSDesserts.getNextPage(),but dont worry about it :)");
             console.log(error);
         }
     }

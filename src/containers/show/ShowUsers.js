@@ -64,7 +64,7 @@ class ShowUsers extends React.Component{
             }
         } 
         catch (error) {
-            console.log('An error occurs in ShowUsers.componentWillReceiveProps(),but don\'t worry about it :) ');
+            console.log('An error occurs in ShowUsers.componentWillReceiveProps(),but dont worry about it :) ');
             console.log(error);
         }
     }

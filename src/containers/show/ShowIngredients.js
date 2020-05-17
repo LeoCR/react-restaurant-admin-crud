@@ -70,7 +70,7 @@ class ShowIngredients extends Component{
             }
         } 
         catch (error) {
-            console.log('An error occurs in ShowIngredients.componentWillReceiveProps(),but don\'t worry about it :) ');
+            console.log('An error occurs in ShowIngredients.componentWillReceiveProps(),but dont worry about it :) ');
             console.log(error);
         }
     } 

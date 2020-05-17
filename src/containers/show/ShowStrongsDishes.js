@@ -73,7 +73,7 @@ class ShowStrongsDishes extends Component{
             }
         } 
         catch (error) {
-            console.log('An error occurs in ShowStrongsDishes.componentWillReceiveProps(),but don\'t worry about it :) ');
+            console.log('An error occurs in ShowStrongsDishes.componentWillReceiveProps(),but dont worry about it :) ');
             console.log(error);
         }
     }
