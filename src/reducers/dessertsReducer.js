@@ -2,7 +2,8 @@ import { EDIT_DESSERT,SHOW_DESSERTS,
     DELETE_DESSERT,ADD_DESSERT,
     SHOW_DESSERT } from "../constants/dessertTypes";
 const initialState={
-    desserts:[]
+    desserts:[],
+    dessert:null
 }
 export default function dessertsReducer(state=initialState,action){
     switch (action.type) {
