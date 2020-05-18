@@ -47,6 +47,7 @@ class AddDessert extends Component{
             this.setState({
                 picture:e.target.files[0]
             });
+            console.log(e.target.files[0]);
         }
     }
     priceDessert=(e)=>{
