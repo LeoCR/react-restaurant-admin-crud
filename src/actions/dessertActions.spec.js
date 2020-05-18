@@ -1,9 +1,9 @@
 //import moxios for testing axios request
 import moxios from 'moxios';
 //import custom constants
-import { SHOW_DESSERTS,DELETE_DESSERT,ADD_DESSERT} from "../constants/dessertTypes";
+import { SHOW_DESSERTS,DELETE_DESSERT,ADD_DESSERT,SHOW_DESSERT} from "../constants/dessertTypes";
 //import custom actions
-import {getDesserts,addDessert,deleteDessert} from "./dessertActions"; 
+import {getDesserts,addDessert,deleteDessert,showDessert} from "./dessertActions"; 
 // import configreStore to create a mock store where we will dispatch our actions
 import configureStore from 'redux-mock-store';
 //import thunk middle to make our action asyncronous
@@ -68,6 +68,30 @@ describe('Desserts Actions', () => {
             done(); 
         }
     });
+    test('SHOW_DESSERT', (done) => {  
+        if(previewMode){
+            moxios.stubRequest('https://localhost:49658/api/desserts/9DESRT', {
+                status: 200 
+            });  
+            store.dispatch(showDessert("9DESRT")).then(() => {
+                let expectedActions = [{
+                    type:SHOW_DESSERT,
+                    payload:{
+                        description: "Sweet apples with cinnamon and sweet cream", 
+                        id: "9DESRT", 
+                        name: "Apple Pie", 
+                        picture: "/img/uploads/apple_pie.jpg", 
+                        price: "5.50"
+                    }
+                }];
+                expect(store.getActions()).toEqual(expectedActions);
+                done()
+            });
+        } 
+        else{ 
+            done(); 
+        }
+    });
     test('SHOW_DESSERTS', (done) => {  
         if(previewMode){
             moxios.stubRequest('https://localhost:49658/api/desserts', {
@@ -89,8 +113,7 @@ describe('Desserts Actions', () => {
         else{ 
             done(); 
         }
-    });
-    
+    }); 
     test('DELETE_DESSERT',(done)=>{
         if(previewMode){
             moxios.stubRequest('POST','https://localhost:49658/api/dessert/delete/9DESRT', {
