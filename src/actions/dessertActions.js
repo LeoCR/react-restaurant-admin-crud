@@ -34,19 +34,24 @@ export const showDessert=id=>async dispatch=>{
 }
 
 export const editDessert=(dessert,id)=>async dispatch=>{
-    const response = await api.put(`/api/dessert/update/${id}`,dessert)
-    .then((res)=>{
-        console.log('Response dessertActions.editDessert()');
-        console.log(res);
-    })
-    .catch((err)=>{
+    try {
+        const response = await api.put(`/api/dessert/update/${id}`,dessert)
+        .then((res)=>{ 
+            return res;
+        })
+        .catch((err)=>{
+            console.log('An error occurs in dessertActions.editDessert catch(err)');
+            console.log(err);
+        }); 
+        dispatch({
+            type:EDIT_DESSERT,
+            payload:response.data
+        })
+    } catch (error) {
         console.log('An error occurs in dessertActions.editDessert');
-        console.log(err);
-    });
-    dispatch({
-        type:EDIT_DESSERT,
-        payload:response.data
-    })
+        console.log(error);
+    }
+    
 }
 export const updateDessert=(dessert,id)=>async dispatch=>{
     const response = await api.put(`/api/dessert/update-img/${id}`,dessert,{

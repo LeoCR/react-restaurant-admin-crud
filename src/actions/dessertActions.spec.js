@@ -1,5 +1,7 @@
 //import moxios for testing axios request
 import moxios from 'moxios';
+//import api for read values from database
+import api from '../api/api';
 //import custom constants
 import { SHOW_DESSERTS,DELETE_DESSERT,ADD_DESSERT,SHOW_DESSERT,EDIT_DESSERT} from "../constants/dessertTypes";
 //import custom actions
@@ -14,12 +16,21 @@ import {previewMode} from "../config/previewMode";
 const mockStore = configureStore([thunk]);
 //creating a store with mockStore and redux-thunk as middleware
 const store = mockStore({});
+//initialize temporal variable for saving all the deserts
+var tempDessert;
+
+async function setDeseerts(){
+    await api.get('/api/desserts').then((res)=>{
+        tempDessert=res.data
+    })
+}
     
 describe('Desserts Actions', () => { 
     /**
     * @see https://medium.com/javascript-in-plain-english/testing-async-redux-actions-with-jest-3bde5dd88607
     **/
     beforeEach(() => {
+        setDeseerts();
         moxios.install();
         store.clearActions();
     });
@@ -47,8 +58,7 @@ describe('Desserts Actions', () => {
             formData.append('name',"Apple Pie");
             formData.append('price',"5.50");
             formData.append('description',"Sweet apples with cinnamon and sweet cream"); 
-            formData.append('picture',imgDessert); 
-            
+            formData.append('picture',imgDessert);  
             store.dispatch(addDessert(formData)).then(() => {
                 let expectedActions = [{
                     type:ADD_DESSERT,
@@ -77,8 +87,8 @@ describe('Desserts Actions', () => {
                 let expectedActions = [{
                     type:SHOW_DESSERT,
                     payload:{
-                        description: "Sweet apples with cinnamon and sweet cream", 
                         id: "9DESRT", 
+                        description: "Sweet apples with cinnamon and sweet cream",  
                         name: "Apple Pie", 
                         picture: "/img/uploads/apple_pie.jpg", 
                         price: "5.50"
@@ -96,16 +106,12 @@ describe('Desserts Actions', () => {
         if(previewMode){
             moxios.stubRequest('https://localhost:49658/api/desserts', {
                 status: 200
-            });  
-            store.dispatch(getDesserts()).then(() => {
-                let expectedActions = [{
-                    type:SHOW_DESSERTS,
-                    payload:[{"id":"1DESRT","name":"Rice with Milk","description":"Sweet rice with cinnamon and sweet cream","picture":"/img/desserts/rice-with-milk.jpg","price":"5.50"},{"id":"2DESRT","name":"Choco Strawberries","description":"Strawberries covered with Chocolate","picture":"/img/desserts/choco-strawberries.jpg","price":"7.50"},{"id":"3DESRT","name":"Ice Cream and Caramel","description":"Chocolate ice cream on the crust","picture":"/img/desserts/ice-cream-and-caramel.jpg","price":"8.50"},{"id":"4DESRT","name":"Hazelnut Flans","description":"Evaporated milk, sweetened condensed milk and liquefied chocolate and hazelnut cream","picture":"/img/desserts/chocolate-and-hazelnut-flans.jpg","price":"4.50"},{"id":"5DESRT","name":"Chocolate pudding","description":"Sugar, flavored with chocolate and vanilla and thickened with a starch","picture":"/img/desserts/chocolate-pudding.jpg","price":"7.50"},{"id":"6DESRT","name":"Coconut Flan","description":"Mix milk and condensed milk and add grated coconut","picture":"/img/desserts/coconut-flan.jpg","price":"7.50"},{"id":"7DESRT","name":"Flan caramel","description":"The sweetened condensed milk and the evaporated milk make a Flan caramel rich .","picture":"/img/desserts/flan-caramel.jpg","price":"7.50"},{"id":"8DESRT","name":"Brownie and Ice Cream","description":"Sweet Ice cream with a brownie","picture":"/img/desserts/brownie-with-ice-cream.jpg","price":"7.50"},
-                    {"id":"9DESRT",
-                    "name":"Apple Pie",
-                    "description":"Sweet apples with cinnamon and sweet cream",
-                    "picture":'/img/uploads/apple_pie.jpg',
-                    "price":"5.50"}]}];
+            });   
+            store.dispatch(getDesserts()).then(() => { 
+                let expectedActions = [{    
+                    payload:tempDessert,
+                    type:SHOW_DESSERTS
+                }];
                 expect(store.getActions()).toEqual(expectedActions);
                 done()
             });
@@ -115,19 +121,30 @@ describe('Desserts Actions', () => {
         }
     });
     test('EDIT_DESSERT', (done) => {  
-        if(previewMode){
-            moxios.stubRequest('https://localhost:49658/api/desserts', {
-                status: 200
-            });  
-            store.dispatch(getDesserts()).then(() => {
+        if(previewMode){ 
+            const infoDessert={
+                id:"1DESRT",
+                name:"Rice with Milk with cinnamon",
+                price:"5.50",
+                description:"Sweet rice with cinnamon and sweet cream",
+                picture:"/img/desserts/rice-with-milk.jpg"
+            } 
+            moxios.stubRequest('PUT','https://localhost:49658/api/dessert/add/', {
+                status: 200,
+                response:infoDessert
+            }); 
+            store.dispatch(editDessert(infoDessert,"1DESRT")).then(() => {
                 let expectedActions = [{
-                    type:SHOW_DESSERTS,
-                    payload:[{"id":"1DESRT","name":"Rice with Milk","description":"Sweet rice with cinnamon and sweet cream","picture":"/img/desserts/rice-with-milk.jpg","price":"5.50"},{"id":"2DESRT","name":"Choco Strawberries","description":"Strawberries covered with Chocolate","picture":"/img/desserts/choco-strawberries.jpg","price":"7.50"},{"id":"3DESRT","name":"Ice Cream and Caramel","description":"Chocolate ice cream on the crust","picture":"/img/desserts/ice-cream-and-caramel.jpg","price":"8.50"},{"id":"4DESRT","name":"Hazelnut Flans","description":"Evaporated milk, sweetened condensed milk and liquefied chocolate and hazelnut cream","picture":"/img/desserts/chocolate-and-hazelnut-flans.jpg","price":"4.50"},{"id":"5DESRT","name":"Chocolate pudding","description":"Sugar, flavored with chocolate and vanilla and thickened with a starch","picture":"/img/desserts/chocolate-pudding.jpg","price":"7.50"},{"id":"6DESRT","name":"Coconut Flan","description":"Mix milk and condensed milk and add grated coconut","picture":"/img/desserts/coconut-flan.jpg","price":"7.50"},{"id":"7DESRT","name":"Flan caramel","description":"The sweetened condensed milk and the evaporated milk make a Flan caramel rich .","picture":"/img/desserts/flan-caramel.jpg","price":"7.50"},{"id":"8DESRT","name":"Brownie and Ice Cream","description":"Sweet Ice cream with a brownie","picture":"/img/desserts/brownie-with-ice-cream.jpg","price":"7.50"},
-                    {"id":"9DESRT",
-                    "name":"Apple Pie",
-                    "description":"Sweet apples with cinnamon and sweet cream",
-                    "picture":'/img/uploads/apple_pie.jpg',
-                    "price":"5.50"}]}];
+                    type:EDIT_DESSERT,
+                    payload:
+                        {
+                            "id":"1DESRT",
+                            "name":"Rice with Milk with cinnamon",
+                            "description":"Sweet rice with cinnamon and sweet cream",
+                            "picture":'/img/desserts/rice-with-milk.jpg',
+                            "price":"5.50"
+                        } 
+                }];
                 expect(store.getActions()).toEqual(expectedActions);
                 done()
             });
@@ -135,7 +152,7 @@ describe('Desserts Actions', () => {
         else{ 
             done(); 
         }
-    }); 
+    });  
     test('DELETE_DESSERT',(done)=>{
         if(previewMode){
             moxios.stubRequest('POST','https://localhost:49658/api/dessert/delete/9DESRT', {
