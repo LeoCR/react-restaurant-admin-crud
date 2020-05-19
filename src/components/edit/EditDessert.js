@@ -119,7 +119,7 @@ class EditDessert extends Component{
             formData.append('price',price);
             formData.append('description',description);
             formData.append('picture',picture);
-            if(changedPicture===false){
+            if(changedPicture===false){ 
                 this.props.editDessert(infoDessert,id);
             }
             else{
