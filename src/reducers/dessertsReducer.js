@@ -15,7 +15,7 @@ export default function dessertsReducer(state=initialState,action){
         case DELETE_DESSERT:
         return{
             ...state,
-            desserts:state.desserts.filter(dessert=>dessert!==action.payload)
+            desserts:state.desserts.filter(dessert=>dessert.id!==action.payload)
         }
         case ADD_DESSERT:
             return{
