@@ -5,7 +5,7 @@ import api from '../api/api';
 //import custom constants
 import { SHOW_DESSERTS,DELETE_DESSERT,ADD_DESSERT,SHOW_DESSERT,EDIT_DESSERT} from "../constants/dessertTypes";
 //import custom actions
-import {getDesserts,addDessert,deleteDessert,showDessert,editDessert,updateDessert} from "./dessertActions"; 
+import {getDesserts,addDessert,deleteDessert,showDessert,editDessert} from "./dessertActions"; 
 // import configreStore to create a mock store where we will dispatch our actions
 import configureStore from 'redux-mock-store';
 //import thunk middle to make our action asyncronous
