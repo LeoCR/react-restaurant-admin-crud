@@ -5,7 +5,7 @@ import api from '../api/api';
 //import custom constants
 import { SHOW_DESSERTS,DELETE_DESSERT,ADD_DESSERT,SHOW_DESSERT,EDIT_DESSERT} from "../constants/dessertTypes";
 //import custom actions
-import {getDesserts,addDessert,deleteDessert,showDessert,editDessert} from "./dessertActions"; 
+import {getDesserts,addDessert,deleteDessert,showDessert,editDessert,updateDessert} from "./dessertActions"; 
 // import configreStore to create a mock store where we will dispatch our actions
 import configureStore from 'redux-mock-store';
 //import thunk middle to make our action asyncronous
@@ -18,13 +18,12 @@ const mockStore = configureStore([thunk]);
 const store = mockStore({});
 //initialize temporal variable for saving all the deserts
 var tempDessert;
-
+//function for setting the desserts from database
 async function setDeseerts(){
     await api.get('/api/desserts').then((res)=>{
         tempDessert=res.data
     })
-}
-    
+}    
 describe('Desserts Actions', () => { 
     /**
     * @see https://medium.com/javascript-in-plain-english/testing-async-redux-actions-with-jest-3bde5dd88607
@@ -129,7 +128,7 @@ describe('Desserts Actions', () => {
                 description:"Sweet rice with cinnamon and sweet cream",
                 picture:"/img/desserts/rice-with-milk.jpg"
             } 
-            moxios.stubRequest('PUT','https://localhost:49658/api/dessert/add/', {
+            moxios.stubRequest('PUT','https://localhost:49658/api/dessert/update/1DESRT', {
                 status: 200,
                 response:infoDessert
             }); 
@@ -152,7 +151,7 @@ describe('Desserts Actions', () => {
         else{ 
             done(); 
         }
-    });  
+    });
     test('DELETE_DESSERT',(done)=>{
         if(previewMode){
             moxios.stubRequest('POST','https://localhost:49658/api/dessert/delete/9DESRT', {
