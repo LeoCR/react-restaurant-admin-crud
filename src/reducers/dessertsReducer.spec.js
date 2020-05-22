@@ -1,5 +1,5 @@
 import dessertsReducer from "./dessertsReducer";
-import { SHOW_DESSERTS,DELETE_DESSERT,ADD_DESSERT} from "../constants/dessertTypes";
+import { SHOW_DESSERTS,DELETE_DESSERT,ADD_DESSERT,SHOW_DESSERT} from "../constants/dessertTypes";
 describe('Desserts Reducer', () => {
     const initialState = {
       desserts: [],
@@ -77,5 +77,20 @@ describe('Desserts Reducer', () => {
       }; 
       const expectedState = { ...initialState,desserts: [newDessert] };
       expect(dessertsReducer(initialState,action)).toEqual(expectedState)
+    })
+    it('Handle SHOW_DESSERT',()=>{
+        var dessert={
+          "id":"1DESRT",
+          "name":"Rice with Milk with cinnamon",
+          "description":"Sweet rice with cinnamon and sweet cream",
+          "picture":"/img/desserts/rice-with-milk.jpg",
+          "price":"5.50"
+        };
+        const action = {
+          type: SHOW_DESSERT,
+          payload:  dessert
+        };
+        const expectedState = { ...initialState,dessert: dessert };
+        expect(dessertsReducer(initialState,action)).toEqual(expectedState)
     })
 });
