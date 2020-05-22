@@ -1,5 +1,5 @@
 import dessertsReducer from "./dessertsReducer";
-import { SHOW_DESSERTS,DELETE_DESSERT} from "../constants/dessertTypes";
+import { SHOW_DESSERTS,DELETE_DESSERT,ADD_DESSERT} from "../constants/dessertTypes";
 describe('Desserts Reducer', () => {
     const initialState = {
       desserts: [],
@@ -62,5 +62,20 @@ describe('Desserts Reducer', () => {
         }
       ] };
       expect(dessertsReducer(tempInitialState,action)).toEqual(expectedState)
+    })
+    it('Handle ADD_DESSERT',()=>{
+      var newDessert={
+        "id": "9DESRT",
+        "description": "Sweet apples with cinnamon and sweet cream",  
+        "name": "Apple Pie", 
+        "picture": "/img/uploads/apple_pie.jpg", 
+        "price": "5.50"
+      }; 
+      const action = {
+        type: ADD_DESSERT,
+        payload:  newDessert
+      }; 
+      const expectedState = { ...initialState,desserts: [newDessert] };
+      expect(dessertsReducer(initialState,action)).toEqual(expectedState)
     })
 });
