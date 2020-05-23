@@ -12,7 +12,7 @@ import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk'; 
 //import previewMode for making test in localhost API
 import {previewMode} from "../config/previewMode";
-// initialize mockStore which is only the configureStore method which take middlesware as its parameters
+// initialize mockStore which is only the configureStore method which take middleware as its parameters
 const mockStore = configureStore([thunk]);
 //creating a store with mockStore and redux-thunk as middleware
 const store = mockStore({});
@@ -36,7 +36,7 @@ describe('Desserts Actions', () => {
     afterEach(() => {
         moxios.uninstall();
     });
-    test('ADD_DESSERT', (done) => {  
+    test('Handle action ADD_DESSERT', (done) => {  
         if(previewMode){
             moxios.stubRequest('POST','https://localhost:49658/api/dessert/add/', {
                 status: 200,
@@ -77,7 +77,7 @@ describe('Desserts Actions', () => {
             done(); 
         }
     });
-    test('SHOW_DESSERT', (done) => {  
+    test('Handle action SHOW_DESSERT', (done) => {  
         if(previewMode){
             moxios.stubRequest('https://localhost:49658/api/dessert/show/9DESRT', {
                 status: 200 
@@ -101,7 +101,7 @@ describe('Desserts Actions', () => {
             done(); 
         }
     });
-    test('SHOW_DESSERTS', (done) => {  
+    test('Handle action SHOW_DESSERTS', (done) => {  
         if(previewMode){
             moxios.stubRequest('https://localhost:49658/api/desserts', {
                 status: 200
@@ -119,7 +119,7 @@ describe('Desserts Actions', () => {
             done(); 
         }
     });
-    test('EDIT_DESSERT', (done) => {  
+    test('Handle action EDIT_DESSERT', (done) => {  
         if(previewMode){ 
             const infoDessert={
                 id:"1DESRT",
@@ -135,14 +135,7 @@ describe('Desserts Actions', () => {
             store.dispatch(editDessert(infoDessert,"1DESRT")).then(() => {
                 let expectedActions = [{
                     type:EDIT_DESSERT,
-                    payload:
-                        {
-                            "id":"1DESRT",
-                            "name":"Rice with Milk with cinnamon",
-                            "description":"Sweet rice with cinnamon and sweet cream",
-                            "picture":'/img/desserts/rice-with-milk.jpg',
-                            "price":"5.50"
-                        } 
+                    payload:infoDessert
                 }];
                 expect(store.getActions()).toEqual(expectedActions);
                 done()
@@ -152,7 +145,7 @@ describe('Desserts Actions', () => {
             done(); 
         }
     });
-    test('DELETE_DESSERT',(done)=>{
+    test('Handle action DELETE_DESSERT',(done)=>{
         if(previewMode){
             moxios.stubRequest('POST','https://localhost:49658/api/dessert/delete/9DESRT', {
                 status: 200,
