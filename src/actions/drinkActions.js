@@ -36,7 +36,7 @@ export const showDrink=id=>async dispatch=>{
 export const editDrink=(drink,id)=>async dispatch=>{
     const response = await api.put(`/api/drink/update/${id}`,drink)
     .then((res)=>{
-        console.log('Response drinkActions.editDrink Update successful');
+        //console.log('Response drinkActions.editDrink Update successful');
         //console.log(res);
         return res;
     })
@@ -56,8 +56,9 @@ export const updateDrink=(drink,id)=>async dispatch=>{
         }
     })
     .then((res)=>{
-        console.log('Response drinkActions.updateDrink');
-        console.log(res);
+        //console.log('Response drinkActions.updateDrink');
+        //console.log(res);
+        return res;
     })
     .catch((err)=>{
         console.log('An error occurs in drinkActions.updateDrink');

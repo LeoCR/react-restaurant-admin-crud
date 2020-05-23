@@ -5,7 +5,7 @@ describe('Desserts Reducer', () => {
       desserts: [],
       dessert: null 
     };
-    it('should handle initial state', () => {
+    it('Handle dessertsReducer initial state', () => {
       expect(
         dessertsReducer(undefined, {})
       ).toEqual({
