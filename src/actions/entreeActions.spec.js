@@ -4,7 +4,7 @@ import api from '../api/api';
 import { SHOW_ENTREES,DELETE_ENTREE, ADD_ENTREE,SHOW_ENTREE,EDIT_ENTREE} from "../constants/entreeTypes";
 //import custom actions
 import {getEntrees,addEntree,deleteEntree,showEntree,editEntree} from "./entreeActions"; 
-// import configreStore to create a mock store where we will dispatch our actions
+// import configureStore to create a mock store where we will dispatch our actions
 import configureStore from 'redux-mock-store';
 //import thunk middle to make our action asyncronous
 import thunk from 'redux-thunk'; 

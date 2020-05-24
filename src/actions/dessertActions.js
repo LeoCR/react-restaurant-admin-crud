@@ -39,7 +39,7 @@ export const editDessert=(dessert,id)=>async dispatch=>{
             return res;
         })
         .catch((err)=>{
-            console.log('An error occurs in dessertActions.editDessert catch(err)');
+            console.log('An error occurs in dessertActions.editDessert');
             console.log(err);
         }); 
         dispatch({
@@ -54,9 +54,8 @@ export const editDessert=(dessert,id)=>async dispatch=>{
 export const updateDessert=(dessert,id)=>async dispatch=>{
     try {
         const response = await api.put(`/api/dessert/update-img/${id}`,dessert)
-        .then((res)=>{
-            console.log('Response dessertActions.updateDessert() succesfull');
-            console.log(res);
+        .then((res)=>{ 
+            return res;
         })
         .catch((err)=>{
             console.log('An error occurs in dessertActions.updateDessert');

@@ -4,7 +4,7 @@ import api from '../api/api';
 import { SHOW_DRINKS,DELETE_DRINK,ADD_DRINK, SHOW_DRINK, EDIT_DRINK} from "../constants/drinkTypes"
 //import custom actions
 import {getDrinks,addDrink,deleteDrink,showDrink,editDrink} from "./drinkActions"; 
-// import configreStore to create a mock store where we will dispatch our actions
+// import configureStore to create a mock store where we will dispatch our actions
 import configureStore from 'redux-mock-store';
 //import thunk middle to make our action asyncronous
 import thunk from 'redux-thunk'; 

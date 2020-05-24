@@ -8,15 +8,7 @@ export  const getIngredients=()=>async dispatch=>{
     })
 }
 export const deleteIngredient =id=>async dispatch=>{
-    await api.delete(`/api/ingredient/delete/${id}`)
-    .then((res)=>{
-        console.log('Deleted Ingredient');
-        console.log(res);
-    })
-    .catch((err)=>{
-        console.log('An error occurs in deleteIngredient()');
-        console.log(err);
-    })
+    await api.delete(`/api/ingredient/delete/${id}`);
     dispatch({
         type:DELETE_INGREDIENT,
         payload:id
@@ -43,8 +35,9 @@ export const addIngredient=ingredient=>async dispatch=>{
 export const editIngredient=(ingredient,id)=>async dispatch=>{
     const response = await api.put(`/api/ingredient/update/${id}`,ingredient)
     .then((res)=>{
-        console.log('Response ingredientActions.editIngredient');
-        console.log(res);
+        //console.log('Response ingredientActions.editIngredient');
+        //console.log(res);
+        return res;
     })
     .catch((err)=>{
         console.log('An error occurs in ingredientActions.editIngredient');
@@ -62,8 +55,9 @@ export const updateIngredient=(ingredient,id)=>async dispatch=>{
         }
     })
     .then((res)=>{
-        console.log('Response ingredientActions.updateIngredient');
-        console.log(res);
+        //console.log('Response ingredientActions.updateIngredient');
+        //console.log(res);
+        return res;
     })
     .catch((err)=>{
         console.log('An error occurs in ingredientActions.updateIngredient');
