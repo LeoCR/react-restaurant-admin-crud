@@ -1,5 +1,3 @@
-//import moxios for testing axios request
-import moxios from 'moxios';
 //import api for read values from database
 import api from '../api/api';
 //import custom constants
@@ -26,13 +24,9 @@ async function setDrinks(){
 }  
 describe('Drinks Actions', () => { 
     beforeEach(() => {
-        setDrinks();
-        moxios.install();
+        setDrinks();  
         store.clearActions();
-    });
-    afterEach(() => {
-        moxios.uninstall();
-    });
+    }); 
     test('Handle action ADD_DRINK', (done) => {  
         if(previewMode){
             var newDrink={
@@ -41,11 +35,7 @@ describe('Drinks Actions', () => {
                 "description":"National Beer",
                 "picture":'/img/uploads/imperial.jpg',
                 "price":"3.50"
-            };
-            moxios.stubRequest('POST','https://localhost:49658/api/drink/add/', {
-                status: 200,
-                response:newDrink
-            }); 
+            }; 
             var imgDessert = new File(["imperial"], "imperial.jpg", {
                 type: "image/jpeg", 
                 lastModified:1589761867000
@@ -71,10 +61,7 @@ describe('Drinks Actions', () => {
         }
     });
     test('Handle action SHOW_DRINK', (done) => {  
-        if(previewMode){
-            moxios.stubRequest('https://localhost:49658/api/drink/show/12DRK', {
-                status: 200 
-            });  
+        if(previewMode){ 
             store.dispatch(showDrink("12DRK")).then(() => {
                 let expectedActions = [{
                     type:SHOW_DRINK,
@@ -95,10 +82,7 @@ describe('Drinks Actions', () => {
         }
     });
     test('Handle action SHOW_DRINKS', (done) => {  
-        if(previewMode){
-            moxios.stubRequest('https://localhost:49658/api/drinks', {
-                status: 200
-            });   
+        if(previewMode){ 
             store.dispatch(getDrinks()).then(() => { 
                 let expectedActions = [{    
                     payload:tempDrink,
@@ -120,11 +104,7 @@ describe('Drinks Actions', () => {
                 price:"3.00",
                 description:"Soft Drink",
                 picture:"/img/drinks/coca-cola.jpg"
-            } 
-            moxios.stubRequest('PUT','https://localhost:49658/api/drink/update/1DESRT', {
-                status: 200,
-                response:infoDrink
-            }); 
+            }  
             store.dispatch(editDrink(infoDrink,"1DRK")).then(() => {
                 let expectedActions = [{
                     type:EDIT_DRINK,
@@ -139,13 +119,7 @@ describe('Drinks Actions', () => {
         }
     });
     test('Handle action DELETE_DRINK',(done)=>{
-        if(previewMode){
-            moxios.stubRequest('POST','https://localhost:49658/api/drink/delete/12DRK', {
-                status: 200,
-                response:[{
-                    "msg": 'Deleted Successfully -> Drink Id = 12DRK'
-                }]
-            });  
+        if(previewMode){ 
             store.dispatch(deleteDrink('12DRK')).then(() => {
                 let expectedActions = [{
                     type:DELETE_DRINK,

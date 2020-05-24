@@ -28,7 +28,6 @@
     "enzyme-adapter-react-16": "^1.15.2",
     "https": "^1.0.0",
     "jquery": "^3.5.1",
-    "moxios": "^0.4.0",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.2.0",
     "redux": "^4.0.4",

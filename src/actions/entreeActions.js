@@ -22,11 +22,7 @@ export const showEntree=id=>async dispatch=>{
     })
 }
 export const addEntree=entree=>async dispatch=>{
-    const response = await api.post('/api/entree/add/',entree,{
-        headers: {
-            'content-type': 'multipart/form-data'
-        }
-    });
+    const response = await api.post('/api/entree/add/',entree);
     dispatch({
         type:ADD_ENTREE,
         payload:response.data
@@ -36,7 +32,8 @@ export const editEntree=(entree,id)=>async dispatch=>{
     const response = await api.put(`/api/entree/update/${id}`,entree)
     .then((res)=>{
         console.log('Response entreeActions.editEntree()');
-        console.log(res);
+        //console.log(res);
+        return res;
     })
     .catch((err)=>{
         console.log('An error occurs in entreeActions.editEntree');
@@ -56,6 +53,7 @@ export const updateEntree=(entree,id)=>async dispatch=>{
     .then((res)=>{
         console.log('Response entreeActions.updateEntree()');
         console.log(res);
+        return res;
     })
     .catch((err)=>{
         console.log('An error occurs in entreeActions.updateEntree');

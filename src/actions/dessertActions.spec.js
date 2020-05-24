@@ -1,5 +1,3 @@
-//import moxios for testing axios request
-import moxios from 'moxios';
 //import api for read values from database
 import api from '../api/api';
 //import custom constants
@@ -29,25 +27,11 @@ describe('Desserts Actions', () => {
     * @see https://medium.com/javascript-in-plain-english/testing-async-redux-actions-with-jest-3bde5dd88607
     **/
     beforeEach(() => {
-        setDeseerts();
-        moxios.install();
+        setDeseerts(); 
         store.clearActions();
-    });
-    afterEach(() => {
-        moxios.uninstall();
-    });
+    }); 
     test('Handle action ADD_DESSERT', (done) => {  
-        if(previewMode){
-            moxios.stubRequest('POST','https://localhost:49658/api/dessert/add/', {
-                status: 200,
-                response:{
-                    "id":"9DESRT",
-                    "name":"Apple Pie",
-                    "description":"Sweet apples with cinnamon and sweet cream",
-                    "picture":'/img/uploads/apple_pie.jpg',
-                    "price":"5.50"
-                }
-            }); 
+        if(previewMode){ 
             var imgDessert = new File(["apple_pie"], "apple_pie.jpg", {
                 type: "image/jpeg", 
                 lastModified:1589761867000
@@ -78,10 +62,7 @@ describe('Desserts Actions', () => {
         }
     });
     test('Handle action SHOW_DESSERT', (done) => {  
-        if(previewMode){
-            moxios.stubRequest('https://localhost:49658/api/dessert/show/9DESRT', {
-                status: 200 
-            });  
+        if(previewMode){   
             store.dispatch(showDessert("9DESRT")).then(() => {
                 let expectedActions = [{
                     type:SHOW_DESSERT,
@@ -102,10 +83,7 @@ describe('Desserts Actions', () => {
         }
     });
     test('Handle action SHOW_DESSERTS', (done) => {  
-        if(previewMode){
-            moxios.stubRequest('https://localhost:49658/api/desserts', {
-                status: 200
-            });   
+        if(previewMode){   
             store.dispatch(getDesserts()).then(() => { 
                 let expectedActions = [{    
                     payload:tempDessert,
@@ -127,11 +105,7 @@ describe('Desserts Actions', () => {
                 price:"5.50",
                 description:"Sweet rice with cinnamon and sweet cream",
                 picture:"/img/desserts/rice-with-milk.jpg"
-            } 
-            moxios.stubRequest('PUT','https://localhost:49658/api/dessert/update/1DESRT', {
-                status: 200,
-                response:infoDessert
-            }); 
+            }  
             store.dispatch(editDessert(infoDessert,"1DESRT")).then(() => {
                 let expectedActions = [{
                     type:EDIT_DESSERT,
@@ -146,13 +120,7 @@ describe('Desserts Actions', () => {
         }
     });
     test('Handle action DELETE_DESSERT',(done)=>{
-        if(previewMode){
-            moxios.stubRequest('POST','https://localhost:49658/api/dessert/delete/9DESRT', {
-                status: 200,
-                response:[{
-                    "msg": 'Deleted Successfully -> Dessert Id = 9DESRT'
-                }]
-            });  
+        if(previewMode){ 
             store.dispatch(deleteDessert('9DESRT')).then(() => {
                 let expectedActions = [{
                     type:DELETE_DESSERT,
