@@ -31,7 +31,7 @@ export const addEntree=entree=>async dispatch=>{
 export const editEntree=(entree,id)=>async dispatch=>{
     const response = await api.put(`/api/entree/update/${id}`,entree)
     .then((res)=>{
-        console.log('Response entreeActions.editEntree()');
+        //console.log('Response entreeActions.editEntree()');
         //console.log(res);
         return res;
     })
