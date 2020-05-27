@@ -1,18 +1,10 @@
 import React,{Component} from 'react';
-import {Link} from "react-router-dom";
-import {deleteInvoice} from "../../actions/invoiceActions";
+import {Link} from "react-router-dom"; 
 import {connect} from "react-redux";
 class Invoice extends Component{ 
     state={
         username:''
-    }
-    deleteInvoice=()=>{
-        const id=this.props.info.id;
-        this.props.deleteInvoice(id);
-        setTimeout(() => {
-            window.location.reload();
-        }, 1200);
-    }
+    } 
     render(){
         const {id_header,date_of_billing,username,email,order_code} = this.props.info;
         var date=date_of_billing.replace('.000Z','');
@@ -30,7 +22,6 @@ class Invoice extends Component{
                     </div>
                     <div className="col-md-4 d-flex justify-content-end acciones">
                         <Link to={`/admin/edit/invoice/${order_code}`} className="btn btn-success mr-2">View</Link>
-                        {/* <button type="button" className="btn btn-primary ml-2" onClick={this.deleteInvoice}>Delete</button> */}
                     </div>  
                     
                 </div>
@@ -39,4 +30,4 @@ class Invoice extends Component{
         )
     }
 }
-export default connect(null,{deleteInvoice})( Invoice);
+export default connect(null)( Invoice);

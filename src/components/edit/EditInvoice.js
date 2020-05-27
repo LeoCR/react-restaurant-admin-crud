@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from "react-redux";
-import {showInvoice,showOrderProducts,editInvoice,getInvoices} from "../../actions/invoiceActions";
+import {showInvoice,showOrderProducts,getInvoices} from "../../actions/invoiceActions";
 import history from '../../history';
 class EditInvoice extends React.Component{
     constructor(props){
@@ -140,4 +140,4 @@ const mapStateToProps=state=>({
     orderProducts:state.invoices.orderProducts,
     invoices:state.invoices.invoices
 })
-export default connect(mapStateToProps,{showInvoice,showOrderProducts,editInvoice,getInvoices})(EditInvoice);;
+export default connect(mapStateToProps,{showInvoice,showOrderProducts,getInvoices})(EditInvoice);;
