@@ -18,7 +18,7 @@ class Modal extends React.Component{
                             <div className="modal-title">{titleModal}</div>
                             <button type="button" className="close" 
                                 data-dismiss="modal" aria-label="Close" 
-                                onClick={(e)=>closeModal(e)}>
+                                onClick={()=>closeModal()}>
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>

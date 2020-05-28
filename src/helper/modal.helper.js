@@ -1,6 +1,5 @@
 import $ from 'jquery';
-export function closeModal(e){
-    e.preventDefault();
+export function closeModal(){ 
     $('.modal').css({'display':'none'});
     $('body').toggleClass('modal-opened');
 }
