@@ -11,7 +11,7 @@ class Modal extends React.Component{
             ModalContent=<AddIngredientToDish/>;
         }
         return(
-            <div className="modal" tabIndex="-1" role="dialog">
+            <div className="modal" tabIndex="-1" role="dialog" data-testid="modal">
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
                         <div className="modal-header">

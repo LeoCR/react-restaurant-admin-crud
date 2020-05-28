@@ -16,15 +16,18 @@ describe("Header Component",()=>{
     it("Counting Links", () => {   
         expect(wrapper.find(Link)).toHaveLength(13);
     }); 
-    it("Onclick Dropdown", () => {  
-        const wrapper = shallow(<Header />);
+    it("Onclick Dropdown", () => {   
         const instance = wrapper.instance();
         const spyToggleSubmenu = sinon.spy(instance, 'toggleSubmenu'); 
+        /**
+        ** @see https://www.sitepoint.com/sinon-tutorial-javascript-testing-mocks-spies-stubs/ 
+        **/
         instance.forceUpdate();
         wrapper.find('.dropdown').at(1).simulate('click');  
-        sinon.assert.calledOnce(spyToggleSubmenu);  
-        //expect(component.find('.dropdown.open').at(1)).toHaveLength(1); 
-        //expect(component.find('.dropdown').at(1).hasClass('open')).toEqual(true); 
+        sinon.assert.calledOnce(spyToggleSubmenu); 
+        expect(spyToggleSubmenu.called).toBe(true);
+        expect(wrapper.find('.dropdown.open').at(1)).toHaveLength(0); 
+        expect(wrapper.find('.dropdown').at(1).hasClass('open')).toEqual(false); 
     }); 
     it("Nav Menu Items text", () => {   
         expect(wrapper.find('.menu-main-item').at(0).props().children[0]).toEqual('Main Courses');
