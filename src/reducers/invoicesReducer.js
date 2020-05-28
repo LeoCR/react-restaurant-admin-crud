@@ -1,4 +1,4 @@
-import {GET_INVOICES,SHOW_INVOICE,EDIT_INVOICE,SHOW_ORDER_PRODUCTS} from "../constants/invoiceTypes";
+import {GET_INVOICES,SHOW_INVOICE,SHOW_ORDER_PRODUCTS} from "../constants/invoiceTypes";
 
 const initialState={
     invoices:[]
@@ -19,16 +19,7 @@ export default function invoicesReducer(state=initialState,action){
             return{
                 ...state,
                 orderProducts:action.payload
-            }
-        case EDIT_INVOICE:
-                return{
-                    ...state,
-                    invoices:state.invoices.map(
-                        invoice=>invoice.orderCode===action.payload.id
-                        ?(invoice=action.payload)
-                        :invoice
-                    )
-        }
+            }     
         default:
             return state
     }
