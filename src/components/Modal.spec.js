@@ -54,6 +54,9 @@ describe("Modal Component",()=>{
             } 
         ]; 
         elementList.forEach((el, index) => {
+            /**
+            ** @see https://blog.logrocket.com/tdd-with-react-test-renderer/ 
+            **/
             expect(el.props.className.includes(`${classNameslist[index].className}`)).toBe(true);
         });  
     });

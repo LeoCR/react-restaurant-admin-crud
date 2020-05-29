@@ -6,7 +6,7 @@ import {deleteIngredientDish,clearIngredientsByDish} from "../../actions/ingredi
 import {setDishId,setAddIngredient,setNextIdDishIngredient} from '../../actions/modalActions';
 import {openModal} from '../../helper/modal.helper';
 import {randomString} from '../../helper/randomString.helper';
-class AddDessert extends Component{
+export class AddDessert extends Component{
     constructor(props){
         super(props);
         this.state={
@@ -14,6 +14,7 @@ class AddDessert extends Component{
             name:'',
             description:'',
             picture:'',
+            pictureName:'',
             category:'',
             price:'',
             error:false,
@@ -45,9 +46,9 @@ class AddDessert extends Component{
     pictureDessert=(e)=>{
         if(e.target.files[0]!==null ||e.target.files[0]!==undefined){
             this.setState({
-                picture:e.target.files[0]
-            });
-            console.log(e.target.files[0]);
+                picture:e.target.files[0],
+                pictureName:e.target.files[0].name
+            }); 
         }
     }
     priceDessert=(e)=>{
@@ -55,13 +56,15 @@ class AddDessert extends Component{
             price:e.target.value
         });
     }
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.ingredientsByDish !== this.state.ingredientsByDish) {
           this.setState({ ingredientsByDish: nextProps.ingredientsByDish });
         }
     }
     addNewDessert=(e)=>{
-        e.preventDefault();
+        if(e){
+            e.preventDefault();
+        }
         const {
             id ,
             name,
@@ -146,7 +149,7 @@ class AddDessert extends Component{
         var totalOfItems=1,
         idString='',
         _this=this;
-        _this.props.clearIngredientsByDish();
+        clearIngredientsByDish();
         var customRandomString=randomString(4);
         await api.get('/api/desserts')
             .then(response => {
@@ -182,34 +185,39 @@ class AddDessert extends Component{
                     <div className="card">
                         <div className="card-body">
                             <h2 className="text-center">Add New Dessert</h2>
-                            <form onSubmit={this.addNewDessert}>
+                            <form onSubmit={this.addNewDessert} data-testid="form">
                                 <div className="form-group">
                                     <label>Name</label>
                                     <input type="text" defaultValue={this.state.id} 
                                     onChange={this.id} className="" style={{display:'none'}}
                                      name="id"/>
-                                    <input type="text" onChange={this.nameDessert} name="name"
-                                     className="form-control" placeholder="Name" />
+                                    <input type="text" onChange={this.nameDessert} name="name" data-testid="name-dessert"
+                                     className="form-control name-dessert" placeholder="Name" id="name"/>
                                 </div>
                                 <div className="form-group">
                                     <label>Description</label>
                                     <input type="text"
-                                        name="description"
+                                        name="description" data-testid="description-dessert"
                                      onChange={this.descriptionDessert} className="form-control" 
-                                    placeholder="Description" />
+                                    placeholder="Description" id="description"/>
                                 </div>
                                 <div className="form-group">
                                     <label>Picture</label>
                                     <input type="file" onChange={this.pictureDessert} 
-                                    className="form-control-file" 
+                                    className="form-control-file" id="picture" data-testid="picture-dessert"
                                     placeholder="Picture" name="picture"/>
+                                            {this.state.pictureName && (
+                                            <div id="picture_uploaded">
+                                                You have uploaded a file named {this.state.pictureName}
+                                            </div>
+                                            )}
                                 </div>
                                 
                                 <div className="form-group">
                                     <label>Price</label>
                                     <input type="text" onChange={this.priceDessert} 
-                                    className="form-control" 
-                                    name="price"
+                                    className="form-control" data-testid="price-dessert"
+                                    name="price" id="price"
                                     placeholder="Price" />
                                 </div>
                             {this.getIngredientsByDishId()}
@@ -219,7 +227,7 @@ class AddDessert extends Component{
                             </div>
                             :''
                             }
-                                <button type="submit" className="btn btn-primary font-weight-bold text-uppercase d-block w-100">Add</button>
+                                <button data-testid="btn-submit" type="submit" className="btn btn-primary font-weight-bold text-uppercase d-block w-100">Add</button>
                             </form>
                         </div>
                     </div>
