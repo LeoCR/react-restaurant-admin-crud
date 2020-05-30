@@ -5,7 +5,8 @@ import {addIngredientToDish,updateIngredientToDish} from '../../actions/ingredie
 import {setNextIdDishIngredient} from '../../actions/modalActions';
 import {closeModal} from '../../helper/modal.helper';
 import api from '../../api/api';
-class AddIngredientToDish extends React.Component{
+import PropTypes from 'prop-types';
+export class AddIngredientToDish extends React.Component{
     state={
         ingredientsToAdd:[],
         ingredientSelected:'',
@@ -105,6 +106,12 @@ class AddIngredientToDish extends React.Component{
             )
         }
     }
+}
+AddIngredientToDish.propTypes = {
+    getIngredients: PropTypes.func.isRequired,
+    addIngredientToDish: PropTypes.func.isRequired,
+    setNextIdDishIngredient: PropTypes.func.isRequired,
+    updateIngredientToDish: PropTypes.func.isRequired
 }
 const mapStateToProps=state=>({
     ingredientsByDish:state.ingredientsByDish.ingredientsByDish,

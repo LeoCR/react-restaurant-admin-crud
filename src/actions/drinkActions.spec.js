@@ -34,7 +34,7 @@ describe('Drinks Actions', () => {
                 "name":"Imperial",
                 "description":"National Beer",
                 "picture":'/img/uploads/imperial.jpg',
-                "price":"3.50"
+                "price":3.5
             }; 
             var imgDessert = new File(["imperial"], "imperial.jpg", {
                 type: "image/jpeg", 
@@ -43,10 +43,10 @@ describe('Drinks Actions', () => {
             var formData = new FormData();
             formData.append('id',"12DRK");
             formData.append('name',"Imperial");
-            formData.append('price',"3.50");
+            formData.append('price',3.5);
             formData.append('description',"National Beer"); 
             formData.append('picture',imgDessert); 
-    
+
             store.dispatch(addDrink(formData)).then(() => {
                 let expectedActions = [{
                     type:ADD_DRINK,
@@ -70,7 +70,7 @@ describe('Drinks Actions', () => {
                         "name":"Imperial",
                         "description":"National Beer",
                         "picture":'/img/uploads/imperial.jpg',
-                        "price":"3.50"
+                        "price":3.5
                     }
                 }];
                 expect(store.getActions()).toEqual(expectedActions);
@@ -101,7 +101,7 @@ describe('Drinks Actions', () => {
             const infoDrink={
                 id:"1DRK",
                 name:"Coca Cola",
-                price:"3.00",
+                price:3,
                 description:"Soft Drink",
                 picture:"/img/drinks/coca-cola.jpg"
             }  

@@ -6,7 +6,8 @@ import {deleteIngredientDish,clearIngredientsByDish} from "../../actions/ingredi
 import {setDishId,setAddIngredient,setNextIdDishIngredient} from '../../actions/modalActions';
 import {openModal} from '../../helper/modal.helper';
 import {randomString} from '../../helper/randomString.helper';
-class AddStrongDish extends Component{
+import PropTypes from 'prop-types';
+export class AddStrongDish extends Component{
     constructor(props){
         super(props);
         this.state={
@@ -150,7 +151,7 @@ class AddStrongDish extends Component{
     }
     componentDidMount=async()=>{
         var totalOfItems=1, idString='',_this=this;
-        _this.props.clearIngredientsByDish();
+        clearIngredientsByDish();
         var customRandomString=randomString(4);
         this.props.getStrongsDishes();
         await api.get('/api/strongs-dishes')
@@ -223,7 +224,7 @@ class AddStrongDish extends Component{
                                     name="price"
                                     placeholder="Price" />
                                 </div>
-                            {this.getIngredientsByDishId()}
+                                {this.state.ingredientsByDish?this.getIngredientsByDishId():''}
                             {error ? 
                             <div className="font-weight-bold alert-danger text-center mt-4">
                                 All the fields are required
@@ -239,6 +240,15 @@ class AddStrongDish extends Component{
             </div>
         )
     }
+}
+AddStrongDish.propTypes = {
+    clearIngredientsByDish: PropTypes.func.isRequired,
+    deleteIngredientDish: PropTypes.func.isRequired,
+    setNextIdDishIngredient: PropTypes.func.isRequired,
+    setDishId: PropTypes.func.isRequired,
+    setAddIngredient: PropTypes.func.isRequired,
+    addStrongDish: PropTypes.func.isRequired,
+    getStrongsDishes: PropTypes.func.isRequired
 }
 const mapStateToProps=state=>({
     strongsDishes:state.strongsDishes.strongsDishes,

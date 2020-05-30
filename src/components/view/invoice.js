@@ -1,10 +1,8 @@
 import React,{Component} from 'react';
 import {Link} from "react-router-dom"; 
 import {connect} from "react-redux";
-class Invoice extends Component{ 
-    state={
-        username:''
-    } 
+import PropTypes from 'prop-types';
+export class Invoice extends Component{ 
     render(){
         const {id_header,date_of_billing,username,email,order_code} = this.props.info;
         var date=date_of_billing.replace('.000Z','');
@@ -29,5 +27,14 @@ class Invoice extends Component{
            </React.Fragment>
         )
     }
+}
+Invoice.propTypes = {  
+    info: PropTypes.shape({
+        id_header: PropTypes.number.isRequired,
+        date_of_billing: PropTypes.string.isRequired,
+        username: PropTypes.number.isRequired,
+        email:PropTypes.string.isRequired,
+        order_code:PropTypes.string.isRequired
+    }).isRequired
 }
 export default connect(null)( Invoice);

@@ -2,6 +2,7 @@ import React from 'react';
 import api from "../../api/api";
 import {connect} from "react-redux";
 import {addUser,getUsers} from "../../actions/userActions";
+import PropTypes from 'prop-types';
 class AddUser extends React.Component{
     constructor(props){
         super(props);
@@ -200,6 +201,10 @@ class AddUser extends React.Component{
             </div>
         )
     }
+}
+AddUser.propTypes = {
+    addUser: PropTypes.func.isRequired,
+    getUsers: PropTypes.func.isRequired,
 }
 const mapStateToProps=state=>({
     users:state.users.users

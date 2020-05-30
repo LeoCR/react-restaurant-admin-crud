@@ -4,7 +4,9 @@ import {getUsers} from "../../actions/userActions";
 import User from "../../components/view/user";
 import $ from 'jquery';
 import { Link } from 'react-router-dom';
-class ShowUsers extends React.Component{
+import { withRouter } from "react-router";
+import PropTypes from 'prop-types';
+export class ShowUsers extends React.Component{
     constructor(props){
         super(props);
         this.state={
@@ -214,7 +216,27 @@ class ShowUsers extends React.Component{
         )
     }
 }
+ShowUsers.propTypes={
+    getUsers:PropTypes.func.isRequired,
+    users:PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.number.isRequired,
+            firstname: PropTypes.string.isRequired,
+            lastname: PropTypes.string.isRequired,
+            username: PropTypes.string.isRequired,
+            about: PropTypes.string,
+            email: PropTypes.string.isRequired,
+            password: PropTypes.string,
+            last_login: PropTypes.string,
+            updated_at: PropTypes.string,
+            created_at:PropTypes.string,
+            status:PropTypes.string,
+            provider:PropTypes.string,
+            id_user:PropTypes.string
+        }).isRequired
+    ).isRequired
+}
 const mapStateToProps=state=>({
     users:state.users.users
 })
-export default connect(mapStateToProps,{getUsers})(ShowUsers);
+export default withRouter(connect(mapStateToProps,{getUsers})(ShowUsers));

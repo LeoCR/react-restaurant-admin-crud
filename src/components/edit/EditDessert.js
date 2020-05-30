@@ -5,6 +5,7 @@ import {getIngredientsByDishId,deleteIngredientDish} from "../../actions/ingredi
 import {setDishId,setAddIngredient,setNextIdDishIngredient} from '../../actions/modalActions';
 import {openModal} from '../../helper/modal.helper';
 import api from '../../api/api';
+import PropTypes from 'prop-types';
 class EditDessert extends Component{
     constructor(props){
         super(props);
@@ -235,6 +236,18 @@ class EditDessert extends Component{
         )
     }
 }
+EditDessert.propTypes = {
+    clearIngredientsByDish: PropTypes.func.isRequired,
+    deleteIngredientDish: PropTypes.func.isRequired,
+    setNextIdDishIngredient: PropTypes.func.isRequired,
+    setDishId: PropTypes.func.isRequired,
+    setAddIngredient: PropTypes.func.isRequired,
+    getIngredientsByDishId: PropTypes.func.isRequired,
+    showDessert: PropTypes.func.isRequired,
+    editDessert: PropTypes.func.isRequired,
+    updateDessert: PropTypes.func.isRequired,
+    getDesserts: PropTypes.func.isRequired
+}
 const mapStateToProps=state=>({
     dessert:state.desserts.dessert,
     desserts:state.desserts.desserts,
@@ -242,4 +255,7 @@ const mapStateToProps=state=>({
     idDish:state.modals.idDish,
     nextIdDishIngredient:state.modals.nextIdDishIngredient
 })
-export default connect(mapStateToProps,{deleteIngredientDish,setNextIdDishIngredient,setDishId,setAddIngredient,getIngredientsByDishId,showDessert,editDessert,updateDessert,getDesserts})(EditDessert);
+export default connect(mapStateToProps,{deleteIngredientDish,setNextIdDishIngredient,
+    setDishId,setAddIngredient,
+    getIngredientsByDishId,showDessert,editDessert,
+    updateDessert,getDesserts})(EditDessert);

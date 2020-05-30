@@ -4,7 +4,9 @@ import $ from 'jquery';
 import {connect} from "react-redux";
 import Invoice from '../../components/view/invoice';
 import { Link } from 'react-router-dom';
-class ShowInvoices extends React.Component{
+import { withRouter } from "react-router";
+import PropTypes from 'prop-types';
+export class ShowInvoices extends React.Component{
     constructor(props){
         super(props);
         this.state={
@@ -218,7 +220,18 @@ class ShowInvoices extends React.Component{
         )
     }
 }
+ShowInvoices.propTypes={
+    getInvoices:PropTypes.func.isRequired,
+    invoices:PropTypes.arrayOf(
+        PropTypes.shape({
+          order_code: PropTypes.string.isRequired,
+          email: PropTypes.string.isRequired,
+          date_of_billing: PropTypes.string.isRequired,
+          username: PropTypes.string.isRequired
+        }).isRequired
+    ).isRequired
+}
 const mapStateToProps=state=>({
     invoices:state.invoices.invoices
 })
-export default connect(mapStateToProps,{getInvoices})(ShowInvoices);
+export default withRouter(connect(mapStateToProps,{getInvoices})(ShowInvoices));

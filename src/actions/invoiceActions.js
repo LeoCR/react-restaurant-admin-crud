@@ -1,4 +1,4 @@
-import {GET_INVOICES,DELETE_INVOICE,SHOW_INVOICE,SHOW_ORDER_PRODUCTS,EDIT_INVOICE} from "../constants/invoiceTypes";
+import {GET_INVOICES,SHOW_INVOICE,SHOW_ORDER_PRODUCTS} from "../constants/invoiceTypes";
 import api from '../api/api';
 export const getInvoices=()=>async dispatch=>{
     const response = await api.get('/api/invoices/');

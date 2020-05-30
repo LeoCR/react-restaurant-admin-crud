@@ -35,7 +35,7 @@ describe('Entrees Actions', () => {
                 "description":"A sweet salsa that is great with pork and chicken dishes.",
                 "picture":"/img/uploads/strawberry-salsa.jpg",
                 "category":"Meat",
-                "price":"7.50"
+                "price":7.5
             }; 
             var imgEntree = new File(["strawberry-salsa"], "strawberry-salsa.jpg", {
                 type: "image/jpeg", 
@@ -44,7 +44,7 @@ describe('Entrees Actions', () => {
             var formData = new FormData();
             formData.append('id',"8ENTR");
             formData.append('name',"Strawberry Salsa");
-            formData.append('price',"7.50");
+            formData.append('price',7.5);
             formData.append('category',"Meat");
             formData.append('description',"A sweet salsa that is great with pork and chicken dishes."); 
             formData.append('picture',imgEntree); 
@@ -73,7 +73,7 @@ describe('Entrees Actions', () => {
                         "description":"A sweet salsa that is great with pork and chicken dishes.",
                         "picture":"/img/uploads/strawberry-salsa.jpg",
                         "category":"Meat",
-                        "price":"7.50"
+                        "price":7.5
                     }
                 }];
                 expect(store.getActions()).toEqual(expectedActions);
@@ -107,7 +107,7 @@ describe('Entrees Actions', () => {
                 "description":"A little dish with marinated meat such as fish, seafood or both .",
                 "picture":"/img/entrees/ceviche.png",
                 "category":"Sea Food",
-                "price":"7.50"
+                "price":7.5
             } 
             store.dispatch(editEntree(infoEntree,"1ENTR")).then(() => {
                 let expectedActions = [{

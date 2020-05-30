@@ -4,7 +4,9 @@ import $ from 'jquery';
 import Entree from "../../components/view/entree";
 import {getEntrees} from "../../actions/entreeActions";
 import { Link } from 'react-router-dom';
-class ShowEntrees extends Component{
+import { withRouter } from "react-router";
+import PropTypes from 'prop-types';
+export class ShowEntrees extends Component{
     constructor(props){
         super(props);
         this.state={
@@ -216,7 +218,19 @@ class ShowEntrees extends Component{
         )
     }
 }
+ShowEntrees.propTypes={
+    getEntrees:PropTypes.func.isRequired,
+    entrees:PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.string.isRequired,
+          name: PropTypes.string.isRequired,
+          description: PropTypes.string.isRequired,
+          picture: PropTypes.string.isRequired,
+          price: PropTypes.number.isRequired
+        }).isRequired
+    ).isRequired
+}
 const mapStateToProps=state=>({
     entrees:state.entrees.entrees
 })
-export default connect(mapStateToProps,{getEntrees})(ShowEntrees);
+export default withRouter(connect(mapStateToProps,{getEntrees})(ShowEntrees));

@@ -3,7 +3,8 @@ import api from "../../api/api";
 import {connect} from "react-redux";
 import {addDrink,getDrinks} from "../../actions/drinkActions";
 import {randomString} from '../../helper/randomString.helper';
-class AddDrink extends Component{
+import PropTypes from 'prop-types';
+export class AddDrink extends Component{
     constructor(props){
         super(props);
         this.state={
@@ -148,6 +149,10 @@ class AddDrink extends Component{
             </div>
         )
     }
+}
+AddDrink.propTypes = {
+    addDrink: PropTypes.func.isRequired,
+    getDrinks: PropTypes.func.isRequired 
 }
 const mapStateToProps=state=>({
     drinks:state.drinks.drinks

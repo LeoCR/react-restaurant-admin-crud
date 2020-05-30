@@ -39,7 +39,7 @@ describe('Desserts Actions', () => {
             var formData = new FormData();
             formData.append('id',"9DESRT");
             formData.append('name',"Apple Pie");
-            formData.append('price',"5.50");
+            formData.append('price',5.5);
             formData.append('description',"Sweet apples with cinnamon and sweet cream"); 
             formData.append('picture',imgDessert);  
             store.dispatch(addDessert(formData)).then(() => {
@@ -50,7 +50,7 @@ describe('Desserts Actions', () => {
                         id: "9DESRT", 
                         name: "Apple Pie", 
                         picture: "/img/uploads/apple_pie.jpg", 
-                        price: "5.50"
+                        price: 5.5
                     }
                 }];
                 expect(store.getActions()).toEqual(expectedActions);
@@ -71,7 +71,7 @@ describe('Desserts Actions', () => {
                         description: "Sweet apples with cinnamon and sweet cream",  
                         name: "Apple Pie", 
                         picture: "/img/uploads/apple_pie.jpg", 
-                        price: "5.50"
+                        price:5.5
                     }
                 }];
                 expect(store.getActions()).toEqual(expectedActions);
@@ -102,7 +102,7 @@ describe('Desserts Actions', () => {
             const infoDessert={
                 id:"1DESRT",
                 name:"Rice with Milk with cinnamon",
-                price:"5.50",
+                price:5.5,
                 description:"Sweet rice with cinnamon and sweet cream",
                 picture:"/img/desserts/rice-with-milk.jpg"
             }  

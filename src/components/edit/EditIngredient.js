@@ -1,7 +1,8 @@
 import React,{Component} from 'react';
 import {connect} from "react-redux";
 import {showIngredient,editIngredient,updateIngredient,getIngredients} from "../../actions/ingredientActions";
-class EditIngredient extends Component{
+import PropTypes from 'prop-types';
+export class EditIngredient extends Component{
     constructor(props){
         super(props);
         this.state={
@@ -128,8 +129,15 @@ class EditIngredient extends Component{
         )
     }
 }
+EditIngredient.propTypes = {
+    showIngredient: PropTypes.func.isRequired,
+    editIngredient: PropTypes.func.isRequired,
+    updateIngredient: PropTypes.func.isRequired, 
+    getIngredients: PropTypes.func.isRequired
+}
 const mapStateToProps=state=>({
     ingredient:state.ingredients.ingredient,
     ingredients:state.ingredients.ingredients
 })
-export default connect(mapStateToProps,{showIngredient,editIngredient,updateIngredient,getIngredients})(EditIngredient);
+export default connect(mapStateToProps,{showIngredient,editIngredient,
+    updateIngredient,getIngredients})(EditIngredient);

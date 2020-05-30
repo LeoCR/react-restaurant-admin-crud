@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from "react-redux";
 import {showInvoice,showOrderProducts,getInvoices} from "../../actions/invoiceActions";
 import history from '../../history';
+import PropTypes from 'prop-types';
 class EditInvoice extends React.Component{
     constructor(props){
         super(props);
@@ -134,6 +135,11 @@ class EditInvoice extends React.Component{
             </div>
         )
     }
+}
+EditInvoice.propTypes = {
+    showInvoice: PropTypes.func.isRequired,
+    showOrderProducts: PropTypes.func.isRequired,
+    getInvoices: PropTypes.func.isRequired
 }
 const mapStateToProps=state=>({
     invoice:state.invoices.invoice,

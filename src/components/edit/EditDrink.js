@@ -1,7 +1,8 @@
 import React,{Component} from 'react';
 import {connect} from "react-redux";
 import {showDrink,editDrink,updateDrink,getDrinks} from "../../actions/drinkActions";
-class EditDrink extends Component{
+import PropTypes from 'prop-types';
+export class EditDrink extends Component{
     constructor(props){
         super(props);
         this.state={
@@ -165,6 +166,12 @@ class EditDrink extends Component{
             </div>
         )
     }
+}
+EditDrink.propTypes = {
+    showDrink: PropTypes.func.isRequired,
+    editDrink: PropTypes.func.isRequired,
+    updateDrink: PropTypes.func.isRequired,
+    getDrinks: PropTypes.func.isRequired
 }
 const mapStateToProps=state=>({
     drink:state.drinks.drink,

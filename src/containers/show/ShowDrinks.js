@@ -4,7 +4,9 @@ import Drink from "../../components/view/drink";
 import {getDrinks} from "../../actions/drinkActions";
 import $ from 'jquery';
 import { Link } from 'react-router-dom';
-class ShowDrinks extends React.Component{
+import { withRouter } from "react-router";
+import PropTypes from 'prop-types';
+export class ShowDrinks extends React.Component{
     constructor(props){
         super(props);
         this.state={
@@ -217,7 +219,19 @@ class ShowDrinks extends React.Component{
         )
     }
 }
+ShowDrinks.propTypes={
+    getDrinks:PropTypes.func.isRequired,
+    drinks:PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.string.isRequired,
+          name: PropTypes.string.isRequired,
+          description: PropTypes.string.isRequired,
+          picture: PropTypes.string.isRequired,
+          price: PropTypes.string.isRequired
+        }).isRequired
+    ).isRequired
+}
 const mapStateToProps=state=>({
     drinks:state.drinks.drinks
 })
-export default connect(mapStateToProps,{getDrinks})(ShowDrinks);
+export default withRouter(connect(mapStateToProps,{getDrinks})(ShowDrinks));

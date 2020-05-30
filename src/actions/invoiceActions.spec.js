@@ -29,7 +29,10 @@ describe('Invoice Actions',()=>{
     });
     it('Handle GET_INVOICES',(done) => {           
         if(previewMode){
-            store.dispatch(getInvoices()).then(() => {
+            store.dispatch(getInvoices()).then(() => { 
+                if(tempInvoice===undefined){
+                    setInvoices(); 
+                }
                 let expectedActions = [
                     {
                         type:GET_INVOICES,
@@ -82,7 +85,7 @@ describe('Invoice Actions',()=>{
                 payload:[
                     {
                         "id_header":1,
-                        "total":"15.0000",
+                        "total":15,
                         "product_name":"Grilled Salmon Salad",
                         "product_id":"3ENTR",
                         "product_quantity":2,
@@ -90,7 +93,7 @@ describe('Invoice Actions',()=>{
                         "date_of_billing":"2019-03-12T02:30:00.000Z"
                     },{
                         "id_header":2,
-                        "total":"15.0000",
+                        "total":15,
                         "product_name":"Brownie with Ice Cream",
                         "product_id":"8DESRT",
                         "product_quantity":2,

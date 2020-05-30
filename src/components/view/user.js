@@ -2,6 +2,7 @@ import React from 'react';
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import {deleteUser} from "../../actions/userActions";
+import PropTypes from 'prop-types';
 class User extends React.Component{ 
     deletingUser=()=>{
         const id=this.props.info.id;
@@ -39,6 +40,13 @@ class User extends React.Component{
             </li>
         )
     }
+}
+User.propTypes = {
+    deleteUser: PropTypes.func.isRequired,
+    info: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        email: PropTypes.string.isRequired
+    }).isRequired
 }
 const mapStateToProps=state=>({
     users:state.users.users

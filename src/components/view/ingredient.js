@@ -2,7 +2,8 @@ import React,{Component} from 'react';
 import {Link} from "react-router-dom";
 import {deleteIngredient} from "../../actions/ingredientActions";
 import {connect} from "react-redux";
-class Ingredient extends Component{ 
+import PropTypes from 'prop-types';
+export class Ingredient extends Component{ 
     deleteIngredient=()=>{
         const id=this.props.info.id;
         if (!(window.confirm('Are you sure you want to delete this Ingredient?'))){
@@ -34,5 +35,13 @@ class Ingredient extends Component{
             </li>
         )
     }
+}
+Ingredient.propTypes = {
+    deleteIngredient: PropTypes.func.isRequired,
+    info: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired, 
+        img:PropTypes.string.isRequired,
+    }).isRequired
 }
 export default connect(null,{deleteIngredient})( Ingredient);

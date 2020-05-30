@@ -2,7 +2,8 @@ import React,{Component} from 'react';
 import {Link} from "react-router-dom";
 import {deleteDrink} from "../../actions/drinkActions";
 import {connect} from "react-redux";
-class Drink extends Component{ 
+import PropTypes from 'prop-types';
+export class Drink extends Component{ 
     deleteDrink=()=>{
         const id=this.props.info.id;
         if (!(window.confirm('Are you sure you want to delete this Drink?'))){
@@ -35,5 +36,14 @@ class Drink extends Component{
             </li>
         )
     }
+}
+Drink.propTypes = {
+    deleteDrink: PropTypes.func.isRequired,
+    info: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+        price: PropTypes.number.isRequired,
+        picture:PropTypes.string.isRequired,
+    }).isRequired
 }
 export default connect(null,{deleteDrink})( Drink);

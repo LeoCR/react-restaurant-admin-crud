@@ -2,7 +2,8 @@ import React,{Component} from 'react';
 import {Link} from "react-router-dom";
 import {deleteStrongDish} from "../../actions/strongDishActions";
 import {connect} from "react-redux";
-class StrongDish extends Component{ 
+import PropTypes from 'prop-types';
+export class StrongDish extends Component{ 
     deleteMainCourse=()=>{
         const id=this.props.info.id;
         if (!(window.confirm('Are you sure you want to delete this Main Course?'))){
@@ -36,4 +37,13 @@ class StrongDish extends Component{
         )
     }
 }
-export default connect(null,{deleteStrongDish})( StrongDish);
+StrongDish.propTypes = {
+    deleteStrongDish: PropTypes.func.isRequired,
+    info: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+        price: PropTypes.number.isRequired,
+        picture:PropTypes.string.isRequired,
+    }).isRequired
+}
+export default connect(null,{deleteStrongDish})(StrongDish);

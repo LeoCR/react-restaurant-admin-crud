@@ -6,6 +6,7 @@ import {deleteIngredientDish,clearIngredientsByDish} from "../../actions/ingredi
 import {setDishId,setAddIngredient,setNextIdDishIngredient} from '../../actions/modalActions';
 import {openModal} from '../../helper/modal.helper';
 import {randomString} from '../../helper/randomString.helper';
+import PropTypes from 'prop-types';
 export class AddDessert extends Component{
     constructor(props){
         super(props);
@@ -113,7 +114,7 @@ export class AddDessert extends Component{
         this.props.deleteIngredientDish(ing.id_ingredient_dish);
     }
     getIngredientsByDishId=()=>{
-        if(this.state.ingredientsByDish.length>0 ){
+        if(this.state.ingredientsByDish.length>0){
             return(
                 <React.Fragment>
                     <h1>Ingredients</h1>
@@ -220,7 +221,7 @@ export class AddDessert extends Component{
                                     name="price" id="price"
                                     placeholder="Price" />
                                 </div>
-                            {this.getIngredientsByDishId()}
+                            {this.state.ingredientsByDish?this.getIngredientsByDishId():''}
                             {error ? 
                             <div className="font-weight-bold alert-danger text-center mt-4">
                                 All the fields are required
@@ -235,6 +236,15 @@ export class AddDessert extends Component{
             </div>
         )
     }
+}
+AddDessert.propTypes = {
+    clearIngredientsByDish: PropTypes.func.isRequired,
+    deleteIngredientDish: PropTypes.func.isRequired,
+    setNextIdDishIngredient: PropTypes.func.isRequired,
+    setDishId: PropTypes.func.isRequired,
+    setAddIngredient: PropTypes.func.isRequired,
+    addDessert: PropTypes.func.isRequired,
+    getDesserts: PropTypes.func.isRequired
 }
 const mapStateToProps=state=>({
     desserts:state.desserts.desserts,

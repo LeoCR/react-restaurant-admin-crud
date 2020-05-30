@@ -3,7 +3,8 @@ import {Link} from "react-router-dom";
 import {deleteEntree} from "../../actions/entreeActions";
 import {connect} from "react-redux";
 import api from "../../api/api";
-class Entree extends Component{ 
+import PropTypes from 'prop-types';
+export class Entree extends Component{ 
     deleteEntree=async()=>{
         const id=this.props.info.id;
         var _this=this;
@@ -61,5 +62,14 @@ class Entree extends Component{
             </li>
         )
     }
+}
+Entree.propTypes = {
+    deleteEntree: PropTypes.func.isRequired,
+    info: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+        price: PropTypes.number.isRequired,
+        picture:PropTypes.string.isRequired,
+    }).isRequired
 }
 export default connect(null,{deleteEntree})( Entree);

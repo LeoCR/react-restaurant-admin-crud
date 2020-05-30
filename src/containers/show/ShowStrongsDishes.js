@@ -4,7 +4,9 @@ import StrongDish from "../../components/view/strongDish";
 import {getStrongsDishes} from "../../actions/strongDishActions";
 import $ from 'jquery';
 import { Link } from 'react-router-dom';
-class ShowStrongsDishes extends Component{
+import { withRouter } from "react-router";
+import PropTypes from 'prop-types';
+export class ShowStrongsDishes extends Component{
     constructor(props){
         super(props);
         this.state={
@@ -223,7 +225,19 @@ class ShowStrongsDishes extends Component{
         )
     }
 }
+ShowStrongsDishes.propTypes={
+    getStrongsDishes:PropTypes.func.isRequired,
+    strongsDishes:PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.string.isRequired,
+            name: PropTypes.string.isRequired,
+            description: PropTypes.string.isRequired,
+            picture: PropTypes.string.isRequired,
+            price: PropTypes.number.isRequired
+        }).isRequired
+    ).isRequired
+}
 const mapStateToProps=state=>({
     strongsDishes:state.strongsDishes.strongsDishes
 })
-export default connect(mapStateToProps,{getStrongsDishes})(ShowStrongsDishes);
+export default withRouter(connect(mapStateToProps,{getStrongsDishes})(ShowStrongsDishes));

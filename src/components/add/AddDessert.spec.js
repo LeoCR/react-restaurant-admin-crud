@@ -19,6 +19,15 @@ async function setDeseerts(){
     })
 } 
 let store; 
+const props = {
+    clearIngredientsByDish: jest.fn(),
+    deleteIngredientDish: jest.fn(),
+    setNextIdDishIngredient: jest.fn(),
+    setDishId: jest.fn(),
+    setAddIngredient: jest.fn(),
+    addDessert: jest.fn(),
+    getDesserts: jest.fn(),
+}
 describe("AddDessert Component",()=>{ 
     let component;
     let wrapper; 
@@ -41,12 +50,12 @@ describe("AddDessert Component",()=>{
         }); 
         component = create(
           <Provider store={store}>
-            <AddDessert/>
+            <AddDessert {...props}/>
           </Provider>
         ); 
         wrapper = shallow(
             <Provider store={store}>
-                 <AddDessert />
+                 <AddDessert {...props}/>
              </Provider>
         ).dive().dive();  
     });
@@ -84,7 +93,7 @@ describe("AddDessert Component",()=>{
         }); 
     })
     it('Should render 2 buttons',()=>{
-        const { getByTestId } = render( <Provider store={store}><AddDessert /></Provider>); 
+        const { getByTestId } = render( <Provider store={store}><AddDessert {...props} /></Provider>); 
         const btnSubmit = getByTestId('btn-submit');  
         expect(btnSubmit).toHaveClass('btn btn-primary font-weight-bold text-uppercase d-block w-100');  
         expect(btnSubmit.textContent).toEqual("Add");
@@ -102,7 +111,7 @@ describe("AddDessert Component",()=>{
     });
     it("Handling State Change",()=>{ 
         const file = new File(['awesome_dessert_img'], 'new_dessert.jpg', { type: 'image/jpg' })
-        const { getByTestId,getByText } =  render(<AddDessert />)
+        const { getByTestId,getByText } =  render(<AddDessert {...props} />)
         fireEvent.change( getByTestId('name-dessert'), { target: { value: 'New Dessert Name' }  });
         fireEvent.change( getByTestId('description-dessert'), { target: { value: 'New Dessert Description' }  });
         fireEvent.change( getByTestId('picture-dessert'), { target: { files:[file]}});

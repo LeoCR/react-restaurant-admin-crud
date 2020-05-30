@@ -6,6 +6,7 @@ import {deleteIngredientDish,clearIngredientsByDish} from "../../actions/ingredi
 import {setDishId,setAddIngredient,setNextIdDishIngredient} from '../../actions/modalActions';
 import {openModal} from '../../helper/modal.helper';
 import {randomString} from '../../helper/randomString.helper';
+import PropTypes from 'prop-types';
 class AddEntree extends Component{
     constructor(props){
         super(props);
@@ -222,7 +223,7 @@ class AddEntree extends Component{
                                     name="price"
                                     placeholder="Price" />
                                 </div>
-                            {this.getIngredientsByDishId()}
+                                {this.state.ingredientsByDish?this.getIngredientsByDishId():''}
                             {error ? 
                             <div className="font-weight-bold alert-danger text-center mt-4">
                                 All the fields are required
@@ -238,6 +239,15 @@ class AddEntree extends Component{
             </div>
         )
     }
+}
+AddEntree.propTypes = {
+    clearIngredientsByDish: PropTypes.func.isRequired,
+    deleteIngredientDish: PropTypes.func.isRequired,
+    setNextIdDishIngredient: PropTypes.func.isRequired,
+    setDishId: PropTypes.func.isRequired,
+    setAddIngredient: PropTypes.func.isRequired,
+    addEntree: PropTypes.func.isRequired,
+    getEntrees: PropTypes.func.isRequired
 }
 const mapStateToProps=state=>({
     entrees:state.entrees.entrees,

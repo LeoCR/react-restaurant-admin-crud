@@ -5,6 +5,7 @@ import {getIngredientsByDishId,deleteIngredientDish} from "../../actions/ingredi
 import {setDishId,setAddIngredient,setNextIdDishIngredient} from '../../actions/modalActions';
 import {openModal} from '../../helper/modal.helper';
 import api from '../../api/api';
+import PropTypes from 'prop-types';
 class EditStrongDish extends Component{
     constructor(props){
         super(props);
@@ -260,6 +261,17 @@ class EditStrongDish extends Component{
         )
     }
 }
+EditStrongDish.propTypes = {
+    deleteIngredientDish: PropTypes.func.isRequired,
+    setNextIdDishIngredient: PropTypes.func.isRequired,
+    setDishId: PropTypes.func.isRequired,
+    setAddIngredient: PropTypes.func.isRequired,
+    getIngredientsByDishId: PropTypes.func.isRequired,
+    showStrongDish: PropTypes.func.isRequired,
+    editStrongDish: PropTypes.func.isRequired,
+    updateStrongDish: PropTypes.func.isRequired,
+    getStrongsDishes: PropTypes.func.isRequired
+}
 const mapStateToProps=state=>({
     strongDish:state.strongsDishes.strongDish,
     strongsDishes:state.strongsDishes.strongsDishes,
@@ -267,4 +279,7 @@ const mapStateToProps=state=>({
     idDish:state.modals.idDish,
     nextIdDishIngredient:state.modals.nextIdDishIngredient
 })
-export default connect(mapStateToProps,{deleteIngredientDish,setNextIdDishIngredient,setDishId,setAddIngredient,getIngredientsByDishId,showStrongDish,editStrongDish,updateStrongDish,getStrongsDishes})(EditStrongDish);
+export default connect(mapStateToProps,{deleteIngredientDish,setNextIdDishIngredient,
+    setDishId,setAddIngredient,getIngredientsByDishId,
+    showStrongDish,editStrongDish,
+    updateStrongDish,getStrongsDishes})(EditStrongDish);

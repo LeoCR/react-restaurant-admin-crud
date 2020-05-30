@@ -3,7 +3,8 @@ import api from "../../api/api";
 import {connect} from "react-redux";
 import {addIngredient,getIngredients} from "../../actions/ingredientActions";
 import {randomString} from '../../helper/randomString.helper';
-class AddIngredient extends React.Component{
+import PropTypes from 'prop-types';
+export class AddIngredient extends React.Component{
     constructor(props){
         super(props);
         this.state={
@@ -118,6 +119,10 @@ class AddIngredient extends React.Component{
             </div>
         )
     }
+}
+AddIngredient.propTypes = {
+    addIngredient: PropTypes.func.isRequired,
+    getIngredients: PropTypes.func.isRequired
 }
 const mapStateToProps=state=>({
     ingredients:state.ingredients.ingredients

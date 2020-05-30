@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {showUser,editUser,getUsers} from "../../actions/userActions";
+import PropTypes from 'prop-types';
 class EditUser extends React.Component{
     constructor(props){
         super(props);
@@ -217,6 +218,11 @@ class EditUser extends React.Component{
             </div>
         )
     }
+}
+EditUser.propTypes = {
+    showUser: PropTypes.func.isRequired,
+    editUser: PropTypes.func.isRequired,
+    getUsers: PropTypes.func.isRequired
 }
 const mapStateToProps=state=>({
     user:state.users.user,

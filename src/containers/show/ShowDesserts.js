@@ -4,7 +4,9 @@ import Dessert from "../../components/view/dessert";
 import {getDesserts} from "../../actions/dessertActions";
 import $ from 'jquery'; 
 import { Link } from 'react-router-dom';
-class ShowDesserts extends Component{
+import { withRouter } from "react-router";
+import PropTypes from 'prop-types';
+export class ShowDesserts extends Component{
     constructor(props){
         super(props);
         this.state={
@@ -93,6 +95,7 @@ class ShowDesserts extends Component{
     getNextPage=()=>{ 
         try {
             if(this.state.currentPage<this.state.totalPagination.length){
+                console.log('getNextPage')
                 if($('.page-nav').hasClass('active')){
                     $('.page-nav').removeClass('active');
                 }
@@ -220,7 +223,19 @@ class ShowDesserts extends Component{
         )
     }
 }
+ShowDesserts.propTypes={
+    getDesserts:PropTypes.func.isRequired,
+    desserts:PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.string.isRequired,
+          name: PropTypes.string.isRequired,
+          description: PropTypes.string.isRequired,
+          picture: PropTypes.string.isRequired,
+          price: PropTypes.number.isRequired
+        }).isRequired
+    ).isRequired
+}
 const mapStateToProps=state=>({
     desserts:state.desserts.desserts
 })
-export default connect(mapStateToProps,{getDesserts})(ShowDesserts);
+export default withRouter(connect(mapStateToProps,{getDesserts})(ShowDesserts));

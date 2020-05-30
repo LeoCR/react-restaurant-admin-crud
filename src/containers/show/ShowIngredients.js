@@ -4,7 +4,9 @@ import Ingredient from "../../components/view/ingredient";
 import {getIngredients} from "../../actions/ingredientActions";
 import $ from 'jquery'; 
 import { Link } from 'react-router-dom';
-class ShowIngredients extends Component{
+import { withRouter } from "react-router";
+import PropTypes from 'prop-types';
+export class ShowIngredients extends Component{
     constructor(props){
         super(props);
         this.state={
@@ -220,7 +222,17 @@ class ShowIngredients extends Component{
         )
     }
 }
+ShowIngredients.propTypes={
+    getIngredients:PropTypes.func.isRequired,
+    ingredients:PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.string.isRequired,
+          name: PropTypes.string.isRequired,
+          img: PropTypes.string.isRequired
+        }).isRequired
+    ).isRequired
+}
 const mapStateToProps=state=>({
     ingredients:state.ingredients.ingredients
 })
-export default connect(mapStateToProps,{getIngredients})(ShowIngredients);
+export default withRouter(connect(mapStateToProps,{getIngredients})(ShowIngredients));

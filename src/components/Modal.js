@@ -2,7 +2,8 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {closeModal} from '../helper/modal.helper';
 import AddIngredientToDish from "./add/AddIngredientToDish"
-class Modal extends React.Component{
+import PropTypes from 'prop-types';
+export class Modal extends React.Component{
     render(){
         var ModalContent=<p>Modal Content</p>;
         var titleModal=<h1>Title Modal</h1>;
@@ -28,6 +29,10 @@ class Modal extends React.Component{
             </div>
         )
     }
+}
+Modal.propTypes = {
+    modals: PropTypes.string,
+    idDish: PropTypes.string,
 }
 const mapStateToProps=state=>({
     modals:state.modals.modals,
