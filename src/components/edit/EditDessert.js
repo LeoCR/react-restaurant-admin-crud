@@ -6,7 +6,8 @@ import {setDishId,setAddIngredient,setNextIdDishIngredient} from '../../actions/
 import {openModal} from '../../helper/modal.helper';
 import api from '../../api/api';
 import PropTypes from 'prop-types';
-class EditDessert extends Component{
+import { withRouter } from "react-router";
+export class EditDessert extends Component{
     constructor(props){
         super(props);
         this.state={
@@ -15,6 +16,7 @@ class EditDessert extends Component{
             description:'',
             picture:'',
             price:'',
+            pictureName:'',
             error:false,
             changedPicture:false,
             ingredientsByDish:[]
@@ -33,21 +35,25 @@ class EditDessert extends Component{
         });
     }
     componentDidMount=async()=>{
-        const {id}=this.props.match.params;
-        this.props.getDesserts();
-        this.props.showDessert(id);
-        this.props.setDishId(id);
-        this.props.getIngredientsByDishId(id);
-        var _this=this;
-        await api.get('/api/ingredient-to-dish/count/')
-        .then((res)=>{
-            if(res.data.maxIngredientDishId){
-                var nextIdIngDish=parseInt(res.data.maxIngredientDishId)+1;
-                _this.props.setNextIdDishIngredient(nextIdIngDish)
-            }
-        })
+        try {
+            var _this=this; 
+            const {id}=this.props.match.params;
+            this.props.getDesserts();
+            this.props.showDessert(id);
+            this.props.setDishId(id);
+            this.props.getIngredientsByDishId(id);
+            await api.get('/api/ingredient-to-dish/count/')
+            .then((res)=>{
+                if(res.data.maxIngredientDishId){
+                    var nextIdIngDish=parseInt(res.data.maxIngredientDishId)+1;
+                    _this.props.setNextIdDishIngredient(nextIdIngDish)
+                }
+            })
+        } catch (error) {
+            console.log('An error occurs in EditDessert.componentDidMount()');
+        }
     }
-    componentWillReceiveProps(nextProps,nextState){
+    UNSAFE_componentWillReceiveProps(nextProps,nextState){
         if(nextProps.ingredientsByDish){
             this.setState({
                 ingredientsByDish:nextProps.ingredientsByDish
@@ -78,7 +84,8 @@ class EditDessert extends Component{
         if(e.target.files[0]!==null){
             this.setState({
                 picture:e.target.files[0],
-                changedPicture:true
+                changedPicture:true,
+                pictureName:e.target.files[0].name
             }); 
         } 
     }
@@ -88,7 +95,9 @@ class EditDessert extends Component{
         });
     }
     editDessert=(e)=>{   
-        e.preventDefault(); 
+        if(e){
+            e.preventDefault(); 
+        }
         const {
             id ,
             name,
@@ -196,7 +205,7 @@ class EditDessert extends Component{
                                      name="id"/>
                                     <input type="text" defaultValue={name} onChange={this.nameDessert} 
                                     className="form-control" placeholder="Name"
-                                    name="name"
+                                    name="name" data-testid="name-dessert"
                                      />
                                 </div>
                                 <div className="form-group">
@@ -204,30 +213,35 @@ class EditDessert extends Component{
                                     <input type="text" defaultValue={description} 
                                     onChange={this.descriptionDessert} className="form-control" 
                                     placeholder="Description"
-                                    name="description" 
+                                    name="description" data-testid="description-dessert"
                                     />
                                 </div>
                                 <div className="form-group">
                                     <label>Picture</label>
-                                    <input type="file" id="picture_upload" defaultValue={picture} 
+                                    <input type="file" id="picture_upload" defaultValue={picture} data-testid="picture-dessert" 
                                     onChange={this.pictureDessert} className="form-control-file" placeholder="Picture" />
                                     <img src={picture} style={{maxWidth:'400px'}} alt={name}/>
+                                    {this.state.pictureName && (
+                                            <div id="picture_uploaded">
+                                                You have uploaded a file named {this.state.pictureName}
+                                            </div>
+                                    )}
                                     <input type="text" defaultValue={picture} className="form-control-file" 
-                                    readonly="readonly" name="picture" id="picture_hidden" style={{display:"none"}}/>
+                                    readOnly="readonly" name="picture" id="picture_hidden" style={{display:"none"}}/>
                                 </div>
                                 <div className="form-group">
                                     <label>Price</label>
                                     <input type="text" defaultValue={price}  onChange={this.priceDessert} 
-                                     className="form-control" placeholder="Price" name="price" />
+                                     className="form-control" placeholder="Price" name="price"  data-testid="price-dessert"/>
                                 </div>
-                            {this.getIngredientsByDish()}
+                                {this.getIngredientsByDish()}
                             {error ? 
                             <div className="font-weight-bold alert-danger text-center mt-4">
                                 All the fields are required
                             </div>
                             :''
                             }
-                                <button type="submit" className="btn btn-primary font-weight-bold text-uppercase d-block w-100">Update</button>
+                                <button data-testid="btn-submit" type="submit" className="btn btn-primary font-weight-bold text-uppercase d-block w-100">Update</button>
                             </form>
                         </div>
                     </div>
@@ -255,7 +269,7 @@ const mapStateToProps=state=>({
     idDish:state.modals.idDish,
     nextIdDishIngredient:state.modals.nextIdDishIngredient
 })
-export default connect(mapStateToProps,{deleteIngredientDish,setNextIdDishIngredient,
+export default withRouter(connect(mapStateToProps,{deleteIngredientDish,setNextIdDishIngredient,
     setDishId,setAddIngredient,
     getIngredientsByDishId,showDessert,editDessert,
-    updateDessert,getDesserts})(EditDessert);
+    updateDessert,getDesserts})(EditDessert));

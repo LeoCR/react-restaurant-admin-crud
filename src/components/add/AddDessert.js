@@ -146,37 +146,42 @@ export class AddDessert extends Component{
             )
         }  
     }
-    componentDidMount=async()=>{
+    componentDidMount=async()=>{ 
         var totalOfItems=1,
         idString='',
         _this=this;
-        clearIngredientsByDish();
-        var customRandomString=randomString(4);
-        await api.get('/api/desserts')
-            .then(response => {
-                for(var i = 0; i <= response.data.length; ++i){
-                    ++totalOfItems;
-                }
-            }).then(()=>{
-                idString=totalOfItems+1+'ADDEDDESRT_'+customRandomString;//console.log(idString); 
-            })
-            .catch(error => {
-                console.log(error);
-        });
-        await api.get('/api/ingredient-to-dish/count/')
-        .then((res)=>{
-            if(res.data.maxIngredientDishId){
-                var nextIdIngDish=parseInt(res.data.maxIngredientDishId)+1;
-                _this.props.setNextIdDishIngredient(nextIdIngDish)
-            }
-        })
-        setTimeout(() => {
-            this.setState({
-                id:idString
+        try { 
+            clearIngredientsByDish();
+            var customRandomString=randomString(4);
+            await api.get('/api/desserts')
+                .then(response => {
+                    for(var i = 0; i <= response.data.length; ++i){
+                        ++totalOfItems;
+                    }
+                }).then(()=>{
+                    idString=totalOfItems+1+'ADDEDDESRT_'+customRandomString;//console.log(idString); 
+                })
+                .catch(error => {
+                    console.log('An error occurs in AddDessert.componentDidMount() but dont worry about');
             });
-            _this.props.setDishId(idString);
-            console.log('this.state.id '+this.state.id);
-        }, 300);
+            await api.get('/api/ingredient-to-dish/count/')
+            .then((res)=>{
+                if(res.data.maxIngredientDishId){
+                    var nextIdIngDish=parseInt(res.data.maxIngredientDishId)+1;
+                    _this.props.setNextIdDishIngredient(nextIdIngDish)
+                }
+            })
+        } catch (error) {
+            console.log('An error occurs in AddDessert.componentDidMount')
+        }
+        finally{
+            setTimeout(() => {
+                _this.setState({
+                    id:idString
+                });
+                _this.props.setDishId(idString); 
+            }, 300);
+        }
     }
     render(){
         const {error} = this.state;
