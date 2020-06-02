@@ -41,22 +41,27 @@ export class ShowDesserts extends Component{
         }
     }
     async componentDidMount(){
-        await this.props.getDesserts();
-        const {desserts}= this.props;
-        this.setState({
-            totalItems:desserts.length
-        });
-        var tempTotalPages=Math.ceil(desserts.length/this.state.maxItemsPerPage);
-        var tempItems=[];
-        for (let index = 1; index <= tempTotalPages; index++) {
-            tempItems.push(index);
+        try {
+            await this.props.getDesserts();
+            const {desserts}= this.props;
+            this.setState({
+                totalItems:desserts.length
+            });
+            var tempTotalPages=Math.ceil(desserts.length/this.state.maxItemsPerPage);
+            var tempItems=[];
+            for (let index = 1; index <= tempTotalPages; index++) {
+                tempItems.push(index);
+            }
+            this.setState({
+                totalPagination:tempItems
+            });
+            this.setDessertsItems();
+        } catch (error) {
+            console.log('An error occurs in ShowDesserts.componentDidMount()');
+            console.log(error);
         }
-        this.setState({
-            totalPagination:tempItems
-        });
-        this.setDessertsItems();
     }
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         try {
             if(nextProps.match.params.page!==null){
                 const {page}=nextProps.match.params;
@@ -159,7 +164,7 @@ export class ShowDesserts extends Component{
             if(maxItemsLenght>desserts.length){
                 maxItemsLenght=desserts.length;
             }
-            do{ 
+            do{  
                 if(desserts[index].name!==null   ){
                     tempDessertsToShow.push(desserts[index]);
                 }
@@ -171,8 +176,8 @@ export class ShowDesserts extends Component{
             while(index <=maxItemsLenght);
         } 
         catch (error) {
-            console.log('An error occurs no worried about');
-            console.log(error);
+            console.log('An error occurs in ShowDesserts.setDessertsItems() but no worried about it');
+            //console.log(error);
         }
     }
     getPagination=()=>{
