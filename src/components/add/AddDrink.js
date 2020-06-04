@@ -12,6 +12,7 @@ export class AddDrink extends Component{
             name:'',
             description:'',
             picture:'',
+            pictureName:'',
             price:'',
             error:false
         }
@@ -34,7 +35,8 @@ export class AddDrink extends Component{
     pictureDrink=(e)=>{
         if(e.target.files[0]!==null ||e.target.files[0]!==undefined){
             this.setState({
-                picture:e.target.files[0]
+                picture:e.target.files[0],
+                pictureName:e.target.files[0].name
             });
         }
     }
@@ -44,7 +46,9 @@ export class AddDrink extends Component{
         });
     }
     addNewDrink=(e)=>{
-        e.preventDefault();
+        if(e){
+            e.preventDefault();
+        }
         const {
             id ,
             name,
@@ -112,27 +116,32 @@ export class AddDrink extends Component{
                                     onChange={this.id} className="" style={{display:'none'}}
                                      name="id"/>
                                     <input type="text" onChange={this.nameDish} name="name"
-                                     className="form-control" placeholder="Name" />
+                                     className="form-control" placeholder="Name" data-testid="name-drink" />
                                 </div>
                                 <div className="form-group">
                                     <label>Description</label>
                                     <input type="text"
                                         name="description"
                                      onChange={this.descriptionDish} className="form-control" 
-                                    placeholder="Description" />
+                                    placeholder="Description" data-testid="description-drink"/>
                                 </div>
                                 <div className="form-group">
                                     <label>Picture</label>
                                     <input type="file" onChange={this.pictureDrink} 
                                     className="form-control-file" 
-                                    placeholder="Picture" name="picture"/>
+                                    placeholder="Picture" name="picture" data-testid="picture-drink"/>
+                                    {this.state.pictureName && (
+                                            <div id="picture_uploaded">
+                                                You have uploaded a file named {this.state.pictureName}
+                                            </div>
+                                    )}
                                 </div>
                                 <div className="form-group">
                                     <label>Price</label>
                                     <input type="text" onChange={this.priceDish} 
                                     className="form-control" 
                                     name="price"
-                                    placeholder="Price" />
+                                    placeholder="Price"  data-testid="price-drink"/>
                                 </div>
                             {error ? 
                             <div className="font-weight-bold alert-danger text-center mt-4">
@@ -140,7 +149,7 @@ export class AddDrink extends Component{
                             </div>
                             :''
                             }
-                                <button type="submit" className="btn btn-primary font-weight-bold text-uppercase d-block w-100">Add</button>
+                                <button data-testid="btn-submit" type="submit" className="btn btn-primary font-weight-bold text-uppercase d-block w-100">Add</button>
                             </form>
                             
                         </div>

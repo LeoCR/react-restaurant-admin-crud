@@ -3,4 +3,4 @@
  * Set this variable as false before run the command line: `npm build` or 
  * before to make a pull request
  */
-export const previewMode=false;
+export const previewMode=true;
