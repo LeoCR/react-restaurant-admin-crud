@@ -7,7 +7,7 @@ import {openModal} from "../../helper/modal.helper";
 export class Dessert extends Component{ 
     deleteDessert=()=>{
         const id=this.props.info.id;
-        this.props.setDelete(id,'Dessert'); 
+        setDelete(id,'Dessert'); 
         openModal();
     }
     render(){
@@ -32,10 +32,10 @@ export class Dessert extends Component{
     }
 }
 Dessert.propTypes = {
-    deleteDessert: PropTypes.func.isRequired,
-    modals:PropTypes.string.isRequired,
-    productType:PropTypes.string.isRequired,
-    idToDelete:PropTypes.string.isRequired,
+    deleteDessert: PropTypes.func,
+    modals: PropTypes.string,
+    productType:PropTypes.string,
+    idToDelete:PropTypes.string,
     info: PropTypes.shape({
         id: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
