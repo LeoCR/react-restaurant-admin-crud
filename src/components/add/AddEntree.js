@@ -7,7 +7,7 @@ import {setDishId,setAddIngredient,setNextIdDishIngredient} from '../../actions/
 import {openModal} from '../../helper/modal.helper';
 import {randomString} from '../../helper/randomString.helper';
 import PropTypes from 'prop-types';
-class AddEntree extends Component{
+export class AddEntree extends Component{
     constructor(props){
         super(props);
         this.state={
@@ -15,6 +15,7 @@ class AddEntree extends Component{
             name:'',
             description:'',
             picture:'',
+            pictureName:'',
             category:'',
             price:'',
             error:false,
@@ -46,7 +47,8 @@ class AddEntree extends Component{
     pictureDish=(e)=>{
         if(e.target.files[0]!==null ||e.target.files[0]!==undefined){
             this.setState({
-                picture:e.target.files[0]
+                picture:e.target.files[0],
+                pictureName:e.target.files[0].name
             });
         }
     }
@@ -60,13 +62,15 @@ class AddEntree extends Component{
             price:e.target.value
         });
     }
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.ingredientsByDish !== this.state.ingredientsByDish) {
           this.setState({ ingredientsByDish: nextProps.ingredientsByDish });
         }
     }
     addNewEntree=(e)=>{
-        e.preventDefault();
+        if(e){
+            e.preventDefault();
+        }
         const {
             id ,
             name,
@@ -194,34 +198,39 @@ class AddEntree extends Component{
                                     onChange={this.id} className="" style={{display:'none'}}
                                      name="id"/>
                                     <input type="text" onChange={this.nameDish} name="name"
-                                     className="form-control" placeholder="Name" />
+                                     className="form-control" placeholder="Name" data-testid="name-entree"/>
                                 </div>
                                 <div className="form-group">
                                     <label>Description</label>
                                     <input type="text"
                                         name="description"
                                      onChange={this.descriptionDish} className="form-control" 
-                                    placeholder="Description" />
+                                    placeholder="Description" data-testid="description-entree"/>
                                 </div>
                                 <div className="form-group">
                                     <label>Picture</label>
                                     <input type="file" onChange={this.pictureDish} 
                                     className="form-control-file" 
-                                    placeholder="Picture" name="picture"/>
+                                    placeholder="Picture" name="picture" data-testid="picture-entree"/>
+                                    {this.state.pictureName && (
+                                    <div id="picture_uploaded">
+                                        You have uploaded a file named {this.state.pictureName}
+                                    </div>
+                                    )}
                                 </div>
                                 <div className="form-group">
                                     <label>Category</label>
                                     <input type="text" onChange={this.categoryDish} 
                                     className="form-control"
                                     name="category"
-                                     placeholder="Category" />
+                                     placeholder="Category"  data-testid="category-entree"/>
                                 </div>
                                 <div className="form-group">
                                     <label>Price</label>
                                     <input type="text" onChange={this.priceDish} 
                                     className="form-control" 
                                     name="price"
-                                    placeholder="Price" />
+                                    placeholder="Price"  data-testid="price-entree"/>
                                 </div>
                                 {this.state.ingredientsByDish?this.getIngredientsByDishId():''}
                             {error ? 
@@ -230,7 +239,7 @@ class AddEntree extends Component{
                             </div>
                             :''
                             }
-                                <button type="submit" className="btn btn-primary font-weight-bold text-uppercase d-block w-100">Add</button>
+                                <button data-testid="btn-submit" type="submit" className="btn btn-primary font-weight-bold text-uppercase d-block w-100">Add</button>
                             </form>
                             
                         </div>

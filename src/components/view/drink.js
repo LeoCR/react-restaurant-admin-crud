@@ -1,20 +1,14 @@
 import React,{Component} from 'react';
 import {Link} from "react-router-dom";
-import {deleteDrink} from "../../actions/drinkActions";
 import {connect} from "react-redux";
 import PropTypes from 'prop-types';
+import {openModal} from "../../helper/modal.helper";
+import {setDelete} from "../../actions/modalActions";
 export class Drink extends Component{ 
     deleteDrink=()=>{
         const id=this.props.info.id;
-        if (!(window.confirm('Are you sure you want to delete this Drink?'))){
-            console.log('Dont Delete Drink');
-        }
-        else{
-            this.props.deleteDrink(id);
-            setTimeout(() => {
-                window.location.reload();
-            }, 1200);
-        }
+        this.props.setDelete(id,'Drink'); 
+        openModal();
     }
     render(){
         const {id,name,price,picture} = this.props.info;
@@ -39,6 +33,9 @@ export class Drink extends Component{
 }
 Drink.propTypes = {
     deleteDrink: PropTypes.func.isRequired,
+    modals:PropTypes.string.isRequired,
+    productType:PropTypes.string.isRequired,
+    idToDelete:PropTypes.string.isRequired,
     info: PropTypes.shape({
         id: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
@@ -46,4 +43,14 @@ Drink.propTypes = {
         picture:PropTypes.string.isRequired,
     }).isRequired
 }
-export default connect(null,{deleteDrink})( Drink);
+const mapDispatchToProps = dispatch => {
+    return {
+        setDelete: (id,type) => dispatch(setDelete(id,type))
+    }
+}
+const mapStateToProps=state=>({
+    modals:state.modals.modals,
+    productType:state.modals.productType,
+    idToDelete:state.modals.idToDelete
+})
+export default connect(mapStateToProps,mapDispatchToProps)( Drink);

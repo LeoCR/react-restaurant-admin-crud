@@ -36,9 +36,11 @@ export class AddIngredientToDish extends React.Component{
         }
     }
     onChangeIngredient=(e)=>{
-        e.preventDefault();
+        var idIngredient=e.target.value; 
+        if(e){
+            e.preventDefault();
+        }
         var _this=this;
-        var idIngredient=e.target.value;
         if(idIngredient!=='none'){
             api.get('/api/ingredient/show/'+idIngredient)
             .then((res)=>{
@@ -56,10 +58,13 @@ export class AddIngredientToDish extends React.Component{
         }
     }
     onSubmit=(e)=>{
+       if(e){
         e.preventDefault();
+       }
+        var selectDish=document.querySelector("#select-add-ingredient-to-dish");
         var _this=this;
         try {
-            if(this.state.ingredientSelected!==null){
+            if(this.state.ingredientSelected!==null&&selectDish.value!=='none'){
                 closeModal(e);
                 if(typeof _this.props.ingredientsByDish!=='undefined'){
                     _this.props.updateIngredientToDish(this.state.ingredientSelected);

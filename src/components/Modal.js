@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {closeModal} from '../helper/modal.helper';
 import AddIngredientToDish from "./add/AddIngredientToDish"
 import PropTypes from 'prop-types';
+import Delete from "./delete/delete";
 export class Modal extends React.Component{
     render(){
         var ModalContent=<p>Modal Content</p>;
@@ -10,6 +11,10 @@ export class Modal extends React.Component{
         if(this.props.modals==='addIngredient'){
             titleModal=<h1>Add Ingredients</h1>;
             ModalContent=<AddIngredientToDish/>;
+        }
+        else if(this.props.modals==='delete'){
+            titleModal=<h1>Are you sure you want to Delete this {this.props.productType}</h1>;
+            ModalContent=<Delete/>;
         }
         return(
             <div className="modal" tabIndex="-1" role="dialog" data-testid="modal">
@@ -32,10 +37,12 @@ export class Modal extends React.Component{
 }
 Modal.propTypes = {
     modals: PropTypes.string,
+    productType: PropTypes.string,
     idDish: PropTypes.string,
 }
 const mapStateToProps=state=>({
     modals:state.modals.modals,
+    productType:state.modals.productType,
     idDish:state.modals.idDish
 })
 export default connect(mapStateToProps)(Modal);
