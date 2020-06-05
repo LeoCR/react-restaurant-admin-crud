@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import {deleteUser} from "../../actions/userActions";
 import PropTypes from 'prop-types';
 class User extends React.Component{ 
-    deletingUser=()=>{
+    /* deletingUser=()=>{
         const id=this.props.info.id;
         try {
             if (!(window.confirm('Are you sure you want to delete this User?'))){
@@ -23,7 +23,7 @@ class User extends React.Component{
         setTimeout(() => {
             window.location.reload();
         }, 1200);
-    }
+    } */
     render(){
         const {id,email} = this.props.info;
         return(
@@ -34,7 +34,7 @@ class User extends React.Component{
                     </div>
                     <div className="col-md-4 d-flex justify-content-end acciones">
                         <Link to={`/admin/edit/user/${id}`} className="btn btn-success mr-2">Edit</Link>
-                        <button type="button" className="btn btn-primary ml-2" onClick={this.deletingUser}>Delete</button>
+                        {/* <button type="button" className="btn btn-primary ml-2" onClick={this.deletingUser}>Delete</button> */}
                     </div>
                 </div>
             </li>

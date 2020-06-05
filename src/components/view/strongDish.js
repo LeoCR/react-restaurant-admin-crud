@@ -1,20 +1,16 @@
 import React,{Component} from 'react';
 import {Link} from "react-router-dom";
-import {deleteStrongDish} from "../../actions/strongDishActions";
 import {connect} from "react-redux";
 import PropTypes from 'prop-types';
+import {openModal} from "../../helper/modal.helper";
+import {setDelete} from "../../actions/modalActions";
 export class StrongDish extends Component{ 
     deleteMainCourse=()=>{
         const id=this.props.info.id;
-        if (!(window.confirm('Are you sure you want to delete this Main Course?'))){
-            console.log('Dont Delete Main Course');
-        }
-        else{
-            this.props.deleteStrongDish(id);
-            setTimeout(() => {
-                window.location.reload();
-            }, 1200);
-        }
+        this.props.setDelete(id,'Main Course'); 
+        setTimeout(() => {
+            openModal();
+        }, 900);
     }
     render(){
         const {id,name,price,picture} = this.props.info;
@@ -38,7 +34,10 @@ export class StrongDish extends Component{
     }
 }
 StrongDish.propTypes = {
-    deleteStrongDish: PropTypes.func.isRequired,
+    setDelete: PropTypes.func.isRequired,
+    modals:PropTypes.string.isRequired,
+    productType:PropTypes.string.isRequired,
+    idToDelete:PropTypes.string.isRequired,
     info: PropTypes.shape({
         id: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
@@ -46,4 +45,14 @@ StrongDish.propTypes = {
         picture:PropTypes.string.isRequired,
     }).isRequired
 }
-export default connect(null,{deleteStrongDish})(StrongDish);
+const mapDispatchToProps = dispatch => {
+    return {
+        setDelete: (id,type) => dispatch(setDelete(id,type))
+    }
+}
+const mapStateToProps=state=>({
+    modals:state.modals.modals,
+    productType:state.modals.productType,
+    idToDelete:state.modals.idToDelete
+})
+export default connect(mapStateToProps,mapDispatchToProps)(StrongDish);

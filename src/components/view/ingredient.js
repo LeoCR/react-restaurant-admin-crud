@@ -1,20 +1,16 @@
 import React,{Component} from 'react';
 import {Link} from "react-router-dom";
-import {deleteIngredient} from "../../actions/ingredientActions";
 import {connect} from "react-redux";
 import PropTypes from 'prop-types';
+import {openModal} from "../../helper/modal.helper";
+import {setDelete} from "../../actions/modalActions";
 export class Ingredient extends Component{ 
     deleteIngredient=()=>{
         const id=this.props.info.id;
-        if (!(window.confirm('Are you sure you want to delete this Ingredient?'))){
-            console.log('Dont Delete Ingredient');
-        }
-        else{
-            this.props.deleteIngredient(id);
-            setTimeout(() => {
-                window.location.reload();
-            }, 1200);
-        }
+        this.props.setDelete(id,'Ingredient'); 
+        setTimeout(() => {
+            openModal();
+        }, 900);
     }
     render(){
         const {id,name,img} = this.props.info;
@@ -38,10 +34,23 @@ export class Ingredient extends Component{
 }
 Ingredient.propTypes = {
     deleteIngredient: PropTypes.func.isRequired,
+    modals:PropTypes.string.isRequired,
+    productType:PropTypes.string.isRequired,
+    idToDelete:PropTypes.string.isRequired,
     info: PropTypes.shape({
         id: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired, 
         img:PropTypes.string.isRequired,
     }).isRequired
 }
-export default connect(null,{deleteIngredient})( Ingredient);
+const mapDispatchToProps = dispatch => {
+    return {
+        setDelete: (id,type) => dispatch(setDelete(id,type))
+    }
+}
+const mapStateToProps=state=>({
+    modals:state.modals.modals,
+    productType:state.modals.productType,
+    idToDelete:state.modals.idToDelete
+})
+export default connect(mapStateToProps,mapDispatchToProps)( Ingredient);

@@ -1,14 +1,16 @@
 import React,{Component} from 'react';
 import {Link} from "react-router-dom";
-import {setDelete} from "../../actions/modalActions";
 import {connect} from "react-redux";
 import PropTypes from 'prop-types';
 import {openModal} from "../../helper/modal.helper";
+import {setDelete} from "../../actions/modalActions";
 export class Dessert extends Component{ 
-    deleteDessert=()=>{
+    deleteDessert=async()=>{
         const id=this.props.info.id;
-        setDelete(id,'Dessert'); 
-        openModal();
+        this.props.setDelete(id,'Dessert'); 
+        setTimeout(() => {
+            openModal();
+        },600);
     }
     render(){
         const {id,name,price,picture} = this.props.info;
@@ -32,7 +34,7 @@ export class Dessert extends Component{
     }
 }
 Dessert.propTypes = {
-    deleteDessert: PropTypes.func,
+    setDelete: PropTypes.func,
     modals: PropTypes.string,
     productType:PropTypes.string,
     idToDelete:PropTypes.string,

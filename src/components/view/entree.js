@@ -8,7 +8,9 @@ export class Entree extends Component{
     deleteEntree=async()=>{
         const id=this.props.info.id;
         this.props.setDelete(id,'Appetizer'); 
-        openModal();
+        setTimeout(() => {
+            openModal();
+        }, 900);
     }
     render(){
         const {id,name,price,picture} = this.props.info;
@@ -32,7 +34,7 @@ export class Entree extends Component{
     }
 }
 Entree.propTypes = {
-    deleteEntree: PropTypes.func.isRequired,
+    setDelete: PropTypes.func.isRequired,
     modals:PropTypes.string.isRequired,
     productType:PropTypes.string.isRequired,
     idToDelete:PropTypes.string.isRequired,

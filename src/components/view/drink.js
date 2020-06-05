@@ -8,7 +8,9 @@ export class Drink extends Component{
     deleteDrink=()=>{
         const id=this.props.info.id;
         this.props.setDelete(id,'Drink'); 
-        openModal();
+        setTimeout(() => {
+            openModal();
+        }, 900);
     }
     render(){
         const {id,name,price,picture} = this.props.info;

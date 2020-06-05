@@ -14,7 +14,10 @@ describe('Dessert Component',()=>{
             picture:"/img/desserts/rice-with-milk.jpg",
             price:5.5
         },
-        deleteDessert:jest.fn()
+        modals: 'addIngredient',
+        productType:'Dessert',
+        idToDelete:'1DESRT',
+        setDelete:jest.fn()
     }
     wrapper=shallow(<Dessert {...props}/>);
     
