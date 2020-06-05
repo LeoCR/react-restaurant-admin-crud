@@ -73,12 +73,10 @@ describe("ShowDesserts Component",()=>{
     var props={
         getDesserts:jest.fn(),
         deleteDessert:jest.fn(),
-        modals:{
-          modals:'addIngredient',
-          idDish:'1ENTR',
-          idToDelete:"none",
-          productType:'Main Course',
-        },  
+        modals:'addIngredient',
+        idDish:'1ENTR',
+        idToDelete:"none",
+        productType:'Main Course',
         desserts:{
             desserts:dessertsArray
         }
