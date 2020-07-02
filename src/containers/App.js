@@ -23,8 +23,7 @@ import history from '../history';
 import Modal from "../components/Modal";
 import EditUser from '../components/edit/EditUser';
 import AddUser from '../components/add/AddUser';
-class App extends Component {
-  render() {
+const App =()=> { 
     return (
       <React.Fragment>
           <Router history={history}>
@@ -75,7 +74,5 @@ class App extends Component {
           <Modal/>
       </React.Fragment>
     );
-  }
-}
-
+} 
 export default App
