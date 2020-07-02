@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Header from "../components/Header";
 import AddStrongDish from "../components/add/AddStrongDish";
 import AddEntree from "../components/add/AddEntree";
