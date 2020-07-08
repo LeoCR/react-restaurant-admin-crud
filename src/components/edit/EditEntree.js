@@ -119,8 +119,7 @@ export class EditEntree extends React.PureComponent{
             e.preventDefault();
         }
         var {id ,name,description,price,category,picture,changedPicture} =this.state;
-        var formData=new FormData(),
-        _this=this;
+        var formData=new FormData();
         if(name===''||price===''||description===''||category===''){
             this.setState({
                 error:true

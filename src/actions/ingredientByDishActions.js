@@ -4,7 +4,7 @@ import api from '../api/api';
 
 export const clearIngredientsByDish = () => ({ type: CLEAR_INGREDIENTS_BY_DISH })
 export const getIngredientsByDishId=(id)=>async dispatch=>{
-        const response = await api.get('/api/ingredients/'+id)
+        return await api.get('/api/ingredients/'+id)
         .then((res)=>{
             dispatch({
                 type:GET_INGREDIENTS_BY_DISH_ID,
