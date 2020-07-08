@@ -17,14 +17,16 @@ const store = mockStore({});
 //initialize temporal variable for saving all the drinks
 var tempInvoice;
 //function for setting the drinks from database
-async function setInvoices(){
-    await api.get('/api/invoices').then((res)=>{
+function setInvoices(){
+    api.get('/api/invoices').then((res)=>{
         tempInvoice=res.data
     })
 }  
 describe('Invoice Actions',()=>{
-    beforeEach(async() => {
-        await setInvoices(); 
+    beforeEach(() => {
+        if(previewMode){
+            setInvoices(); 
+        }
         store.clearActions();
     });
     it('Handle GET_INVOICES',(done) => {           
