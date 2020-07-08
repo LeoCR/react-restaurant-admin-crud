@@ -1,4 +1,4 @@
-import React,{Component} from 'react';
+import React from 'react';
 import {connect} from "react-redux";
 import {showEntree,updateEntree,editEntree,getEntrees} from "../../actions/entreeActions";
 import {getIngredientsByDishId,deleteIngredientDish} from "../../actions/ingredientByDishActions";
@@ -6,7 +6,7 @@ import {setDishId,setAddIngredient,setNextIdDishIngredient} from '../../actions/
 import {openModal} from '../../helper/modal.helper';
 import api from '../../api/api';
 import PropTypes from 'prop-types';
-export class EditEntree extends Component{
+export class EditEntree extends React.PureComponent{
     constructor(props){
         super(props);
         this.state={
@@ -22,13 +22,18 @@ export class EditEntree extends Component{
         }
     }
     onAddIngredient=(e)=>{
-        e.preventDefault();
+        if(e){
+            e.preventDefault();
+        }
         this.props.setAddIngredient();
         setTimeout(() => {
             openModal();
         }, 500);
     }
     id=(e)=>{
+        if(e){
+            e.preventDefault();
+        }
         this.setState({
             name:e.target.value
         });
@@ -67,16 +72,25 @@ export class EditEntree extends Component{
         }
     }
     nameEntree=(e)=>{
+        if(e){
+            e.preventDefault();
+        }
         this.setState({
             name:e.target.value
         });
     }
     descriptionEntree=(e)=>{
+        if(e){
+            e.preventDefault();
+        }
         this.setState({
             description:e.target.value
         });
     }
     pictureEntree=(e)=>{
+        if(e){
+            e.preventDefault();
+        }
         if(e.target.files[0]!==null){
             this.setState({
                 picture:e.target.files[0],
@@ -85,18 +99,26 @@ export class EditEntree extends Component{
         }
     }
     categoryEntree=(e)=>{
+        if(e){
+            e.preventDefault();
+        }
         this.setState({
             category:e.target.value
         });
     }
     priceEntree=(e)=>{
+        if(e){
+            e.preventDefault();
+        }
         this.setState({
             price:e.target.value
         });
     }
     editEntree=(e)=>{
-        e.preventDefault();
-        const {id ,name,description,price,category,picture,changedPicture} =this.state;
+        if(e){
+            e.preventDefault();
+        }
+        var {id ,name,description,price,category,picture,changedPicture} =this.state;
         var formData=new FormData(),
         _this=this;
         if(name===''||price===''||description===''||category===''){
@@ -108,38 +130,49 @@ export class EditEntree extends Component{
             this.setState({
                 error:false
             });
-            const infoEntree={id,name,price,description,category,picture}
+            var infoEntree={id,name,price,description,category,picture}
             formData.append('id',id);
             formData.append('name',name);
             formData.append('price',price);
             formData.append('description',description);
             formData.append('picture',picture);
             formData.append('category',category);
-            if(changedPicture===false){
-                this.props.editEntree(infoEntree,id);
+            try {
+                if(changedPicture===false){
+                    this.props.editEntree(infoEntree,id);
+                }
+                else{
+                    this.props.updateEntree(formData,id);
+                }
+                if(this.props.ingredientsByDish.length>0 ){
+                    this.saveIngredients(); 
+                }
+            } catch (error) {
+                console.log('An error occurs in EditEntree.editEntree');
+                console.log(error);
             }
-            else{
-                this.props.updateEntree(formData,id);
+            finally{
+                setTimeout(() => { 
+                    this.props.history.push('/admin/appetizers/');
+                },2900);
             }
-            if(_this.props.ingredientsByDish.length>0 ){
-                    _this.props.ingredientsByDish.forEach(function(ing) {
-                        api.post('/api/ingredient-to-dish/add/',ing)
-                        .then((res)=>{
-                            console.log(res);
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
-                    });
-            }
-            setTimeout(() => {
-                _this.props.getEntrees();
-                _this.props.history.push('/admin/appetizers/');
-            },1900);
         }
     }
+    saveIngredients=async()=>{
+        this.props.ingredientsByDish.forEach(async(ing) =>{
+            await api.post('/api/ingredient-to-dish/add/',ing)
+            .then((res)=>{
+                console.log(res);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        });
+    }
     deleteIngredientDish=(e,ing)=>{
-        e.preventDefault();
+        if(e){
+            e.preventDefault();
+        }
         this.props.deleteIngredientDish(ing.id_ingredient_dish);
     }
     getIngredientsByDish=()=>{
@@ -176,7 +209,7 @@ export class EditEntree extends Component{
             }    
     }
     render(){
-        const {name,price,description,category,picture,error} = this.state;
+        var {name,price,description,category,picture,error} = this.state;
         return(
             <div className="row justify-content-center mt-5">
                 <div className="col-md-8">
@@ -189,7 +222,8 @@ export class EditEntree extends Component{
                                     <input type="text" defaultValue={this.state.id} 
                                     onChange={this.id} className="" style={{display:'none'}}
                                      name="id"/>
-                                    <input type="text" defaultValue={name} onChange={this.nameEntree} 
+                                    <input type="text" defaultValue={name} 
+                                    onChange={(e)=>this.nameEntree(e)} 
                                     className="form-control" placeholder="Name"
                                     name="name"
                                      />
@@ -197,21 +231,23 @@ export class EditEntree extends Component{
                                 <div className="form-group">
                                     <label style={{width:'100%'}}>Description</label> 
                                     <textarea  value={description} className="form-control"
-                                    onChange={this.descriptionEntree} ></textarea>
+                                    onChange={(e)=>this.descriptionEntree(e)} ></textarea>
                                 </div>
                                 <div className="form-group">
                                     <label>Picture</label>
                                     <input type="file" id="picture_upload" defaultValue={picture} 
-                                    onChange={this.pictureEntree} className="form-control-file"
+                                    onChange={(e)=>this.pictureEntree(e)} className="form-control-file"
                                      placeholder="Picture" />
                                     <img src={picture} style={{maxWidth:'400px'}} alt={name}/>
-                                    <input type="text" defaultValue={picture} className="form-control-file"
-                                    readOnly="readOnly" name="picture" id="picture_hidden" style={{display:"none"}}/>
+                                    <input type="text" defaultValue={picture} 
+                                    className="form-control-file"
+                                    readOnly="readOnly" name="picture" 
+                                    id="picture_hidden" style={{display:"none"}}/>
                                 </div>
                                 <div className="form-group">
                                     <label>Category</label>
                                     <input type="text" defaultValue={category} 
-                                    onChange={this.categoryEntree} className="form-control"
+                                    onChange={(e)=>this.categoryEntree(e)} className="form-control"
                                      placeholder="Category" 
                                      name="category"
                                      />
@@ -219,7 +255,7 @@ export class EditEntree extends Component{
                                 <div className="form-group">
                                     <label>Price</label>
                                     <input type="text" defaultValue={price} 
-                                    onChange={this.priceEntree} 
+                                    onChange={(e)=>this.priceEntree(e)} 
                                     className="form-control"
                                      placeholder="Price" 
                                      name="price"

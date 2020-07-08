@@ -3,7 +3,7 @@ import api from "../../api/api";
 import {connect} from "react-redux";
 import {addUser,getUsers} from "../../actions/userActions";
 import PropTypes from 'prop-types';
-class AddUser extends React.Component{
+class AddUser extends React.PureComponent{
     constructor(props){
         super(props);
         this.state={

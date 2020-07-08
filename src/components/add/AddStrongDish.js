@@ -1,4 +1,4 @@
-import React,{Component} from 'react';
+import React from 'react';
 import api from "../../api/api";
 import {connect} from "react-redux";
 import {addStrongDish,getStrongsDishes} from "../../actions/strongDishActions";
@@ -7,7 +7,7 @@ import {setDishId,setAddIngredient,setNextIdDishIngredient} from '../../actions/
 import {openModal} from '../../helper/modal.helper';
 import {randomString} from '../../helper/randomString.helper';
 import PropTypes from 'prop-types';
-export class AddStrongDish extends Component{
+export class AddStrongDish extends React.PureComponent{
     constructor(props){
         super(props);
         this.state={
@@ -60,13 +60,15 @@ export class AddStrongDish extends Component{
             price:e.target.value
         });
     }
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.ingredientsByDish !== this.state.ingredientsByDish) {
           this.setState({ ingredientsByDish: nextProps.ingredientsByDish });
         }
     }
     addNewStrongDish=(e)=>{ 
-        e.preventDefault();
+        if(e){
+            e.preventDefault();
+        }
         const {
             id ,
             name,
@@ -150,35 +152,42 @@ export class AddStrongDish extends Component{
         }  
     }
     componentDidMount=async()=>{
-        var totalOfItems=1, idString='',_this=this;
-        clearIngredientsByDish();
-        var customRandomString=randomString(4);
-        this.props.getStrongsDishes();
-        await api.get('/api/strongs-dishes')
-            .then(response => {
-                for(var i = 0; i <= response.data.length; ++i){
-                        ++totalOfItems;
-                }
-            }).then(()=>{
-                idString=totalOfItems+1+'ADDEDBGD_'+customRandomString;//console.log(idString); 
-            })
-            .catch(error => {
-                console.log(error);
-        });
-        await api.get('/api/ingredient-to-dish/count/')
-        .then((res)=>{
-            if(res.data.maxIngredientDishId){
-                var nextIdIngDish=parseInt(res.data.maxIngredientDishId)+1;
-                _this.props.setNextIdDishIngredient(nextIdIngDish)
-            }
-        })
-        setTimeout(() => {
-            _this.setState({
-                id:idString
+        var totalOfItems=1, 
+        idString='',
+        _this=this;
+        try {
+            _this.props.clearIngredientsByDish();
+            var customRandomString=randomString(4); 
+            await api.get('/api/strongs-dishes')
+                .then(response => {
+                    for(var i = 0; i <= response.data.length; ++i){
+                            ++totalOfItems;
+                    }
+                }).then(()=>{
+                    idString=totalOfItems+1+'ADDEDBGD_'+customRandomString;//console.log(idString); 
+                })
+                .catch(error => {
+                    console.log(error);
             });
-            _this.props.setDishId(idString);
-            console.log('this.state.id '+this.state.id);
-        }, 300);
+            await api.get('/api/ingredient-to-dish/count/')
+            .then((res)=>{
+                if(res.data.maxIngredientDishId){
+                    var nextIdIngDish=parseInt(res.data.maxIngredientDishId)+1;
+                    _this.props.setNextIdDishIngredient(nextIdIngDish)
+                }
+            })
+        } catch (error) {
+            console.log('An error occurs in AddStrongDish');
+            console.log(error); 
+        }
+        finally{
+            setTimeout(() => {
+                _this.setState({
+                    id:idString
+                });
+                _this.props.setDishId(idString); 
+            }, 300);
+        }
     }
     render(){
         const {error} = this.state;

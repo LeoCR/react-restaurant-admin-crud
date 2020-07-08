@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from "react-redux";
 import {showUser,editUser,getUsers} from "../../actions/userActions";
 import PropTypes from 'prop-types';
-class EditUser extends React.Component{
+class EditUser extends React.PureComponent{
     constructor(props){
         super(props);
         this.state={

@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {showInvoice,showOrderProducts,getInvoices} from "../../actions/invoiceActions";
 import history from '../../history';
 import PropTypes from 'prop-types';
-class EditInvoice extends React.Component{
+class EditInvoice extends React.PureComponent{
     constructor(props){
         super(props);
         this.state={

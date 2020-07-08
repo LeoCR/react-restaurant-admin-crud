@@ -4,16 +4,15 @@ import {closeModal} from '../helper/modal.helper';
 import AddIngredientToDish from "./add/AddIngredientToDish"
 import PropTypes from 'prop-types';
 import Delete from "./delete/delete";
-export class Modal extends React.Component{
-    render(){
-        var ModalContent=<p>Modal Content</p>;
+const Modal =props=>{
+    var ModalContent=<p>Modal Content</p>;
         var titleModal=<h1>Title Modal</h1>;
-        if(this.props.modals==='addIngredient'){
+        if(props.modals==='addIngredient'){
             titleModal=<h1>Add Ingredients</h1>;
             ModalContent=<AddIngredientToDish/>;
         }
-        else if(this.props.modals==='delete'){
-            titleModal=<h1>Are you sure you want to Delete this {this.props.productType}</h1>;
+        else if(props.modals==='delete'){
+            titleModal=<h1>Are you sure you want to Delete this {props.productType}</h1>;
             ModalContent=<Delete/>;
         }
         return(
@@ -33,8 +32,7 @@ export class Modal extends React.Component{
                 </div>
             </div>
         )
-    }
-}
+} 
 Modal.propTypes = {
     modals: PropTypes.string,
     productType: PropTypes.string,

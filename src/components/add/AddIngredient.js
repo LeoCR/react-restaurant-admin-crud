@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import {addIngredient,getIngredients} from "../../actions/ingredientActions";
 import {randomString} from '../../helper/randomString.helper';
 import PropTypes from 'prop-types';
-export class AddIngredient extends React.Component{
+export class AddIngredient extends React.PureComponent{
     constructor(props){
         super(props);
         this.state={
@@ -61,26 +61,34 @@ export class AddIngredient extends React.Component{
         
     }
     componentDidMount=async()=>{
-        var totalOfItems=1;var idString,_this=this;;
-        var customRandomString=randomString(4);
-        await api.get('/api/ingredients')
-            .then(response => {
-                for(var i = 0; i <= response.data.length; ++i){
-                        ++totalOfItems;
-                }
-            }).then(()=>{
-                idString=totalOfItems+1+'ADDEDING_'+customRandomString;//console.log(idString); 
-            })
-            .catch(error => {
-                console.log(error);
-        });
-        setTimeout(() => {
-            _this.setState({
-                id:idString
+        var totalOfItems=1,
+        idString='',
+        _this=this,
+        customRandomString=randomString(4);
+        try {
+            await api.get('/api/ingredients')
+                .then(response => {
+                    for(var i = 0; i <= response.data.length; ++i){
+                            ++totalOfItems;
+                    }
+                }).then(()=>{
+                    idString=totalOfItems+1+'ADDEDING_'+customRandomString;//console.log(idString); 
+                })
+                .catch(error => {
+                    console.log(error);
             });
-            console.log('this.state.id '+this.state.id);
-        }, 300);
-        
+        } catch (error) {
+            console.log('An error occurs in AddIngredient.componentDidMount');
+            console.log(error); 
+        }
+        finally{
+            setTimeout(() => {
+                _this.setState({
+                    id:idString
+                });
+                console.log('this.state.id '+this.state.id);
+            }, 300);
+        }
     }
     render(){
         const {error} = this.state;

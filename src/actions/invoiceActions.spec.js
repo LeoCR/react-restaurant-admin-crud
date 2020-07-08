@@ -23,8 +23,8 @@ async function setInvoices(){
     })
 }  
 describe('Invoice Actions',()=>{
-    beforeEach(() => {
-        setInvoices(); 
+    beforeEach(async() => {
+        await setInvoices(); 
         store.clearActions();
     });
     it('Handle GET_INVOICES',(done) => {           
@@ -53,16 +53,16 @@ describe('Invoice Actions',()=>{
                 type:SHOW_INVOICE,
                 payload:[
                     {
-                        "email":"laranibarsanchez@gmail.com",
+                        "email":"invited_user@gmail.com",
                         "id_header":1,
                         "order_code":"INVC1",
-                        "username":"LeonardoAranibarSanchez",
+                        "username":"InvitedUser",
                         "date_of_billing":"2019-03-12T02:30:00.000Z"
                     },{
-                        "email":"laranibarsanchez@gmail.com",
+                        "email":"invited_user@gmail.com",
                         "id_header":2,
                         "order_code":"INVC1",
-                        "username":"LeonardoAranibarSanchez",
+                        "username":"InvitedUser",
                         "date_of_billing":"2019-03-12T02:30:00.000Z"
                     }
                 ]

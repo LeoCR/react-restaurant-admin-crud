@@ -1,10 +1,10 @@
-import React,{Component} from 'react';
+import React from 'react';
 import api from "../../api/api";
 import {connect} from "react-redux";
 import {addDrink,getDrinks} from "../../actions/drinkActions";
 import {randomString} from '../../helper/randomString.helper';
 import PropTypes from 'prop-types';
-export class AddDrink extends Component{
+export class AddDrink extends React.PureComponent{
     constructor(props){
         super(props);
         this.state={

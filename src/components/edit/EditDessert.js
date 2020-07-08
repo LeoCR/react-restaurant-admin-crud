@@ -1,4 +1,4 @@
-import React,{Component} from 'react';
+import React from 'react';
 import {connect} from "react-redux";
 import {showDessert,editDessert,updateDessert,getDesserts} from "../../actions/dessertActions";
 import {getIngredientsByDishId,deleteIngredientDish} from "../../actions/ingredientByDishActions";
@@ -7,7 +7,7 @@ import {openModal} from '../../helper/modal.helper';
 import api from '../../api/api';
 import PropTypes from 'prop-types';
 import { withRouter } from "react-router";
-export class EditDessert extends Component{
+export class EditDessert extends React.PureComponent{
     constructor(props){
         super(props);
         this.state={
@@ -23,13 +23,18 @@ export class EditDessert extends Component{
         }
     }
     onAddIngredient=(e)=>{
-        e.preventDefault();
+        if(e){
+            e.preventDefault();
+        }
         this.props.setAddIngredient();
         setTimeout(() => {
             openModal();
         }, 500);
     }
     id=(e)=>{
+        if(e){
+            e.preventDefault();
+        }
         this.setState({
             id:e.target.value
         });
@@ -71,16 +76,25 @@ export class EditDessert extends Component{
         }
     }
     nameDessert=(e)=>{
+        if(e){
+            e.preventDefault();
+        }
         this.setState({
             name:e.target.value
         });
     }
     descriptionDessert=(e)=>{
+        if(e){
+            e.preventDefault();
+        }
         this.setState({
             description:e.target.value
         });
     }
     pictureDessert=(e)=>{
+        if(e){
+            e.preventDefault();
+        }
         if(e.target.files[0]!==null){
             this.setState({
                 picture:e.target.files[0],
@@ -90,6 +104,9 @@ export class EditDessert extends Component{
         } 
     }
     priceDessert=(e)=>{
+        if(e){
+            e.preventDefault();
+        }
         this.setState({
             price:e.target.value
         });
@@ -98,16 +115,8 @@ export class EditDessert extends Component{
         if(e){
             e.preventDefault(); 
         }
-        const {
-            id ,
-            name,
-            description,
-            price,
-            picture,
-            changedPicture
-        } =this.state;
-        var formData=new FormData(),
-        _this=this;
+        var { id , name, description, price, picture, changedPicture } =this.state;
+        var formData=new FormData();
         if(name===''||price===''||description===''){
             this.setState({
                 error:true
@@ -117,7 +126,7 @@ export class EditDessert extends Component{
             this.setState({
                 error:false
             });
-            const infoDessert={
+            var infoDessert={
                 id,
                 name,
                 price,
@@ -129,28 +138,35 @@ export class EditDessert extends Component{
             formData.append('price',price);
             formData.append('description',description);
             formData.append('picture',picture);
-            if(changedPicture===false){ 
-                this.props.editDessert(infoDessert,id);
+            try {
+                if(changedPicture===false){ 
+                    this.props.editDessert(infoDessert,id);
+                }
+                else{
+                    this.props.updateDessert(formData,id);
+                }
+                if(this.props.ingredientsByDish.length>0 ){
+                    this.saveIngredients(); 
+                }
+            } catch (error) {
+                console.log('An error occurs in EditDessert.editDessert');
+                console.log(error);
             }
-            else{
-                this.props.updateDessert(formData,id);
-            }
-            if(_this.props.ingredientsByDish.length>0 ){
-                    _this.props.ingredientsByDish.forEach(function(ing) {
-                        api.post('/api/ingredient-to-dish/add/',ing)
-                        .then((res)=>{
-                            console.log(res);
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
-                    });
-            }
-            setTimeout(() => {
-                _this.props.getDesserts();
-                _this.props.history.push('/admin/desserts/');
+            setTimeout(() => { 
+                this.props.history.push('/admin/desserts/');
             }, 1900);
         }
+    }
+    saveIngredients=async()=>{
+        this.props.ingredientsByDish.forEach(async(ing) =>{
+            await api.post('/api/ingredient-to-dish/add/',ing)
+            .then((res)=>{
+                console.log(res);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        });
     }
     deleteIngredientDish=(e,ing)=>{
         e.preventDefault();
@@ -190,7 +206,7 @@ export class EditDessert extends Component{
             }    
     }
     render(){
-        const {name,price,description,picture,error} = this.state;
+        var {name,price,description,picture,error} = this.state;
         return(
             <div className="row justify-content-center mt-5">
                 <div className="col-md-8">
@@ -203,7 +219,7 @@ export class EditDessert extends Component{
                                     <input type="text" defaultValue={this.state.id} 
                                     onChange={this.id} className="" style={{display:'none'}}
                                      name="id"/>
-                                    <input type="text" defaultValue={name} onChange={this.nameDessert} 
+                                    <input type="text" defaultValue={name} onChange={(e)=>this.nameDessert(e)} 
                                     className="form-control" placeholder="Name"
                                     name="name" data-testid="name-dessert"
                                      />
@@ -211,15 +227,17 @@ export class EditDessert extends Component{
                                 <div className="form-group">
                                     <label>Description</label>
                                     <input type="text" defaultValue={description} 
-                                    onChange={this.descriptionDessert} className="form-control" 
+                                    onChange={(e)=>this.descriptionDessert(e)} className="form-control" 
                                     placeholder="Description"
                                     name="description" data-testid="description-dessert"
                                     />
                                 </div>
                                 <div className="form-group">
                                     <label>Picture</label>
-                                    <input type="file" id="picture_upload" defaultValue={picture} data-testid="picture-dessert" 
-                                    onChange={this.pictureDessert} className="form-control-file" placeholder="Picture" />
+                                    <input type="file" id="picture_upload" 
+                                    defaultValue={picture} data-testid="picture-dessert" 
+                                    onChange={(e)=>this.pictureDessert(e)} 
+                                    className="form-control-file" placeholder="Picture" />
                                     <img src={picture} style={{maxWidth:'400px'}} alt={name}/>
                                     {this.state.pictureName && (
                                             <div id="picture_uploaded">
@@ -231,8 +249,10 @@ export class EditDessert extends Component{
                                 </div>
                                 <div className="form-group">
                                     <label>Price</label>
-                                    <input type="text" defaultValue={price}  onChange={this.priceDessert} 
-                                     className="form-control" placeholder="Price" name="price"  data-testid="price-dessert"/>
+                                    <input type="text" defaultValue={price}  
+                                    onChange={(e)=>this.priceDessert(e)} 
+                                     className="form-control" placeholder="Price" 
+                                     name="price"  data-testid="price-dessert"/>
                                 </div>
                                 {this.getIngredientsByDish()}
                             {error ? 

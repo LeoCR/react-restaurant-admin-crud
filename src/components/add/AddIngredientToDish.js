@@ -6,14 +6,14 @@ import {setNextIdDishIngredient} from '../../actions/modalActions';
 import {closeModal} from '../../helper/modal.helper';
 import api from '../../api/api';
 import PropTypes from 'prop-types';
-export class AddIngredientToDish extends React.Component{
+export class AddIngredientToDish extends React.PureComponent{
     state={
         ingredientsToAdd:[],
         ingredientSelected:'',
         dishSelected:'',
         nextIdDishIngredient:0
     }
-    async componentDidMount(){
+     componentDidMount=async()=>{
         await this.props.getIngredients();  
         var _this=this;
         setTimeout(() => {
@@ -23,7 +23,7 @@ export class AddIngredientToDish extends React.Component{
             })
         }, 900);
     }
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps,nextState) {
         if(nextProps.idDish!==this.state.dishSelected){
             this.setState({
                 dishSelected:nextProps.idDish
@@ -75,7 +75,7 @@ export class AddIngredientToDish extends React.Component{
                 setTimeout(() => {
                     _this.props.getIngredients();
                     _this.props.setNextIdDishIngredient(parseInt(this.state.nextIdDishIngredient)+1);
-                }, 1000);
+                }, 400);
             }
         } catch (error) {
             console.log('An error occurs in AddIngredientToDish.onSubmit()');

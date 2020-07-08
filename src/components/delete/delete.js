@@ -7,28 +7,28 @@ import {deleteEntree,getEntrees} from "../../actions/entreeActions";
 import {deleteIngredient,getIngredients} from "../../actions/ingredientActions";
 import {deleteStrongDish,getStrongsDishes} from "../../actions/strongDishActions"
 import PropTypes from 'prop-types'; 
-export class Delete extends React.Component{
-    deleteProduct=()=>{ 
-        var id=this.props.idToDelete;
-        if(this.props.productType==='Dessert'){
-            this.props.deleteDessert(id);
-            this.props.getDesserts();
+const Delete = props=>{
+    const deleteProduct=()=>{ 
+        var id=props.idToDelete;
+        if(props.productType==='Dessert'){
+            props.deleteDessert(id);
+            props.getDesserts();
         }
-        else if(this.props.productType==='Drink'){
-            this.props.deleteDrink(id);
-            this.props.getDrinks()
+        else if(props.productType==='Drink'){
+            props.deleteDrink(id);
+            props.getDrinks()
         } 
-        else if(this.props.productType==='Appetizer'){
-            this.props.deleteEntree(id);
-            this.props.getEntrees();
+        else if(props.productType==='Appetizer'){
+            props.deleteEntree(id);
+            props.getEntrees();
         }
-        else if(this.props.productType==='Ingredient'){
-            this.props.deleteIngredient(id);
-            this.props.getIngredients();
+        else if(props.productType==='Ingredient'){
+            props.deleteIngredient(id);
+            props.getIngredients();
         }
-        else if(this.props.productType==='Main Course'){
-            this.props.deleteStrongDish(id);
-            this.props.getStrongsDishes();
+        else if(props.productType==='Main Course'){
+            props.deleteStrongDish(id);
+            props.getStrongsDishes();
         }
         try {
             setTimeout(() => {
@@ -38,21 +38,19 @@ export class Delete extends React.Component{
             console.log('An error occurs in Delete.deleteProduct()');
         } 
     }
-    dontDelete=(e)=>{
+    const dontDelete=(e)=>{
         if(e){
             e.preventDefault()
         }
         closeModal();
-    }
-    render(){
-        return(
-            <React.Fragment>
-                <button className="btn btn-primary" onClick={(e)=>{this.dontDelete(e)}} id="btn-dont-delete">No</button>
-                <button className="btn btn-success" onClick={()=>{this.deleteProduct()}} id="btn-delete">Yes</button>
-            </React.Fragment>
-        )
-    }
-}
+    } 
+    return(
+        <React.Fragment>
+            <button className="btn btn-primary" onClick={(e)=>{dontDelete(e)}} id="btn-dont-delete">No</button>
+            <button className="btn btn-success" onClick={()=>{deleteProduct()}} id="btn-delete">Yes</button>
+        </React.Fragment>
+    ) 
+} 
 Delete.propTypes = {
     modals: PropTypes.string,
     idDish: PropTypes.string,

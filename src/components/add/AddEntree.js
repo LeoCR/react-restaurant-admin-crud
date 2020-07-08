@@ -1,4 +1,4 @@
-import React,{Component} from 'react';
+import React from 'react';
 import api from "../../api/api";
 import {connect} from "react-redux";
 import {addEntree,getEntrees} from "../../actions/entreeActions";
@@ -7,7 +7,7 @@ import {setDishId,setAddIngredient,setNextIdDishIngredient} from '../../actions/
 import {openModal} from '../../helper/modal.helper';
 import {randomString} from '../../helper/randomString.helper';
 import PropTypes from 'prop-types';
-export class AddEntree extends Component{
+export class AddEntree extends React.PureComponent{
     constructor(props){
         super(props);
         this.state={
@@ -154,34 +154,42 @@ export class AddEntree extends Component{
         }  
     }
     componentDidMount=async()=>{
-        var totalOfItems=1;var idString,_this=this;
-        _this.props.clearIngredientsByDish();
-        var customRandomString=randomString(4);
-        await api.get('/api/entrees')
-            .then(response => {
-                for(var i = 0; i <=response.data.length; ++i){
-                    ++totalOfItems;
-                }
-            }).then(()=>{
-                idString=totalOfItems+1+'ADDEDENTR_'+customRandomString;//console.log(idString); 
-            })
-            .catch(error => {
-                console.log(error);
-        });
-        await api.get('/api/ingredient-to-dish/count/')
-        .then((res)=>{
-            if(res.data.maxIngredientDishId){
-                var nextIdIngDish=parseInt(res.data.maxIngredientDishId)+1;
-                _this.props.setNextIdDishIngredient(nextIdIngDish)
-            }
-        })
-        setTimeout(() => {
-            _this.setState({
-                id:idString
+        var totalOfItems=1, 
+        idString='',
+        _this=this,
+        customRandomString=randomString(4);
+        try {
+            _this.props.clearIngredientsByDish();
+            await api.get('/api/entrees')
+                .then(response => {
+                    for(var i = 0; i <=response.data.length; ++i){
+                        ++totalOfItems;
+                    }
+                }).then(()=>{
+                    idString=totalOfItems+1+'ADDEDENTR_'+customRandomString;//console.log(idString); 
+                })
+                .catch(error => {
+                    console.log(error);
             });
-            _this.props.setDishId(idString);
-            console.log('this.state.id '+this.state.id);
-        }, 300);
+            await api.get('/api/ingredient-to-dish/count/')
+            .then((res)=>{
+                if(res.data.maxIngredientDishId){
+                    var nextIdIngDish=parseInt(res.data.maxIngredientDishId)+1;
+                    _this.props.setNextIdDishIngredient(nextIdIngDish)
+                }
+            })
+        } catch (error) {
+            console.log('An error occurs AddEntree.componentDidMount');
+            console.log(error);
+        }
+        finally{
+            setTimeout(() => {
+                _this.setState({
+                    id:idString
+                });
+                _this.props.setDishId(idString); 
+            }, 300);
+        }
     }
     render(){
         const {error} = this.state;

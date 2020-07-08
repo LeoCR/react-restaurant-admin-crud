@@ -1,4 +1,4 @@
-import React,{Component} from 'react';
+import React from 'react';
 import {connect} from "react-redux";
 import {showStrongDish,editStrongDish,updateStrongDish,getStrongsDishes} from "../../actions/strongDishActions";
 import {getIngredientsByDishId,deleteIngredientDish} from "../../actions/ingredientByDishActions";
@@ -6,19 +6,19 @@ import {setDishId,setAddIngredient,setNextIdDishIngredient} from '../../actions/
 import {openModal} from '../../helper/modal.helper';
 import api from '../../api/api';
 import PropTypes from 'prop-types';
-class EditStrongDish extends Component{
+class EditStrongDish extends React.PureComponent{
     constructor(props){
         super(props);
         this.state={
-            id:'',
-            name:'',
-            description:'',
-            picture:'',
-            category:'',
-            price:'',
-            error:false,
-            changedPicture:false,
-            ingredientsByDish:[]
+                id:'',
+                name:'',
+                description:'',
+                picture:'',
+                category:'',
+                price:'',
+                error:false,
+                changedPicture:false,
+                ingredientsByDish:[]
         }
     }
     onAddIngredient=(e)=>{
@@ -26,7 +26,7 @@ class EditStrongDish extends Component{
         this.props.setAddIngredient();
         setTimeout(() => {
             openModal();
-        }, 500);
+        }, 700);
     }
     id=(e)=>{
         this.setState({
@@ -34,7 +34,7 @@ class EditStrongDish extends Component{
         });
     }
     componentDidMount=async()=>{
-        const {id}=this.props.match.params;
+        var {id}=this.props.match.params;
         this.props.getStrongsDishes();
         this.props.showStrongDish(id);
         this.props.setDishId(id);
@@ -55,7 +55,7 @@ class EditStrongDish extends Component{
             })
         }
         if(nextProps.strongDish){
-            const {id, name,price,description,category,picture}=nextProps.strongDish;
+            var {id, name,price,description,category,picture}=nextProps.strongDish;
             this.setState({
                 id,
                 name,
@@ -68,16 +68,19 @@ class EditStrongDish extends Component{
         }
     }
     nameDish=(e)=>{
+        e.preventDefault();
         this.setState({
             name:e.target.value
         });
     }
     descriptionDish=(e)=>{
+        e.preventDefault();
         this.setState({
             description:e.target.value
         });
     }
     pictureDish=(e)=>{
+        e.preventDefault();
         if(e.target.files[0]!==null){
             this.setState({
                 picture:e.target.files[0],
@@ -86,28 +89,23 @@ class EditStrongDish extends Component{
         }
     }
     categoryDish=(e)=>{
+        e.preventDefault();
         this.setState({
             category:e.target.value
         });
     }
     priceDish=(e)=>{
+        e.preventDefault();
         this.setState({
             price:e.target.value
         });
     }
-    editStrongDish=(e)=>{    
-        e.preventDefault();
-        const {
-            id ,
-            name,
-            description,
-            price,
-            category,
-            picture,
-            changedPicture
-        } =this.state;
-        var formData=new FormData(),
-        _this=this;
+    editStrongDish=(e)=>{   
+        if(e){
+            e.preventDefault();
+        }
+        var { id , name, description, price, category, picture, changedPicture } =this.state;
+        var formData=new FormData();
         if(name===''||price===''||description===''||category===''){
             this.setState({
                 error:true
@@ -117,45 +115,60 @@ class EditStrongDish extends Component{
             this.setState({
                 error:false
             });
-            const infoDish={
-                id,
-                name,
-                price,
-                description,
-                category,
-                picture
+            var infoDish={
+                id:id,
+                name:name,
+                price:price,
+                description:description,
+                category:category,
+                picture:picture
             }
             formData.append('id',id);
             formData.append('name',name);
             formData.append('price',price);
             formData.append('description',description);
             formData.append('picture',picture);
-            formData.append('category',category);
-            if(changedPicture===false){
-                this.props.editStrongDish(infoDish,id);
+            formData.append('category',category); 
+            try {
+                if(changedPicture===false){
+                    console.log('infoDish');
+                    console.log(infoDish);
+                    console.log('id');
+                    console.log(id);
+                    this.props.editStrongDish(infoDish,id) 
+                }
+                else{
+                     this.props.updateStrongDish(formData,id)
+                }
+                if(this.props.ingredientsByDish.length>0 ){
+                    this.saveIngredients(); 
+                }
+            } catch (error) {
+                console.log('An error occurs in EditStrongDish.editStrongDish');
+                console.log(error);
             }
-            else{
-                this.props.updateStrongDish(formData,id);
+            finally{ 
+                setTimeout(() => {
+                    this.props.history.push('/admin/main-courses'); 
+                }, 3900); 
             }
-            if(this.props.ingredientsByDish.length>0 ){
-                    _this.props.ingredientsByDish.forEach(function(ing) {
-                        api.post('/api/ingredient-to-dish/add/',ing)
-                        .then((res)=>{
-                            console.log(res);
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
-                    });
-            }
-            setTimeout(() => {
-                _this.props.getStrongsDishes();
-                _this.props.history.push('/admin/main-courses'); 
-            }, 1900); 
         }
     }
+    saveIngredients=async()=>{
+        this.props.ingredientsByDish.forEach(async(ing) =>{
+            await api.post('/api/ingredient-to-dish/add/',ing)
+            .then((res)=>{
+                console.log(res);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        });
+    }
     deleteIngredientDish=(e,ing)=>{
-        e.preventDefault();
+        if(e){
+            e.preventDefault();
+        }
         this.props.deleteIngredientDish(ing.id_ingredient_dish);
     }
     getIngredientsByDish=()=>{
@@ -192,7 +205,6 @@ class EditStrongDish extends Component{
         }    
     }
     render(){
-        const {name,price,description,category,picture,error} = this.state;
         return(
             <div className="row justify-content-center mt-5">
                 <div className="col-md-8">
@@ -206,47 +218,47 @@ class EditStrongDish extends Component{
                                     <input type="text" defaultValue={this.state.id} 
                                     onChange={this.id} className="" style={{display:'none'}}
                                      name="id"/>
-                                    <input type="text" defaultValue={name} onChange={this.nameDish} 
+                                    <input type="text" defaultValue={this.state.name} onChange={(e)=>this.nameDish(e)} 
                                     className="form-control" placeholder="Name"
                                     name="name"
                                      />
                                 </div>
                                 <div className="form-group">
                                     <label>Description</label>
-                                    <input type="text" defaultValue={description} 
-                                    onChange={this.descriptionDish} className="form-control" 
+                                    <input type="text" defaultValue={this.state.description} 
+                                    onChange={(e)=>this.descriptionDish(e)} className="form-control" 
                                     placeholder="Description"
                                     name="description" 
                                     />
                                 </div>
                                 <div className="form-group">
                                     <label>Picture</label>
-                                    <input type="file" id="picture_upload" defaultValue={picture} 
-                                    onChange={this.pictureDish} className="form-control-file"
+                                    <input type="file" id="picture_upload" defaultValue={this.state.picture} 
+                                    onChange={(e)=>this.pictureDish(e)} className="form-control-file"
                                      placeholder="Picture" />
-                                     <img src={picture} style={{maxWidth:'400px'}} alt={name}/>
-                                <input type="text" defaultValue={picture} className="form-control-file"
+                                     <img src={this.state.picture} style={{maxWidth:'400px'}} alt={this.state.name}/>
+                                <input type="text" defaultValue={this.state.picture} className="form-control-file"
                                     readonly="readonly" name="picture" id="picture_hidden" style={{display:"none"}}/>
                                 </div>
                                 <div className="form-group">
                                     <label>Category</label>
-                                    <input type="text" defaultValue={category} 
-                                    onChange={this.categoryDish} className="form-control"
+                                    <input type="text" defaultValue={this.state.category} 
+                                    onChange={(e)=>this.categoryDish(e)} className="form-control"
                                      placeholder="Category" 
                                      name="category"
                                      />
                                 </div>
                                 <div className="form-group">
                                     <label>Price</label>
-                                    <input type="text" defaultValue={price} 
-                                    onChange={this.priceDish} 
+                                    <input type="text" defaultValue={this.state.price} 
+                                    onChange={(e)=>this.priceDish(e)} 
                                     className="form-control"
                                      placeholder="Price" 
                                      name="price"
                                      />
                                 </div>
                             {this.getIngredientsByDish()}
-                            {error ? 
+                            {this.state.error ? 
                             <div className="font-weight-bold alert-danger text-center mt-4">
                                 All the fields are required
                             </div>

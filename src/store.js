@@ -13,7 +13,7 @@ const initialState = {
     users:[]
 };
 const store = createStore(rootReducer, initialState, compose(
-    applyMiddleware(...middleware),
-    window.devToolsExtension ? window.devToolsExtension() : ''
+    applyMiddleware(...middleware)/* ,
+    window.devToolsExtension ? window.devToolsExtension() : '' */
 ));
 export default store;

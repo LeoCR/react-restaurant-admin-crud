@@ -1,8 +1,8 @@
-import React,{Component} from 'react';
+import React from 'react';
 import {connect} from "react-redux";
 import {showIngredient,editIngredient,updateIngredient,getIngredients} from "../../actions/ingredientActions";
 import PropTypes from 'prop-types';
-export class EditIngredient extends Component{
+export class EditIngredient extends React.PureComponent{
     constructor(props){
         super(props);
         this.state={

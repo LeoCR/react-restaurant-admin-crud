@@ -33,40 +33,32 @@ export const showDessert=id=>async dispatch=>{
     })
 }
 export const editDessert=(dessert,id)=>async dispatch=>{
-    try {
-        const response = await api.put(`/api/dessert/update/${id}`,dessert)
-        .then((res)=>{ 
-            return res;
-        })
-        .catch((err)=>{
-            console.log('An error occurs in dessertActions.editDessert');
-            console.log(err);
-        }); 
+    return await api.put('/api/dessert/update/'+id,dessert)
+    .then((res)=>{ 
         dispatch({
             type:EDIT_DESSERT,
-            payload:response.data
-        })
-    } catch (error) {
+            payload:res.data
+        }) 
+    })
+    .catch((err)=>{
         console.log('An error occurs in dessertActions.editDessert');
-        console.log(error);
-    }  
+        console.log(err);
+    });    
 }
 export const updateDessert=(dessert,id)=>async dispatch=>{
-    try {
-        const response = await api.put(`/api/dessert/update-img/${id}`,dessert)
-        .then((res)=>{ 
-            return res;
-        })
-        .catch((err)=>{
-            console.log('An error occurs in dessertActions.updateDessert');
-            console.log(err);
-        });
+    return await api.put('/api/dessert/update-img/'+id,dessert,{
+        headers: {
+            'content-type': 'multipart/form-data'
+        }
+    })
+    .then((res)=>{ 
         dispatch({
             type:UPDATE_DESSERT,
-            payload:response.data
+            payload:res.data
         })
-    } catch (error) {
+    })
+    .catch((err)=>{
         console.log('An error occurs in dessertActions.updateDessert');
-        console.log(error);
-    }
+        console.log(err);
+    });
 }

@@ -1,4 +1,4 @@
-import React,{Component} from 'react';
+import React from 'react';
 import api from "../../api/api";
 import {connect} from "react-redux";
 import {addDessert,getDesserts} from "../../actions/dessertActions";
@@ -7,7 +7,7 @@ import {setDishId,setAddIngredient,setNextIdDishIngredient} from '../../actions/
 import {openModal} from '../../helper/modal.helper';
 import {randomString} from '../../helper/randomString.helper';
 import PropTypes from 'prop-types';
-export class AddDessert extends Component{
+export class AddDessert extends React.PureComponent{
     constructor(props){
         super(props);
         this.state={
@@ -151,7 +151,7 @@ export class AddDessert extends Component{
         idString='',
         _this=this;
         try { 
-            clearIngredientsByDish();
+            _this.props.clearIngredientsByDish();
             var customRandomString=randomString(4);
             await api.get('/api/desserts')
                 .then(response => {
@@ -172,7 +172,8 @@ export class AddDessert extends Component{
                 }
             })
         } catch (error) {
-            console.log('An error occurs in AddDessert.componentDidMount')
+            console.log('An error occurs in AddDessert.componentDidMount');
+            console.log(error);
         }
         finally{
             setTimeout(() => {

@@ -38,36 +38,33 @@ export const showStrongDish=id=>async dispatch=>{
 }
 
 export const editStrongDish=(strongDish,id)=>async dispatch=>{
-    const response = await api.put(`/api/strong-dish/update/${id}`,strongDish)
-    .then((res)=>{
-        console.log('Response strongDishActions.editStrongDish');
-        console.log(res);
+    return await api.put('/api/strong-dish/update/'+id,strongDish)
+    .then((res)=>{ 
+        dispatch({
+            type:EDIT_STRONG_DISH,
+            payload:res.data
+        })
     })
     .catch((err)=>{
         console.log('An error occurs in strongDishActions.editStrongDish');
         console.log(err);
     });
-    dispatch({
-        type:EDIT_STRONG_DISH,
-        payload:response.data
-    })
+    
 }
 export const updateStrongDish=(strongDish,id)=>async dispatch=>{
-    const response = await api.put(`/api/strong-dish/update-img/${id}`,strongDish,{
+    return await api.put('/api/strong-dish/update-img/'+id,strongDish,{
         headers: {
             'content-type': 'multipart/form-data'
         }
     })
-    .then((res)=>{
-        console.log('Response strongDishActions.updateStrongDish');
-        console.log(res);
+    .then((res)=>{ 
+        dispatch({
+            type:EDIT_STRONG_DISH,
+            payload:res.data
+        })
     })
     .catch((err)=>{
         console.log('An error occurs in strongDishActions.updateStrongDish');
         console.log(err);
     });
-    dispatch({
-        type:EDIT_STRONG_DISH,
-        payload:response.data
-    })
 }

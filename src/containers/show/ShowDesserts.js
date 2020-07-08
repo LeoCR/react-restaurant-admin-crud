@@ -238,7 +238,7 @@ ShowDesserts.propTypes={
           picture: PropTypes.string.isRequired,
           price: PropTypes.number.isRequired
         }).isRequired
-    ).isRequired
+    )
 }
 const mapStateToProps=state=>({
     desserts:state.desserts.desserts
