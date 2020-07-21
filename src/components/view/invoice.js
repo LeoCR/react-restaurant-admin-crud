@@ -36,4 +36,4 @@ Invoice.propTypes = {
         order_code:PropTypes.string.isRequired
     }).isRequired
 }
-export default connect(null)( Invoice);
+export default connect(null)( React.memo(Invoice));

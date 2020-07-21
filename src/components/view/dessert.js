@@ -53,4 +53,4 @@ const mapStateToProps=state=>({
     productType:state.modals.productType,
     idToDelete:state.modals.idToDelete
 })
-export default connect(mapStateToProps,mapDispatchToProps)( Dessert);
+export default connect(mapStateToProps,mapDispatchToProps)( React.memo(Dessert));

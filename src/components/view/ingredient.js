@@ -52,4 +52,4 @@ const mapStateToProps=state=>({
     productType:state.modals.productType,
     idToDelete:state.modals.idToDelete
 })
-export default connect(mapStateToProps,mapDispatchToProps)( Ingredient);
+export default connect(mapStateToProps,mapDispatchToProps)(React.memo(Ingredient));

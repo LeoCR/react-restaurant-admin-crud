@@ -15,6 +15,7 @@ export class AddStrongDish extends React.PureComponent{
             name:'',
             description:'',
             picture:'',
+            pictureName:'',
             category:'',
             price:'',
             error:false,
@@ -46,7 +47,8 @@ export class AddStrongDish extends React.PureComponent{
     pictureDish=(e)=>{
         if(e.target.files[0]!==null ||e.target.files[0]!==undefined){
             this.setState({
-                picture:e.target.files[0]
+                picture:e.target.files[0],
+                pictureName:e.target.files[0].name
             });
         }
     }
@@ -218,6 +220,11 @@ export class AddStrongDish extends React.PureComponent{
                                     <input type="file" onChange={this.pictureDish} 
                                     className="form-control-file" 
                                     placeholder="Picture" name="picture"/>
+                                    {this.state.pictureName && (
+                                            <div id="picture_uploaded">
+                                                You have uploaded a file named {this.state.pictureName}
+                                            </div>
+                                    )}
                                 </div>
                                 <div className="form-group">
                                     <label>Category</label>

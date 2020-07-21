@@ -49,4 +49,4 @@ User.propTypes = {
 const mapStateToProps=state=>({
     users:state.users.users
 })
-export default connect(mapStateToProps,{deleteUser})( User);
+export default connect(mapStateToProps,{deleteUser})(React.memo(User));
