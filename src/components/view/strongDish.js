@@ -1,39 +1,57 @@
-import React,{Component} from 'react';
+import React from 'react';
 import {Link} from "react-router-dom";
-import {deleteStrongDish} from "../../actions/strongDishActions";
 import {connect} from "react-redux";
-class StrongDish extends Component{ 
-    deleteMainCourse=()=>{
-        const id=this.props.info.id;
-        if (!(window.confirm('Are you sure you want to delete this Main Course?'))){
-            console.log('Dont Delete Main Course');
-        }
-        else{
-            this.props.deleteStrongDish(id);
-            setTimeout(() => {
-                window.location.reload();
-            }, 1200);
-        }
-    }
-    render(){
-        const {id,name,price,picture} = this.props.info;
-        return(
-            <li className="list-group-item" id={id}>
-                <div className="row justify-content-between align-items-center">
-                    <div className="col-md-8 d-flex justify-content-between align-items-center">
-                        <p className="text-dark m-0">
-                            {name}
-                        </p>
-                        <span className="badge badge-warning text-dark"> $ {price}</span>
-                        <img src={picture} alt={name} className="responsive-img col-md-3"/>
-                    </div>
-                    <div className="col-md-4 d-flex justify-content-end acciones">
-                        <Link to={`/admin/edit/main-course/${id}`} className="btn btn-success mr-2">Edit</Link>
-                        <button type="button" className="btn btn-primary ml-2" onClick={this.deleteMainCourse}>Delete</button>
-                    </div>
+import PropTypes from 'prop-types';
+import {openModal} from "../../helper/modal.helper";
+import {setDelete} from "../../actions/modalActions";
+
+export const StrongDish =props=>{ 
+    const {id,name,price,picture} = props.info;
+    const deleteMainCourse=(e,id)=>{ 
+        props.setDelete(id,'Main Course'); 
+        setTimeout(() => {
+            openModal(e);
+        }, 900);
+    } 
+    return(
+        <li className="list-group-item" id={id}>
+            <div className="row justify-content-between align-items-center">
+                <div className="col-md-8 d-flex justify-content-between align-items-center">
+                    <p className="text-dark m-0">
+                        {name}
+                    </p>
+                    <span className="badge badge-warning text-dark"> $ {price}</span>
+                    <img src={picture} alt={name} className="responsive-img col-md-3"/>
                 </div>
-            </li>
-        )
+                <div className="col-md-4 d-flex justify-content-end acciones">
+                    <Link to={`/admin/edit/main-course/${id}`} className="btn btn-success mr-2">Edit</Link>
+                    <button type="button" className="btn btn-primary ml-2" onClick={(e)=>deleteMainCourse(e,id)}>Delete</button>
+                </div>
+            </div>
+        </li>
+    )
+    
+}
+StrongDish.propTypes = {
+    setDelete: PropTypes.func.isRequired,
+    modals:PropTypes.string.isRequired,
+    productType:PropTypes.string.isRequired,
+    idToDelete:PropTypes.string.isRequired,
+    info: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+        price: PropTypes.number.isRequired,
+        picture:PropTypes.string.isRequired,
+    }).isRequired
+}
+const mapDispatchToProps = dispatch => {
+    return {
+        setDelete: (id,type) => dispatch(setDelete(id,type))
     }
 }
-export default connect(null,{deleteStrongDish})( StrongDish);
+const mapStateToProps=state=>({
+    modals:state.modals.modals,
+    productType:state.modals.productType,
+    idToDelete:state.modals.idToDelete
+})
+export default connect(mapStateToProps,mapDispatchToProps)(React.memo(StrongDish));

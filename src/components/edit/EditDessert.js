@@ -1,11 +1,13 @@
-import React,{Component} from 'react';
+import React from 'react';
 import {connect} from "react-redux";
 import {showDessert,editDessert,updateDessert,getDesserts} from "../../actions/dessertActions";
 import {getIngredientsByDishId,deleteIngredientDish} from "../../actions/ingredientByDishActions";
 import {setDishId,setAddIngredient,setNextIdDishIngredient} from '../../actions/modalActions';
 import {openModal} from '../../helper/modal.helper';
 import api from '../../api/api';
-class EditDessert extends Component{
+import PropTypes from 'prop-types';
+import { withRouter } from "react-router";
+export class EditDessert extends React.PureComponent{
     constructor(props){
         super(props);
         this.state={
@@ -14,90 +16,82 @@ class EditDessert extends Component{
             description:'',
             picture:'',
             price:'',
+            pictureName:'',
             error:false,
             changedPicture:false,
-            ingredientsByDish:[]
+            ingredientsByDish:[],
+            isLoadig:true 
         }
     }
     onAddIngredient=(e)=>{
-        e.preventDefault();
+        if(e){
+            e.preventDefault();
+        }
         this.props.setAddIngredient();
         setTimeout(() => {
-            openModal();
+            openModal(e);
         }, 500);
-    }
-    id=(e)=>{
-        this.setState({
-            id:e.target.value
-        });
-    }
+    } 
     componentDidMount=async()=>{
-        const {id}=this.props.match.params;
-        this.props.getDesserts();
-        this.props.showDessert(id);
-        this.props.setDishId(id);
-        this.props.getIngredientsByDishId(id);
-        var _this=this;
-        await api.get('/api/ingredient-to-dish/count/')
-        .then((res)=>{
-            if(res.data.maxIngredientDishId){
-                var nextIdIngDish=parseInt(res.data.maxIngredientDishId)+1;
-                _this.props.setNextIdDishIngredient(nextIdIngDish)
-            }
-        })
-    }
-    componentWillReceiveProps(nextProps,nextState){
-        if(nextProps.ingredientsByDish){
-            this.setState({
-                ingredientsByDish:nextProps.ingredientsByDish
+        try {
+            var _this=this; 
+            const {id}=this.props.match.params;
+            this.props.getDesserts();
+            this.props.showDessert(id);
+            this.props.setDishId(id);
+            this.props.getIngredientsByDishId(id);
+            await api.get('/api/ingredient-to-dish/count/')
+            .then((res)=>{
+                if(res.data.maxIngredientDishId){
+                    var nextIdIngDish=parseInt(res.data.maxIngredientDishId)+1;
+                    _this.props.setNextIdDishIngredient(nextIdIngDish)
+                }
             })
-        }
-        if(nextProps.dessert){
-            const {id, name,price,description,picture}=nextProps.dessert;
-            this.setState({
-                id,
-                name,
-                description,
-                picture,
-                price
-            })
+            setTimeout(() => {
+                if(this.props.dessert){
+                    const {id, name,price,description,picture}=this.props.dessert;
+                    this.setState({
+                        id,
+                        name,
+                        description,
+                        picture,
+                        price,
+                        isLoadig:false
+                    })
+                }
+            }, 350);
+        } catch (error) {
+            console.log('An error occurs in EditDessert.componentDidMount()');
         }
     }
-    nameDessert=(e)=>{
-        this.setState({
-            name:e.target.value
-        });
-    }
-    descriptionDessert=(e)=>{
-        this.setState({
-            description:e.target.value
-        });
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (nextProps.ingredientsByDish !== prevState.ingredientsByDish) {
+          return({ ingredientsByDish: nextProps.ingredientsByDish });
+        }
     }
     pictureDessert=(e)=>{
+        if(e){
+            e.preventDefault();
+        }
         if(e.target.files[0]!==null){
             this.setState({
                 picture:e.target.files[0],
-                changedPicture:true
+                changedPicture:true,
+                pictureName:e.target.files[0].name
             }); 
         } 
     }
-    priceDessert=(e)=>{
+    onChange=(e)=>{ 
         this.setState({
-            price:e.target.value
-        });
-    }
+            [e.target.name]:e.target.value
+        })
+    } 
     editDessert=(e)=>{   
-        e.preventDefault(); 
-        const {
-            id ,
-            name,
-            description,
-            price,
-            picture,
-            changedPicture
-        } =this.state;
-        var formData=new FormData(),
-        _this=this;
+        if(e){
+            e.preventDefault(); 
+        }
+        var { id , name, description, price, picture, changedPicture } =this.state;
+        var formData=new FormData();
         if(name===''||price===''||description===''){
             this.setState({
                 error:true
@@ -107,7 +101,7 @@ class EditDessert extends Component{
             this.setState({
                 error:false
             });
-            const infoDessert={
+            var infoDessert={
                 id,
                 name,
                 price,
@@ -119,28 +113,35 @@ class EditDessert extends Component{
             formData.append('price',price);
             formData.append('description',description);
             formData.append('picture',picture);
-            if(changedPicture===false){
-                this.props.editDessert(infoDessert,id);
+            try {
+                if(changedPicture===false){ 
+                    this.props.editDessert(infoDessert,id);
+                }
+                else{
+                    this.props.updateDessert(formData,id);
+                }
+                if(this.props.ingredientsByDish.length>0 ){
+                    this.saveIngredients(); 
+                }
+            } catch (error) {
+                console.log('An error occurs in EditDessert.editDessert');
+                console.log(error);
             }
-            else{
-                this.props.updateDessert(formData,id);
-            }
-            if(_this.props.ingredientsByDish.length>0 ){
-                    _this.props.ingredientsByDish.forEach(function(ing) {
-                        api.post('/api/ingredient-to-dish/add/',ing)
-                        .then((res)=>{
-                            console.log(res);
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
-                    });
-            }
-            setTimeout(() => {
-                _this.props.getDesserts();
-                _this.props.history.push('/admin/desserts/');
+            setTimeout(() => { 
+                this.props.history.push('/admin/desserts/');
             }, 1900);
         }
+    }
+    saveIngredients=async()=>{
+        this.props.ingredientsByDish.forEach(async(ing) =>{
+            await api.post('/api/ingredient-to-dish/add/',ing)
+            .then((res)=>{
+                console.log(res);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        });
     }
     deleteIngredientDish=(e,ing)=>{
         e.preventDefault();
@@ -180,60 +181,82 @@ class EditDessert extends Component{
             }    
     }
     render(){
-        const {name,price,description,picture,error} = this.state;
+        var {name,price,description,picture,error} = this.state;
         return(
-            <div className="row justify-content-center mt-5">
-                <div className="col-md-8">
-                    <div className="card">
-                        <div className="card-body">
-                            <h2 className="text-center">Edit Dessert</h2>
-                            <form onSubmit={this.editDessert} id="form-dessert-update">
-                                <div className="form-group">
-                                    <label>Name</label>
-                                    <input type="text" defaultValue={this.state.id} 
-                                    onChange={this.id} className="" style={{display:'none'}}
-                                     name="id"/>
-                                    <input type="text" defaultValue={name} onChange={this.nameDessert} 
-                                    className="form-control" placeholder="Name"
-                                    name="name"
-                                     />
+            (this.state.isLoadig===true)?<p>Loading Data, Please wait...</p>:<React.Fragment>
+                <div className="row justify-content-center mt-5">
+                    <div className="col-md-8">
+                        <div className="card">
+                            <div className="card-body">
+                                <h2 className="text-center">Edit Dessert</h2>
+                                <form onSubmit={this.editDessert} id="form-dessert-update">
+                                    <div className="form-group">
+                                        <label>Name</label>
+                                        <input type="text" defaultValue={this.state.id} 
+                                        onChange={this.onChange} className="" style={{display:'none'}}
+                                        name="id"/>
+                                        <input type="text" defaultValue={name} onChange={(e)=>this.onChange(e)} 
+                                        className="form-control" placeholder="Name"
+                                        name="name" data-testid="name-dessert"
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Description</label>
+                                        <input type="text" defaultValue={description} 
+                                        onChange={(e)=>this.onChange(e)} className="form-control" 
+                                        placeholder="Description"
+                                        name="description" data-testid="description-dessert"
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Picture</label>
+                                        <input type="file" id="picture_upload" data-testid="picture-dessert" 
+                                        onChange={(e)=>this.pictureDessert(e)} 
+                                        className="form-control-file" placeholder="Picture" />
+                                        {
+                                                (this.state.changedPicture===false)?<img src={picture} style={{maxWidth:'400px'}} alt={name}/>:''
+                                        }
+                                        {this.state.pictureName && (
+                                                <div id="picture_uploaded">
+                                                    You have uploaded a file named {this.state.pictureName}
+                                                </div>
+                                        )} 
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Price</label>
+                                        <input type="text" defaultValue={price}  
+                                        onChange={(e)=>this.onChange(e)} 
+                                        className="form-control" placeholder="Price" 
+                                        name="price"  data-testid="price-dessert"/>
+                                    </div>
+                                    {this.getIngredientsByDish()}
+                                {error ? 
+                                <div className="font-weight-bold alert-danger text-center mt-4">
+                                    All the fields are required
                                 </div>
-                                <div className="form-group">
-                                    <label>Description</label>
-                                    <input type="text" defaultValue={description} 
-                                    onChange={this.descriptionDessert} className="form-control" 
-                                    placeholder="Description"
-                                    name="description" 
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label>Picture</label>
-                                    <input type="file" id="picture_upload" defaultValue={picture} 
-                                    onChange={this.pictureDessert} className="form-control-file" placeholder="Picture" />
-                                    <img src={picture} style={{maxWidth:'400px'}} alt={name}/>
-                                    <input type="text" defaultValue={picture} className="form-control-file" 
-                                    readonly="readonly" name="picture" id="picture_hidden" style={{display:"none"}}/>
-                                </div>
-                                <div className="form-group">
-                                    <label>Price</label>
-                                    <input type="text" defaultValue={price}  onChange={this.priceDessert} 
-                                     className="form-control" placeholder="Price" name="price" />
-                                </div>
-                            {this.getIngredientsByDish()}
-                            {error ? 
-                            <div className="font-weight-bold alert-danger text-center mt-4">
-                                All the fields are required
+                                :''
+                                }
+                                    <button data-testid="btn-submit" type="submit" className="btn btn-primary font-weight-bold text-uppercase d-block w-100">Update</button>
+                                </form>
                             </div>
-                            :''
-                            }
-                                <button type="submit" className="btn btn-primary font-weight-bold text-uppercase d-block w-100">Update</button>
-                            </form>
                         </div>
                     </div>
                 </div>
-            </div>
+            </React.Fragment>
         )
     }
+}
+EditDessert.propTypes = {
+    clearIngredientsByDish: PropTypes.func.isRequired,
+    deleteIngredientDish: PropTypes.func.isRequired,
+    setNextIdDishIngredient: PropTypes.func.isRequired,
+    setDishId: PropTypes.func.isRequired,
+    setAddIngredient: PropTypes.func.isRequired,
+    getIngredientsByDishId: PropTypes.func.isRequired,
+    showDessert: PropTypes.func.isRequired,
+    editDessert: PropTypes.func.isRequired,
+    updateDessert: PropTypes.func.isRequired,
+    getDesserts: PropTypes.func.isRequired
 }
 const mapStateToProps=state=>({
     dessert:state.desserts.dessert,
@@ -242,4 +265,7 @@ const mapStateToProps=state=>({
     idDish:state.modals.idDish,
     nextIdDishIngredient:state.modals.nextIdDishIngredient
 })
-export default connect(mapStateToProps,{deleteIngredientDish,setNextIdDishIngredient,setDishId,setAddIngredient,getIngredientsByDishId,showDessert,editDessert,updateDessert,getDesserts})(EditDessert);
+export default withRouter(connect(mapStateToProps,{deleteIngredientDish,setNextIdDishIngredient,
+    setDishId,setAddIngredient,
+    getIngredientsByDishId,showDessert,editDessert,
+    updateDessert,getDesserts})(EditDessert));

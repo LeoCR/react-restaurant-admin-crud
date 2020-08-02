@@ -1,4 +1,4 @@
-import React,{Component} from 'react';
+import React from 'react';
 import api from "../../api/api";
 import {connect} from "react-redux";
 import {addDessert,getDesserts} from "../../actions/dessertActions";
@@ -6,7 +6,8 @@ import {deleteIngredientDish,clearIngredientsByDish} from "../../actions/ingredi
 import {setDishId,setAddIngredient,setNextIdDishIngredient} from '../../actions/modalActions';
 import {openModal} from '../../helper/modal.helper';
 import {randomString} from '../../helper/randomString.helper';
-class AddDessert extends Component{
+import PropTypes from 'prop-types';
+export class AddDessert extends React.PureComponent{
     constructor(props){
         super(props);
         this.state={
@@ -14,53 +15,42 @@ class AddDessert extends Component{
             name:'',
             description:'',
             picture:'',
+            pictureName:'',
             category:'',
             price:'',
             error:false,
             ingredientsByDish:[]
         }
     }
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (nextProps.ingredientsByDish !== prevState.ingredientsByDish) {
+          return({ ingredientsByDish: nextProps.ingredientsByDish });
+        }
+    }
     onAddIngredient=(e)=>{
         e.preventDefault();
         this.props.setAddIngredient();
         setTimeout(() => {
-            openModal();
+            openModal(e);
         }, 500);
     }
-    id=(e)=>{
+    onChange=(e)=>{
         this.setState({
-            id:e.target.value
-        });
-    }
-    nameDessert=(e)=>{
-        this.setState({
-            name:e.target.value
-        });
-    }
-    descriptionDessert=(e)=>{
-        this.setState({
-            description:e.target.value
-        });
-    }
+            [e.target.name]:e.target.value
+        })
+    }  
     pictureDessert=(e)=>{
         if(e.target.files[0]!==null ||e.target.files[0]!==undefined){
             this.setState({
-                picture:e.target.files[0]
-            });
+                picture:e.target.files[0],
+                pictureName:e.target.files[0].name
+            }); 
         }
-    }
-    priceDessert=(e)=>{
-        this.setState({
-            price:e.target.value
-        });
-    }
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.ingredientsByDish !== this.state.ingredientsByDish) {
-          this.setState({ ingredientsByDish: nextProps.ingredientsByDish });
-        }
-    }
+    }  
     addNewDessert=(e)=>{
-        e.preventDefault();
+        if(e){
+            e.preventDefault();
+        }
         const {
             id ,
             name,
@@ -109,7 +99,7 @@ class AddDessert extends Component{
         this.props.deleteIngredientDish(ing.id_ingredient_dish);
     }
     getIngredientsByDishId=()=>{
-        if(this.state.ingredientsByDish.length>0 ){
+        if(this.state.ingredientsByDish.length>0){
             return(
                 <React.Fragment>
                     <h1>Ingredients</h1>
@@ -141,37 +131,43 @@ class AddDessert extends Component{
             )
         }  
     }
-    componentDidMount=async()=>{
+    componentDidMount=async()=>{ 
         var totalOfItems=1,
         idString='',
         _this=this;
-        _this.props.clearIngredientsByDish();
-        var customRandomString=randomString(4);
-        await api.get('/api/desserts')
-            .then(response => {
-                for(var i = 0; i <= response.data.length; ++i){
-                    ++totalOfItems;
-                }
-            }).then(()=>{
-                idString=totalOfItems+1+'ADDEDDESRT_'+customRandomString;//console.log(idString); 
-            })
-            .catch(error => {
-                console.log(error);
-        });
-        await api.get('/api/ingredient-to-dish/count/')
-        .then((res)=>{
-            if(res.data.maxIngredientDishId){
-                var nextIdIngDish=parseInt(res.data.maxIngredientDishId)+1;
-                _this.props.setNextIdDishIngredient(nextIdIngDish)
-            }
-        })
-        setTimeout(() => {
-            this.setState({
-                id:idString
+        try { 
+            _this.props.clearIngredientsByDish();
+            var customRandomString=randomString(4);
+            await api.get('/api/desserts')
+                .then(response => {
+                    for(var i = 0; i <= response.data.length; ++i){
+                        ++totalOfItems;
+                    }
+                }).then(()=>{
+                    idString=totalOfItems+1+'ADDEDDESRT_'+customRandomString;//console.log(idString); 
+                })
+                .catch(error => {
+                    console.log('An error occurs in AddDessert.componentDidMount() but dont worry about');
             });
-            _this.props.setDishId(idString);
-            console.log('this.state.id '+this.state.id);
-        }, 300);
+            await api.get('/api/ingredient-to-dish/count/')
+            .then((res)=>{
+                if(res.data.maxIngredientDishId){
+                    var nextIdIngDish=parseInt(res.data.maxIngredientDishId)+1;
+                    _this.props.setNextIdDishIngredient(nextIdIngDish)
+                }
+            })
+        } catch (error) {
+            console.log('An error occurs in AddDessert.componentDidMount');
+            console.log(error);
+        }
+        finally{
+            setTimeout(() => {
+                _this.setState({
+                    id:idString
+                });
+                _this.props.setDishId(idString); 
+            }, 300);
+        }
     }
     render(){
         const {error} = this.state;
@@ -181,44 +177,49 @@ class AddDessert extends Component{
                     <div className="card">
                         <div className="card-body">
                             <h2 className="text-center">Add New Dessert</h2>
-                            <form onSubmit={this.addNewDessert}>
+                            <form onSubmit={this.addNewDessert} data-testid="form">
                                 <div className="form-group">
                                     <label>Name</label>
                                     <input type="text" defaultValue={this.state.id} 
-                                    onChange={this.id} className="" style={{display:'none'}}
+                                    onChange={this.onChange} style={{display:'none'}}
                                      name="id"/>
-                                    <input type="text" onChange={this.nameDessert} name="name"
-                                     className="form-control" placeholder="Name" />
+                                    <input type="text" onChange={this.onChange} name="name" data-testid="name-dessert"
+                                     className="form-control name-dessert" placeholder="Name" id="name"/>
                                 </div>
                                 <div className="form-group">
                                     <label>Description</label>
                                     <input type="text"
-                                        name="description"
-                                     onChange={this.descriptionDessert} className="form-control" 
-                                    placeholder="Description" />
+                                        name="description" data-testid="description-dessert"
+                                     onChange={this.onChange} className="form-control" 
+                                    placeholder="Description" id="description"/>
                                 </div>
                                 <div className="form-group">
                                     <label>Picture</label>
                                     <input type="file" onChange={this.pictureDessert} 
-                                    className="form-control-file" 
+                                    className="form-control-file" id="picture" data-testid="picture-dessert"
                                     placeholder="Picture" name="picture"/>
+                                            {this.state.pictureName && (
+                                            <div id="picture_uploaded">
+                                                You have uploaded a file named {this.state.pictureName}
+                                            </div>
+                                            )}
                                 </div>
                                 
                                 <div className="form-group">
                                     <label>Price</label>
-                                    <input type="text" onChange={this.priceDessert} 
-                                    className="form-control" 
-                                    name="price"
+                                    <input type="text" onChange={this.onChange} 
+                                    className="form-control" data-testid="price-dessert"
+                                    name="price" id="price"
                                     placeholder="Price" />
                                 </div>
-                            {this.getIngredientsByDishId()}
+                            {this.state.ingredientsByDish?this.getIngredientsByDishId():''}
                             {error ? 
                             <div className="font-weight-bold alert-danger text-center mt-4">
                                 All the fields are required
                             </div>
                             :''
                             }
-                                <button type="submit" className="btn btn-primary font-weight-bold text-uppercase d-block w-100">Add</button>
+                                <button data-testid="btn-submit" type="submit" className="btn btn-primary font-weight-bold text-uppercase d-block w-100">Add</button>
                             </form>
                         </div>
                     </div>
@@ -226,6 +227,15 @@ class AddDessert extends Component{
             </div>
         )
     }
+}
+AddDessert.propTypes = {
+    clearIngredientsByDish: PropTypes.func.isRequired,
+    deleteIngredientDish: PropTypes.func.isRequired,
+    setNextIdDishIngredient: PropTypes.func.isRequired,
+    setDishId: PropTypes.func.isRequired,
+    setAddIngredient: PropTypes.func.isRequired,
+    addDessert: PropTypes.func.isRequired,
+    getDesserts: PropTypes.func.isRequired
 }
 const mapStateToProps=state=>({
     desserts:state.desserts.desserts,

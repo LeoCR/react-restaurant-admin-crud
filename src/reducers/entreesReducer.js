@@ -3,7 +3,8 @@ import {
     ADD_ENTREE,
     SHOW_ENTREE ,EDIT_ENTREE} from "../constants/entreeTypes";
 const initialState={
-    entrees:[]
+    entrees:[],
+    entree:null
 }
 export default function entreesReducer(state=initialState,action){
     switch (action.type) {
@@ -15,7 +16,7 @@ export default function entreesReducer(state=initialState,action){
         case DELETE_ENTREE:
         return{
             ...state,
-            entrees:state.entrees.filter(entree=>entree!==action.payload)
+            entrees:state.entrees.filter(entree=>entree.id!==action.payload)
         }
         case ADD_ENTREE:
             return{

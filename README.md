@@ -1,6 +1,6 @@
 # react-restaurant-admin-crud 
 
-This project require another project as backend [Server Nodejs](https://github.com/LeoCR/server-nodejs-restaurant).
+The purpose of this project is show you how to interact React and Redux with Nodejs and MySQL as Database.This project require another project as backend [Server Nodejs](https://github.com/LeoCR/server-nodejs-restaurant).
 
 ## User Interfaces
 
@@ -11,6 +11,10 @@ This project require another project as backend [Server Nodejs](https://github.c
 ### Edit Main Course
 
 <img src="screenshots/edit_main_course.png" alt="Edit Main Courses"/>
+
+### Delete Main Course
+
+<img src="screenshots/delete_main_course.png" alt="Delete Main Courses"/>
 
 ### Add ingredient to Main Course
 

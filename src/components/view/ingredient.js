@@ -1,38 +1,54 @@
-import React,{Component} from 'react';
+import React from 'react';
 import {Link} from "react-router-dom";
-import {deleteIngredient} from "../../actions/ingredientActions";
 import {connect} from "react-redux";
-class Ingredient extends Component{ 
-    deleteIngredient=()=>{
-        const id=this.props.info.id;
-        if (!(window.confirm('Are you sure you want to delete this Ingredient?'))){
-            console.log('Dont Delete Ingredient');
-        }
-        else{
-            this.props.deleteIngredient(id);
-            setTimeout(() => {
-                window.location.reload();
-            }, 1200);
-        }
-    }
-    render(){
-        const {id,name,img} = this.props.info;
-        return(
-            <li className="list-group-item" id={id}>
-                <div className="row justify-content-between align-items-center">
-                    <div className="col-md-8 d-flex justify-content-between align-items-center">
-                        <p className="text-dark m-0">
-                            {name}
-                        </p>
-                        <img src={img} alt={name} className="responsive-img col-md-3"/>
-                    </div>
-                    <div className="col-md-4 d-flex justify-content-end acciones">
-                        <Link to={`/admin/edit/ingredient/${id}`} className="btn btn-success mr-2">Edit</Link>
-                        <button type="button" className="btn btn-primary ml-2" onClick={this.deleteIngredient}>Delete</button>
-                    </div>
+import PropTypes from 'prop-types';
+import {openModal} from "../../helper/modal.helper";
+import {setDelete} from "../../actions/modalActions";
+
+export const Ingredient=props=>{ 
+    const {id,name,img} = props.info;
+    const deleteIngredient=(e,id)=>{
+        props.setDelete(id,'Ingredient'); 
+        setTimeout(() => {
+            openModal(e);
+        }, 900);
+    } 
+    return(
+        <li className="list-group-item" id={id}>
+            <div className="row justify-content-between align-items-center">
+                <div className="col-md-8 d-flex justify-content-between align-items-center">
+                    <p className="text-dark m-0">
+                        {name}
+                    </p>
+                    <img src={img} alt={name} className="responsive-img col-md-3"/>
                 </div>
-            </li>
-        )
+                <div className="col-md-4 d-flex justify-content-end acciones">
+                    <Link to={`/admin/edit/ingredient/${id}`} className="btn btn-success mr-2">Edit</Link>
+                    <button type="button" className="btn btn-primary ml-2" onClick={(e)=>deleteIngredient(e,id)}>Delete</button>
+                </div>
+            </div>
+        </li>
+    ) 
+}
+Ingredient.propTypes = {
+    deleteIngredient: PropTypes.func.isRequired,
+    modals:PropTypes.string.isRequired,
+    productType:PropTypes.string.isRequired,
+    idToDelete:PropTypes.string.isRequired,
+    info: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired, 
+        img:PropTypes.string.isRequired,
+    }).isRequired
+}
+const mapDispatchToProps = dispatch => {
+    return {
+        setDelete: (id,type) => dispatch(setDelete(id,type))
     }
 }
-export default connect(null,{deleteIngredient})( Ingredient);
+const mapStateToProps=state=>({
+    modals:state.modals.modals,
+    productType:state.modals.productType,
+    idToDelete:state.modals.idToDelete
+})
+export default connect(mapStateToProps,mapDispatchToProps)(React.memo(Ingredient));

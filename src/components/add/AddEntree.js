@@ -1,4 +1,4 @@
-import React,{Component} from 'react';
+import React from 'react';
 import api from "../../api/api";
 import {connect} from "react-redux";
 import {addEntree,getEntrees} from "../../actions/entreeActions";
@@ -6,7 +6,8 @@ import {deleteIngredientDish,clearIngredientsByDish} from "../../actions/ingredi
 import {setDishId,setAddIngredient,setNextIdDishIngredient} from '../../actions/modalActions';
 import {openModal} from '../../helper/modal.helper';
 import {randomString} from '../../helper/randomString.helper';
-class AddEntree extends Component{
+import PropTypes from 'prop-types';
+export class AddEntree extends React.PureComponent{
     constructor(props){
         super(props);
         this.state={
@@ -14,58 +15,42 @@ class AddEntree extends Component{
             name:'',
             description:'',
             picture:'',
+            pictureName:'',
             category:'',
             price:'',
             error:false,
             ingredientsByDish:[]
         }
     }
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (nextProps.ingredientsByDish !== prevState.ingredientsByDish) {
+          return({ ingredientsByDish: nextProps.ingredientsByDish });
+        }
+    }
+    onChange=(e)=>{
+        this.setState({
+            [e.target.name]:e.target.value
+        })
+    }  
     onAddIngredient=(e)=>{
         e.preventDefault();
         this.props.setAddIngredient();
         setTimeout(() => {
-            openModal();
+            openModal(e);
         }, 500);
-    }
-    id=(e)=>{
-        this.setState({
-            id:e.target.value
-        });
-    }
-    nameDish=(e)=>{
-        this.setState({
-            name:e.target.value
-        });
-    }
-    descriptionDish=(e)=>{
-        this.setState({
-            description:e.target.value
-        });
     }
     pictureDish=(e)=>{
         if(e.target.files[0]!==null ||e.target.files[0]!==undefined){
             this.setState({
-                picture:e.target.files[0]
+                picture:e.target.files[0],
+                pictureName:e.target.files[0].name
             });
         }
-    }
-    categoryDish=(e)=>{
-        this.setState({
-            category:e.target.value
-        });
-    }
-    priceDish=(e)=>{
-        this.setState({
-            price:e.target.value
-        });
-    }
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.ingredientsByDish !== this.state.ingredientsByDish) {
-          this.setState({ ingredientsByDish: nextProps.ingredientsByDish });
-        }
-    }
+    } 
     addNewEntree=(e)=>{
-        e.preventDefault();
+        if(e){
+            e.preventDefault();
+        }
         const {
             id ,
             name,
@@ -149,34 +134,42 @@ class AddEntree extends Component{
         }  
     }
     componentDidMount=async()=>{
-        var totalOfItems=1;var idString,_this=this;
-        _this.props.clearIngredientsByDish();
-        var customRandomString=randomString(4);
-        await api.get('/api/entrees')
-            .then(response => {
-                for(var i = 0; i <=response.data.length; ++i){
-                    ++totalOfItems;
-                }
-            }).then(()=>{
-                idString=totalOfItems+1+'ADDEDENTR_'+customRandomString;//console.log(idString); 
-            })
-            .catch(error => {
-                console.log(error);
-        });
-        await api.get('/api/ingredient-to-dish/count/')
-        .then((res)=>{
-            if(res.data.maxIngredientDishId){
-                var nextIdIngDish=parseInt(res.data.maxIngredientDishId)+1;
-                _this.props.setNextIdDishIngredient(nextIdIngDish)
-            }
-        })
-        setTimeout(() => {
-            _this.setState({
-                id:idString
+        var totalOfItems=1, 
+        idString='',
+        _this=this,
+        customRandomString=randomString(4);
+        try {
+            _this.props.clearIngredientsByDish();
+            await api.get('/api/entrees')
+                .then(response => {
+                    for(var i = 0; i <=response.data.length; ++i){
+                        ++totalOfItems;
+                    }
+                }).then(()=>{
+                    idString=totalOfItems+1+'ADDEDENTR_'+customRandomString;//console.log(idString); 
+                })
+                .catch(error => {
+                    console.log(error);
             });
-            _this.props.setDishId(idString);
-            console.log('this.state.id '+this.state.id);
-        }, 300);
+            await api.get('/api/ingredient-to-dish/count/')
+            .then((res)=>{
+                if(res.data.maxIngredientDishId){
+                    var nextIdIngDish=parseInt(res.data.maxIngredientDishId)+1;
+                    _this.props.setNextIdDishIngredient(nextIdIngDish)
+                }
+            })
+        } catch (error) {
+            console.log('An error occurs AddEntree.componentDidMount');
+            console.log(error);
+        }
+        finally{
+            setTimeout(() => {
+                _this.setState({
+                    id:idString
+                });
+                _this.props.setDishId(idString); 
+            }, 300);
+        }
     }
     render(){
         const {error} = this.state;
@@ -190,46 +183,51 @@ class AddEntree extends Component{
                                 <div className="form-group">
                                     <label>Name</label>
                                     <input type="text" defaultValue={this.state.id} 
-                                    onChange={this.id} className="" style={{display:'none'}}
+                                    onChange={this.onChange} className="" style={{display:'none'}}
                                      name="id"/>
-                                    <input type="text" onChange={this.nameDish} name="name"
-                                     className="form-control" placeholder="Name" />
+                                    <input type="text" onChange={this.onChange} name="name"
+                                     className="form-control" placeholder="Name" data-testid="name-entree"/>
                                 </div>
                                 <div className="form-group">
                                     <label>Description</label>
                                     <input type="text"
                                         name="description"
-                                     onChange={this.descriptionDish} className="form-control" 
-                                    placeholder="Description" />
+                                     onChange={this.onChange} className="form-control" 
+                                    placeholder="Description" data-testid="description-entree"/>
                                 </div>
                                 <div className="form-group">
                                     <label>Picture</label>
                                     <input type="file" onChange={this.pictureDish} 
                                     className="form-control-file" 
-                                    placeholder="Picture" name="picture"/>
+                                    placeholder="Picture" name="picture" data-testid="picture-entree"/>
+                                    {this.state.pictureName && (
+                                    <div id="picture_uploaded">
+                                        You have uploaded a file named {this.state.pictureName}
+                                    </div>
+                                    )}
                                 </div>
                                 <div className="form-group">
                                     <label>Category</label>
-                                    <input type="text" onChange={this.categoryDish} 
+                                    <input type="text" onChange={this.onChange} 
                                     className="form-control"
                                     name="category"
-                                     placeholder="Category" />
+                                     placeholder="Category"  data-testid="category-entree"/>
                                 </div>
                                 <div className="form-group">
                                     <label>Price</label>
-                                    <input type="text" onChange={this.priceDish} 
+                                    <input type="text" onChange={this.onChange} 
                                     className="form-control" 
                                     name="price"
-                                    placeholder="Price" />
+                                    placeholder="Price"  data-testid="price-entree"/>
                                 </div>
-                            {this.getIngredientsByDishId()}
+                                {this.state.ingredientsByDish?this.getIngredientsByDishId():''}
                             {error ? 
                             <div className="font-weight-bold alert-danger text-center mt-4">
                                 All the fields are required
                             </div>
                             :''
                             }
-                                <button type="submit" className="btn btn-primary font-weight-bold text-uppercase d-block w-100">Add</button>
+                                <button data-testid="btn-submit" type="submit" className="btn btn-primary font-weight-bold text-uppercase d-block w-100">Add</button>
                             </form>
                             
                         </div>
@@ -238,6 +236,15 @@ class AddEntree extends Component{
             </div>
         )
     }
+}
+AddEntree.propTypes = {
+    clearIngredientsByDish: PropTypes.func.isRequired,
+    deleteIngredientDish: PropTypes.func.isRequired,
+    setNextIdDishIngredient: PropTypes.func.isRequired,
+    setDishId: PropTypes.func.isRequired,
+    setAddIngredient: PropTypes.func.isRequired,
+    addEntree: PropTypes.func.isRequired,
+    getEntrees: PropTypes.func.isRequired
 }
 const mapStateToProps=state=>({
     entrees:state.entrees.entrees,

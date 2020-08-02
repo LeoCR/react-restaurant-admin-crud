@@ -1,4 +1,4 @@
-import {GET_INVOICES,DELETE_INVOICE,SHOW_INVOICE,SHOW_ORDER_PRODUCTS,EDIT_INVOICE} from "../constants/invoiceTypes";
+import {GET_INVOICES,SHOW_INVOICE,SHOW_ORDER_PRODUCTS} from "../constants/invoiceTypes";
 import api from '../api/api';
 export const getInvoices=()=>async dispatch=>{
     const response = await api.get('/api/invoices/');
@@ -20,18 +20,4 @@ export const showOrderProducts=orderCode=>async dispatch=>{
         type:SHOW_ORDER_PRODUCTS,
         payload:response.data
     })
-}
-export const editInvoice=invoice=>async dispatch=>{
-    const response = await api.put(`/api/invoice/update/${invoice.orderCode}`,invoice);
-    dispatch({
-        type:EDIT_INVOICE,
-        payload:response.data
-    })
-}
-export const deleteInvoice=id=>async dispatch=>{
-    await api.delete(`/api/invoices/delete/${id}`)
-    dispatch({
-        type:DELETE_INVOICE,
-        payload:id
-    })
-}
+}  

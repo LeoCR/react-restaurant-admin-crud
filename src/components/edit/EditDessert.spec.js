@@ -90,7 +90,7 @@ describe("EditDessert Component",()=>{
                 idDish:'1DESRT',
                 nextIdDishIngredient:66
             } 
-        });
+        }); 
         wrapper = shallow(
             <Provider store={store}>
                  <EditDessert {...props}/>
@@ -104,7 +104,7 @@ describe("EditDessert Component",()=>{
             expect(wrapper.find(".col-md-8")).toHaveLength(1);
             expect(wrapper.find(".row.justify-content-center.mt-5")).toHaveLength(1);
             expect(wrapper.find(".form-group")).toHaveLength(4);
-        }, 500);
+        }, 500); 
     })
     it('Should render 2 buttons',()=>{
         setTimeout(() => {

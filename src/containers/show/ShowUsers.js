@@ -4,7 +4,9 @@ import {getUsers} from "../../actions/userActions";
 import User from "../../components/view/user";
 import $ from 'jquery';
 import { Link } from 'react-router-dom';
-class ShowUsers extends React.Component{
+import { withRouter } from "react-router";
+import PropTypes from 'prop-types';
+export class ShowUsers extends React.Component{
     constructor(props){
         super(props);
         this.state={
@@ -64,7 +66,7 @@ class ShowUsers extends React.Component{
             }
         } 
         catch (error) {
-            console.log('An error occurs in ShowUsers.componentWillReceiveProps(),but don\'t worry about it :) ');
+            console.log('An error occurs in ShowUsers.componentWillReceiveProps(),but dont worry about it :) ');
             console.log(error);
         }
     }
@@ -99,7 +101,7 @@ class ShowUsers extends React.Component{
                 this.props.history.push("/admin/users/"+tempCurrentPage)
             }
         } catch (error) {
-            console.log("An error occurs in ShowUsers.getNextPage(),but don\'t worry about it :)");
+            console.log("An error occurs in ShowUsers.getNextPage(),but dont worry about it :)");
             console.log(error);
         }
     }
@@ -118,7 +120,7 @@ class ShowUsers extends React.Component{
                 this.props.history.push("/admin/users/"+tempCurrentPage);
             } 
         } catch (error) {
-            console.log("An error occurs in ShowUsers.getPrevPage(),but don\'t worry about it :)");
+            console.log("An error occurs in ShowUsers.getPrevPage(),but dont worry about it :)");
             console.log(error);
         }
     }
@@ -137,7 +139,7 @@ class ShowUsers extends React.Component{
                 this.setUsersItems(); 
             }, 200);
         } catch (error) {
-            console.log('An error occurs in ShowUsers.getPage() , but don\'t worry about it');
+            console.log('An error occurs in ShowUsers.getPage() , but dont worry about it');
             console.log(error);
         }
     }
@@ -162,7 +164,7 @@ class ShowUsers extends React.Component{
             while(index <=maxItemsLenght);
         } 
         catch (error) {
-            console.log('An error occurs in ShowUsers.setUsersItems(), but don\'t worried about :)');
+            console.log('An error occurs in ShowUsers.setUsersItems(), but dont worried about :)');
             console.log(error);
         }
     }
@@ -173,7 +175,7 @@ class ShowUsers extends React.Component{
                     <nav id="pagination-bottom">
                         <ul className="pagination">
                             <li className="page-item">
-                                <a className="page-link" onClick={()=>this.getPrevPage()}>Previous</a>
+                                <a className="page-link" onClick={()=>this.getPrevPage()} href="#previous">Previous</a>
                             </li> 
                             {
                                 this.state.totalPagination.map((index,key)=> 
@@ -183,7 +185,7 @@ class ShowUsers extends React.Component{
                                 )
                             }
                             <li className="page-item">
-                                <a className="page-link" onClick={()=>this.getNextPage()}>Next</a>
+                                <a className="page-link" onClick={()=>this.getNextPage()} href="#next">Next</a>
                             </li> 
                         </ul>
                     </nav>
@@ -214,7 +216,27 @@ class ShowUsers extends React.Component{
         )
     }
 }
+ShowUsers.propTypes={
+    getUsers:PropTypes.func.isRequired,
+    users:PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.number.isRequired,
+            firstname: PropTypes.string.isRequired,
+            lastname: PropTypes.string.isRequired,
+            username: PropTypes.string.isRequired,
+            about: PropTypes.string,
+            email: PropTypes.string.isRequired,
+            password: PropTypes.string,
+            last_login: PropTypes.string,
+            updated_at: PropTypes.string,
+            created_at:PropTypes.string,
+            status:PropTypes.string,
+            provider:PropTypes.string,
+            id_user:PropTypes.string
+        }).isRequired
+    ).isRequired
+}
 const mapStateToProps=state=>({
     users:state.users.users
 })
-export default connect(mapStateToProps,{getUsers})(ShowUsers);
+export default withRouter(connect(mapStateToProps,{getUsers})(ShowUsers));

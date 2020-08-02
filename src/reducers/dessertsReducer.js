@@ -1,8 +1,9 @@
 import { EDIT_DESSERT,SHOW_DESSERTS, 
     DELETE_DESSERT,ADD_DESSERT,
-    SHOW_DESSERT } from "../constants/dessertTypes";
+    SHOW_DESSERT,UPDATE_DESSERT } from "../constants/dessertTypes";
 const initialState={
-    desserts:[]
+    desserts:[],
+    dessert:null
 }
 export default function dessertsReducer(state=initialState,action){
     switch (action.type) {
@@ -14,7 +15,7 @@ export default function dessertsReducer(state=initialState,action){
         case DELETE_DESSERT:
         return{
             ...state,
-            desserts:state.desserts.filter(dessert=>dessert!==action.payload)
+            desserts:state.desserts.filter(dessert=>dessert.id!==action.payload)
         }
         case ADD_DESSERT:
             return{
@@ -34,7 +35,16 @@ export default function dessertsReducer(state=initialState,action){
                     ?(dessert=action.payload)
                     :dessert
                 )
-        }
+            }
+        case UPDATE_DESSERT:
+            return{
+                ...state,
+                desserts:state.desserts.map(
+                    dessert=>dessert.id===action.payload.id
+                    ?(dessert=action.payload)
+                    :dessert
+                )
+            }
         default:
             return state;
     }

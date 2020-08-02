@@ -1,4 +1,4 @@
-import React,{Component} from 'react';
+import React from 'react';
 import api from "../../api/api";
 import {connect} from "react-redux";
 import {addStrongDish,getStrongsDishes} from "../../actions/strongDishActions";
@@ -6,7 +6,8 @@ import {deleteIngredientDish,clearIngredientsByDish} from "../../actions/ingredi
 import {setDishId,setAddIngredient,setNextIdDishIngredient} from '../../actions/modalActions';
 import {openModal} from '../../helper/modal.helper';
 import {randomString} from '../../helper/randomString.helper';
-class AddStrongDish extends Component{
+import PropTypes from 'prop-types';
+export class AddStrongDish extends React.PureComponent{
     constructor(props){
         super(props);
         this.state={
@@ -14,6 +15,7 @@ class AddStrongDish extends Component{
             name:'',
             description:'',
             picture:'',
+            pictureName:'',
             category:'',
             price:'',
             error:false,
@@ -24,48 +26,31 @@ class AddStrongDish extends Component{
         e.preventDefault();
         this.props.setAddIngredient();
         setTimeout(() => {
-            openModal();
+            openModal(e);
         }, 500);
     }
-    id=(e)=>{
+    onChange=(e)=>{
         this.setState({
-            id:e.target.value
-        });
-    }
-    nameDish=(e)=>{
-        this.setState({
-            name:e.target.value
-        });
-    }
-    descriptionDish=(e)=>{
-        this.setState({
-            description:e.target.value
-        });
-    }
+            [e.target.name]:e.target.value
+        })
+    }   
     pictureDish=(e)=>{
         if(e.target.files[0]!==null ||e.target.files[0]!==undefined){
             this.setState({
-                picture:e.target.files[0]
+                picture:e.target.files[0],
+                pictureName:e.target.files[0].name
             });
         }
-    }
-    categoryDish=(e)=>{
-        this.setState({
-            category:e.target.value
-        });
-    }
-    priceDish=(e)=>{
-        this.setState({
-            price:e.target.value
-        });
-    }
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.ingredientsByDish !== this.state.ingredientsByDish) {
-          this.setState({ ingredientsByDish: nextProps.ingredientsByDish });
+    } 
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (nextProps.ingredientsByDish !== prevState.ingredientsByDish) {
+          return({ ingredientsByDish: nextProps.ingredientsByDish });
         }
     }
     addNewStrongDish=(e)=>{ 
-        e.preventDefault();
+        if(e){
+            e.preventDefault();
+        }
         const {
             id ,
             name,
@@ -149,35 +134,42 @@ class AddStrongDish extends Component{
         }  
     }
     componentDidMount=async()=>{
-        var totalOfItems=1, idString='',_this=this;
-        _this.props.clearIngredientsByDish();
-        var customRandomString=randomString(4);
-        this.props.getStrongsDishes();
-        await api.get('/api/strongs-dishes')
-            .then(response => {
-                for(var i = 0; i <= response.data.length; ++i){
-                        ++totalOfItems;
-                }
-            }).then(()=>{
-                idString=totalOfItems+1+'ADDEDBGD_'+customRandomString;//console.log(idString); 
-            })
-            .catch(error => {
-                console.log(error);
-        });
-        await api.get('/api/ingredient-to-dish/count/')
-        .then((res)=>{
-            if(res.data.maxIngredientDishId){
-                var nextIdIngDish=parseInt(res.data.maxIngredientDishId)+1;
-                _this.props.setNextIdDishIngredient(nextIdIngDish)
-            }
-        })
-        setTimeout(() => {
-            _this.setState({
-                id:idString
+        var totalOfItems=1, 
+        idString='',
+        _this=this;
+        try {
+            _this.props.clearIngredientsByDish();
+            var customRandomString=randomString(4); 
+            await api.get('/api/strongs-dishes')
+                .then(response => {
+                    for(var i = 0; i <= response.data.length; ++i){
+                            ++totalOfItems;
+                    }
+                }).then(()=>{
+                    idString=totalOfItems+1+'ADDEDBGD_'+customRandomString;//console.log(idString); 
+                })
+                .catch(error => {
+                    console.log(error);
             });
-            _this.props.setDishId(idString);
-            console.log('this.state.id '+this.state.id);
-        }, 300);
+            await api.get('/api/ingredient-to-dish/count/')
+            .then((res)=>{
+                if(res.data.maxIngredientDishId){
+                    var nextIdIngDish=parseInt(res.data.maxIngredientDishId)+1;
+                    _this.props.setNextIdDishIngredient(nextIdIngDish)
+                }
+            })
+        } catch (error) {
+            console.log('An error occurs in AddStrongDish');
+            console.log(error); 
+        }
+        finally{
+            setTimeout(() => {
+                _this.setState({
+                    id:idString
+                });
+                _this.props.setDishId(idString); 
+            }, 300);
+        }
     }
     render(){
         const {error} = this.state;
@@ -191,16 +183,16 @@ class AddStrongDish extends Component{
                                 <div className="form-group">
                                     <label>Name</label>
                                     <input type="text" defaultValue={this.state.id} 
-                                    onChange={this.id} className="" style={{display:'none'}}
+                                    onChange={this.onChange} className="" style={{display:'none'}}
                                      name="id"/>
-                                    <input type="text" onChange={this.nameDish} name="name"
+                                    <input type="text" onChange={this.onChange} name="name"
                                      className="form-control" placeholder="Name" />
                                 </div>
                                 <div className="form-group">
                                     <label>Description</label>
                                     <input type="text"
                                         name="description"
-                                     onChange={this.descriptionDish} className="form-control" 
+                                     onChange={this.onChange} className="form-control" 
                                     placeholder="Description" />
                                 </div>
                                 <div className="form-group">
@@ -208,22 +200,27 @@ class AddStrongDish extends Component{
                                     <input type="file" onChange={this.pictureDish} 
                                     className="form-control-file" 
                                     placeholder="Picture" name="picture"/>
+                                    {this.state.pictureName && (
+                                            <div id="picture_uploaded">
+                                                You have uploaded a file named {this.state.pictureName}
+                                            </div>
+                                    )}
                                 </div>
                                 <div className="form-group">
                                     <label>Category</label>
-                                    <input type="text" onChange={this.categoryDish} 
+                                    <input type="text" onChange={this.onChange} 
                                     className="form-control"
                                     name="category"
                                      placeholder="Category" />
                                 </div>
                                 <div className="form-group">
                                     <label>Price</label>
-                                    <input type="text" onChange={this.priceDish} 
+                                    <input type="text" onChange={this.onChange} 
                                     className="form-control" 
                                     name="price"
                                     placeholder="Price" />
                                 </div>
-                            {this.getIngredientsByDishId()}
+                                {this.state.ingredientsByDish?this.getIngredientsByDishId():''}
                             {error ? 
                             <div className="font-weight-bold alert-danger text-center mt-4">
                                 All the fields are required
@@ -239,6 +236,15 @@ class AddStrongDish extends Component{
             </div>
         )
     }
+}
+AddStrongDish.propTypes = {
+    clearIngredientsByDish: PropTypes.func.isRequired,
+    deleteIngredientDish: PropTypes.func.isRequired,
+    setNextIdDishIngredient: PropTypes.func.isRequired,
+    setDishId: PropTypes.func.isRequired,
+    setAddIngredient: PropTypes.func.isRequired,
+    addStrongDish: PropTypes.func.isRequired,
+    getStrongsDishes: PropTypes.func.isRequired
 }
 const mapStateToProps=state=>({
     strongsDishes:state.strongsDishes.strongsDishes,

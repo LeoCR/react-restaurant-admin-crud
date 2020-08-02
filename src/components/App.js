@@ -1,30 +1,29 @@
-import React, { Component } from 'react';
-import Header from "../components/Header";
-import AddStrongDish from "../components/add/AddStrongDish";
-import AddEntree from "../components/add/AddEntree";
-import AddIngredient from "../components/add/AddIngredient";
-import AddDessert from "../components/add/AddDessert";
-import AddDrink from "../components/add/AddDrink";
-import ShowStrongsDishes from "./show/ShowStrongsDishes";
-import ShowIngredients from "./show/ShowIngredients";
-import ShowEntrees from "./show/ShowEntrees";
-import ShowDesserts from "./show/ShowDesserts";
-import ShowDrinks from "./show/ShowDrinks";
-import ShowInvoices from "./show/ShowInvoices";
-import ShowUsers from "./show/ShowUsers";
-import EditStrongDish from "../components/edit/EditStrongDish";
-import EditIngredient from "../components/edit/EditIngredient";
-import EditEntree from "../components/edit/EditEntree";
-import EditDessert from "../components/edit/EditDessert";
-import EditDrink from "../components/edit/EditDrink";
-import EditInvoice from "../components/edit/EditInvoice";
+import React from 'react';
+import Header from "./Header";
+import AddStrongDish from "./add/AddStrongDish";
+import AddEntree from "./add/AddEntree";
+import AddIngredient from "./add/AddIngredient";
+import AddDessert from "./add/AddDessert";
+import AddDrink from "./add/AddDrink";
+import ShowStrongsDishes from "../containers/show/ShowStrongsDishes";
+import ShowIngredients from "../containers/show/ShowIngredients";
+import ShowEntrees from "../containers/show/ShowEntrees";
+import ShowDesserts from "../containers/show/ShowDesserts";
+import ShowDrinks from "../containers/show/ShowDrinks";
+import ShowInvoices from "../containers/show/ShowInvoices";
+import ShowUsers from "../containers/show/ShowUsers";
+import EditStrongDish from "./edit/EditStrongDish";
+import EditIngredient from "./edit/EditIngredient";
+import EditEntree from "./edit/EditEntree";
+import EditDessert from "./edit/EditDessert";
+import EditDrink from "./edit/EditDrink";
+import EditInvoice from "./edit/EditInvoice";
 import {Router,Route,Switch} from "react-router-dom";
 import history from '../history';
-import Modal from "../components/Modal";
-import EditUser from '../components/edit/EditUser';
-import AddUser from '../components/add/AddUser';
-class App extends Component {
-  render() {
+import Modal from "./Modal";
+import EditUser from './edit/EditUser';
+import AddUser from './add/AddUser';
+const App =()=> { 
     return (
       <React.Fragment>
           <Router history={history}>
@@ -75,7 +74,5 @@ class App extends Component {
           <Modal/>
       </React.Fragment>
     );
-  }
-}
-
-export default App
+} 
+export default  React.memo(App);

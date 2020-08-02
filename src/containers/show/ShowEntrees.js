@@ -4,7 +4,9 @@ import $ from 'jquery';
 import Entree from "../../components/view/entree";
 import {getEntrees} from "../../actions/entreeActions";
 import { Link } from 'react-router-dom';
-class ShowEntrees extends Component{
+import { withRouter } from "react-router";
+import PropTypes from 'prop-types';
+export class ShowEntrees extends Component{
     constructor(props){
         super(props);
         this.state={
@@ -66,7 +68,7 @@ class ShowEntrees extends Component{
             }
         } 
         catch (error) {
-            console.log('An error occurs in ShowEntrees.componentWillReceiveProps(),but don\'t worry about it :) ');
+            console.log('An error occurs in ShowEntrees.componentWillReceiveProps(),but dont worry about it :) ');
             console.log(error);
         }
     }
@@ -101,7 +103,7 @@ class ShowEntrees extends Component{
                 this.props.history.push("/admin/appetizers/"+tempCurrentPage);
             }
         } catch (error) {
-            console.log("An error occurs in ShowEntrees.getNextPage(),but don\'t worry about it :)");
+            console.log("An error occurs in ShowEntrees.getNextPage(),but dont worry about it :)");
             console.log(error);
         }
     }
@@ -120,7 +122,7 @@ class ShowEntrees extends Component{
                 this.props.history.push("/admin/appetizers/"+tempCurrentPage); 
             }
         } catch (error) {
-            console.log("An error occurs in ShowEntrees.getPrevPage(),but don\'t worry about it :)");
+            console.log("An error occurs in ShowEntrees.getPrevPage(),but dont worry about it :)");
             console.log(error);
         }
     }
@@ -139,7 +141,7 @@ class ShowEntrees extends Component{
                 this.setEntreesItems(); 
             }, 300);
         } catch (error) {
-            console.log('An error occurs in ShowEntrees.getPage() , but don\'t worry about it');
+            console.log('An error occurs in ShowEntrees.getPage() , but dont worry about it');
             console.log(error);
         }
     }
@@ -174,7 +176,7 @@ class ShowEntrees extends Component{
                     <nav id="pagination-bottom">
                         <ul className="pagination">
                             <li className="page-item">
-                                <a className="page-link" onClick={()=>this.getPrevPage()}>Previous</a>
+                                <a className="page-link" onClick={()=>this.getPrevPage()}  href="#previous">Previous</a>
                             </li> 
                             {
                                 this.state.totalPagination.map((index,key)=> 
@@ -184,7 +186,7 @@ class ShowEntrees extends Component{
                                 )
                             }
                             <li className="page-item">
-                                <a className="page-link" onClick={()=>this.getNextPage()}>Next</a>
+                                <a className="page-link" onClick={()=>this.getNextPage()} href="#next">Next</a>
                             </li> 
                         </ul>
                     </nav>
@@ -216,7 +218,19 @@ class ShowEntrees extends Component{
         )
     }
 }
+ShowEntrees.propTypes={
+    getEntrees:PropTypes.func.isRequired,
+    entrees:PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.string.isRequired,
+          name: PropTypes.string.isRequired,
+          description: PropTypes.string.isRequired,
+          picture: PropTypes.string.isRequired,
+          price: PropTypes.number.isRequired
+        }).isRequired
+    ).isRequired
+}
 const mapStateToProps=state=>({
     entrees:state.entrees.entrees
 })
-export default connect(mapStateToProps,{getEntrees})(ShowEntrees);
+export default withRouter(connect(mapStateToProps,{getEntrees})(ShowEntrees));

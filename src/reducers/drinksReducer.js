@@ -2,7 +2,8 @@ import { EDIT_DRINK,SHOW_DRINKS,
     DELETE_DRINK,ADD_DRINK,
     SHOW_DRINK } from "../constants/drinkTypes";
 const initialState={
-    drinks:[]
+    drinks:[],
+    drink:null
 }
 export default function drinksReducer(state=initialState,action){
     switch (action.type) {
@@ -14,7 +15,7 @@ export default function drinksReducer(state=initialState,action){
         case DELETE_DRINK:
         return{
             ...state,
-            drinks:state.drinks.filter(drink=>drink!==action.payload)
+            drinks:state.drinks.filter(drink=>drink.id!==action.payload)
         }
         case ADD_DRINK:
             return{

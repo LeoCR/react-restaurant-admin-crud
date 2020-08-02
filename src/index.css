@@ -94,3 +94,15 @@ table th,table td,.table > thead > tr > th{
  .form-group img{
    max-height: 100px;
  }
+ .modal-content{
+   padding: 10px 20px;
+   margin: 10px 15px;
+ }
+.modal-content .btn{
+  margin-top: 30px;
+}
+form .alert-danger{
+  position: relative;
+  float: left;
+  width: 100%;
+}

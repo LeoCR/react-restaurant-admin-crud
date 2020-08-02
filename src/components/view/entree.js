@@ -1,65 +1,57 @@
-import React,{Component} from 'react';
-import {Link} from "react-router-dom";
-import {deleteEntree} from "../../actions/entreeActions";
-import {connect} from "react-redux";
-import api from "../../api/api";
-class Entree extends Component{ 
-    deleteEntree=async()=>{
-        const id=this.props.info.id;
-        var _this=this;
-        try {
-            if (!(window.confirm('Are you sure you want to delete this Appetizer?'))){
-                console.log('Dont Delete Appetizer');
-            }
-            else{
-                await api.get('/api/ingredients/'+id)
-                .then(async(res)=>{
-                    for (let index = 0; index < res.data.length; index++) {
-                        if(res.data[index].id_ingredient!=='undefined'){
-                            console.log('Deleting id_ingredient_dish: '+res.data[index].id_ingredient_dish);
-                            await api.delete('/api/ingredient-to-dish/delete/'+res.data[index].id_ingredient_dish)
-                            .then((resp)=>{
-                                console.log(resp);
-                            })
-                        }
-                    }
-                })
-                .then(()=>{
-                    _this.props.deleteEntree(id);
-                })
-                .catch((err)=>{
-                    console.log(err);
-                })
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1200);
-            }
-            
-        } 
-        catch (error) {
-            console.log('An error occurs in Entree.deleteEntree()');
-            console.log(error);
-        }
-    }
-    render(){
-        const {id,name,price,picture} = this.props.info;
-        return(
-            <li className="list-group-item" id={id}>
-                <div className="row justify-content-between align-items-center">
-                    <div className="col-md-8 d-flex justify-content-between align-items-center">
-                        <p className="text-dark m-0">
-                            {name}
-                        </p>
-                        <span className="badge badge-warning text-dark"> $ {price}</span>
-                        <img src={picture} alt={name} className="responsive-img col-md-3"/>
-                    </div>
-                    <div className="col-md-4 d-flex justify-content-end acciones">
-                        <Link to={`/admin/edit/appetizer/${id}`} className="btn btn-success mr-2">Edit</Link>
-                        <button type="button" className="btn btn-primary ml-2" onClick={this.deleteEntree}>Delete</button>
-                    </div>
+import React from 'react';
+import {Link} from "react-router-dom"; 
+import {connect} from "react-redux"; 
+import PropTypes from 'prop-types';
+import {openModal} from "../../helper/modal.helper";
+import {setDelete} from "../../actions/modalActions";
+
+export const Entree=props=>{ 
+    const {id,name,price,picture} =props.info;
+    const deleteEntree=(e,id)=>{ 
+        props.setDelete(id,'Appetizer'); 
+        setTimeout(() => {
+            openModal(e);
+        }, 900);
+    }    
+    return(
+        <li className="list-group-item" id={id}>
+            <div className="row justify-content-between align-items-center">
+                <div className="col-md-8 d-flex justify-content-between align-items-center">
+                    <p className="text-dark m-0">
+                        {name}
+                    </p>
+                    <span className="badge badge-warning text-dark"> $ {price}</span>
+                    <img src={picture} alt={name} className="responsive-img col-md-3"/>
                 </div>
-            </li>
-        )
+                <div className="col-md-4 d-flex justify-content-end acciones">
+                    <Link to={`/admin/edit/appetizer/${id}`} className="btn btn-success mr-2">Edit</Link>
+                    <button type="button" className="btn btn-primary ml-2" onClick={(e)=>deleteEntree(e,id)}>Delete</button>
+                </div>
+            </div>
+        </li>
+    )
+}
+
+Entree.propTypes = {
+    setDelete: PropTypes.func.isRequired,
+    modals:PropTypes.string.isRequired,
+    productType:PropTypes.string.isRequired,
+    idToDelete:PropTypes.string.isRequired,
+    info: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+        price: PropTypes.number.isRequired,
+        picture:PropTypes.string.isRequired,
+    }).isRequired
+}
+const mapDispatchToProps = dispatch => {
+    return {
+        setDelete: (id,type) => dispatch(setDelete(id,type))
     }
 }
-export default connect(null,{deleteEntree})( Entree);
+const mapStateToProps=state=>({
+    modals:state.modals.modals,
+    productType:state.modals.productType,
+    idToDelete:state.modals.idToDelete
+})
+export default connect(mapStateToProps,mapDispatchToProps)( React.memo(Entree));

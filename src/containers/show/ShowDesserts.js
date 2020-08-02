@@ -4,7 +4,9 @@ import Dessert from "../../components/view/dessert";
 import {getDesserts} from "../../actions/dessertActions";
 import $ from 'jquery'; 
 import { Link } from 'react-router-dom';
-class ShowDesserts extends Component{
+import { withRouter } from "react-router";
+import PropTypes from 'prop-types';
+export class ShowDesserts extends Component{
     constructor(props){
         super(props);
         this.state={
@@ -39,22 +41,27 @@ class ShowDesserts extends Component{
         }
     }
     async componentDidMount(){
-        await this.props.getDesserts();
-        const {desserts}= this.props;
-        this.setState({
-            totalItems:desserts.length
-        });
-        var tempTotalPages=Math.ceil(desserts.length/this.state.maxItemsPerPage);
-        var tempItems=[];
-        for (let index = 1; index <= tempTotalPages; index++) {
-            tempItems.push(index);
+        try {
+            await this.props.getDesserts();
+            const {desserts}= this.props;
+            this.setState({
+                totalItems:desserts.length
+            });
+            var tempTotalPages=Math.ceil(desserts.length/this.state.maxItemsPerPage);
+            var tempItems=[];
+            for (let index = 1; index <= tempTotalPages; index++) {
+                tempItems.push(index);
+            }
+            this.setState({
+                totalPagination:tempItems
+            });
+            this.setDessertsItems();
+        } catch (error) {
+            console.log('An error occurs in ShowDesserts.componentDidMount()');
+            console.log(error);
         }
-        this.setState({
-            totalPagination:tempItems
-        });
-        this.setDessertsItems();
     }
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         try {
             if(nextProps.match.params.page!==null){
                 const {page}=nextProps.match.params;
@@ -70,7 +77,7 @@ class ShowDesserts extends Component{
             }
         } 
         catch (error) {
-            console.log('An error occurs in ShowDesserts.componentWillReceiveProps(),but don\'t worry about it :) ');
+            console.log('An error occurs in ShowDesserts.componentWillReceiveProps(),but dont worry about it :) ');
             console.log(error);
         }
     }
@@ -93,6 +100,7 @@ class ShowDesserts extends Component{
     getNextPage=()=>{ 
         try {
             if(this.state.currentPage<this.state.totalPagination.length){
+                console.log('getNextPage')
                 if($('.page-nav').hasClass('active')){
                     $('.page-nav').removeClass('active');
                 }
@@ -105,7 +113,7 @@ class ShowDesserts extends Component{
                 this.props.history.push("/admin/desserts/"+tempCurrentPage);
             }
         } catch (error) {
-            console.log("An error occurs in ShowSDesserts.getNextPage(),but don\'t worry about it :)");
+            console.log("An error occurs in ShowSDesserts.getNextPage(),but dont worry about it :)");
             console.log(error);
         }
     }
@@ -124,7 +132,7 @@ class ShowDesserts extends Component{
                 this.props.history.push("/admin/desserts/"+tempCurrentPage);
             }
         } catch (error) {
-            console.log("An error occurs in ShowSDesserts.getPrevPage(),but don\'t worry about it :)");
+            console.log("An error occurs in ShowSDesserts.getPrevPage(),but dont worry about it :)");
             console.log(error);
         }
     }
@@ -143,7 +151,7 @@ class ShowDesserts extends Component{
                 this.setDessertsItems(); 
             }, 300);
         } catch (error) {
-            console.log('An error occurs in ShowDesserts.getPage() , but don\'t worry about it');
+            console.log('An error occurs in ShowDesserts.getPage() , but dont worry about it');
             console.log(error);
         }
     }
@@ -156,7 +164,7 @@ class ShowDesserts extends Component{
             if(maxItemsLenght>desserts.length){
                 maxItemsLenght=desserts.length;
             }
-            do{ 
+            do{  
                 if(desserts[index].name!==null   ){
                     tempDessertsToShow.push(desserts[index]);
                 }
@@ -168,8 +176,8 @@ class ShowDesserts extends Component{
             while(index <=maxItemsLenght);
         } 
         catch (error) {
-            console.log('An error occurs no worried about');
-            console.log(error);
+            console.log('An error occurs in ShowDesserts.setDessertsItems() but no worried about it');
+            //console.log(error);
         }
     }
     getPagination=()=>{
@@ -179,7 +187,7 @@ class ShowDesserts extends Component{
                     <nav id="pagination-bottom">
                         <ul className="pagination">
                             <li className="page-item">
-                                <a className="page-link" onClick={()=>this.getPrevPage()}>Previous</a>
+                                <a className="page-link" onClick={()=>this.getPrevPage()} href="#previous">Previous</a>
                             </li> 
                             {
                                 this.state.totalPagination.map((index,key)=> 
@@ -189,7 +197,7 @@ class ShowDesserts extends Component{
                                 )
                             }
                             <li className="page-item">
-                                <a className="page-link" onClick={()=>this.getNextPage()}>Next</a>
+                                <a className="page-link" onClick={()=>this.getNextPage()} href="#next">Next</a>
                             </li> 
                         </ul>
                     </nav>
@@ -220,7 +228,19 @@ class ShowDesserts extends Component{
         )
     }
 }
+ShowDesserts.propTypes={
+    getDesserts:PropTypes.func.isRequired,
+    desserts:PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.string.isRequired,
+          name: PropTypes.string.isRequired,
+          description: PropTypes.string.isRequired,
+          picture: PropTypes.string.isRequired,
+          price: PropTypes.number.isRequired
+        }).isRequired
+    )
+}
 const mapStateToProps=state=>({
     desserts:state.desserts.desserts
 })
-export default connect(mapStateToProps,{getDesserts})(ShowDesserts);
+export default withRouter(connect(mapStateToProps,{getDesserts})(ShowDesserts));

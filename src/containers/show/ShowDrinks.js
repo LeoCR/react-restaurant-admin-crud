@@ -4,7 +4,9 @@ import Drink from "../../components/view/drink";
 import {getDrinks} from "../../actions/drinkActions";
 import $ from 'jquery';
 import { Link } from 'react-router-dom';
-class ShowDrinks extends React.Component{
+import { withRouter } from "react-router";
+import PropTypes from 'prop-types';
+export class ShowDrinks extends React.Component{
     constructor(props){
         super(props);
         this.state={
@@ -64,7 +66,7 @@ class ShowDrinks extends React.Component{
             }
         } 
         catch (error) {
-            console.log('An error occurs in ShowDrinks.componentWillReceiveProps(),but don\'t worry about it :) ');
+            console.log('An error occurs in ShowDrinks.componentWillReceiveProps(),but dont worry about it :) ');
             console.log(error);
         }
     }
@@ -99,7 +101,7 @@ class ShowDrinks extends React.Component{
                 this.props.history.push("/admin/drinks/"+tempCurrentPage)
             }
         } catch (error) {
-            console.log("An error occurs in ShowDrinks.getNextPage(),but don\'t worry about it :)");
+            console.log("An error occurs in ShowDrinks.getNextPage(),but dont worry about it :)");
             console.log(error);
         }
     }
@@ -118,7 +120,7 @@ class ShowDrinks extends React.Component{
                 this.props.history.push("/admin/drinks/"+tempCurrentPage)
             }
         } catch (error) {
-            console.log("An error occurs in ShowDrinks.getPrevPage(),but don\'t worry about it :)");
+            console.log("An error occurs in ShowDrinks.getPrevPage(),but dont worry about it :)");
             console.log(error);
         }
     }
@@ -137,7 +139,7 @@ class ShowDrinks extends React.Component{
                 this.setDrinksItems(); 
             }, 300);
         } catch (error) {
-            console.log('An error occurs in ShowDrinks.getPage() , but don\'t worry about it');
+            console.log('An error occurs in ShowDrinks.getPage() , but dont worry about it');
             console.log(error);
         }
     }
@@ -172,7 +174,7 @@ class ShowDrinks extends React.Component{
                     <nav id="pagination-bottom">
                         <ul className="pagination">
                             <li className="page-item">
-                                <a className="page-link" onClick={()=>this.getPrevPage()}>Previous</a>
+                                <a className="page-link" onClick={()=>this.getPrevPage()} href="#previous">Previous</a>
                             </li> 
                             {
                                 this.state.totalPagination.map((index,key)=> 
@@ -182,7 +184,7 @@ class ShowDrinks extends React.Component{
                                 )
                             }
                             <li className="page-item">
-                                <a className="page-link" onClick={()=>this.getNextPage()}>Next</a>
+                                <a className="page-link" onClick={()=>this.getNextPage()} href="#next">Next</a>
                             </li> 
                         </ul>
                     </nav>
@@ -217,7 +219,19 @@ class ShowDrinks extends React.Component{
         )
     }
 }
+ShowDrinks.propTypes={
+    getDrinks:PropTypes.func.isRequired,
+    drinks:PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.string.isRequired,
+          name: PropTypes.string.isRequired,
+          description: PropTypes.string.isRequired,
+          picture: PropTypes.string.isRequired,
+          price: PropTypes.string.isRequired
+        }).isRequired
+    ).isRequired
+}
 const mapStateToProps=state=>({
     drinks:state.drinks.drinks
 })
-export default connect(mapStateToProps,{getDrinks})(ShowDrinks);
+export default withRouter(connect(mapStateToProps,{getDrinks})(ShowDrinks));

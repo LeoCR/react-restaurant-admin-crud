@@ -1,7 +1,8 @@
-import React,{Component} from 'react';
+import React from 'react';
 import {connect} from "react-redux";
 import {showDrink,editDrink,updateDrink,getDrinks} from "../../actions/drinkActions";
-class EditDrink extends Component{
+import PropTypes from 'prop-types';
+export class EditDrink extends React.PureComponent{
     constructor(props){
         super(props);
         this.state={
@@ -14,11 +15,11 @@ class EditDrink extends Component{
             changedPicture:false
         }
     }
-    id=(e)=>{
+    onChange=(e)=>{
         this.setState({
-            id:e.target.value
-        });
-    }
+            [e.target.name]:e.target.value
+        })
+    } 
     componentDidMount(){
         const {id}=this.props.match.params;
         this.props.getDrinks();
@@ -35,42 +36,22 @@ class EditDrink extends Component{
                 price
             })
         }
-    }
-    nameDrink=(e)=>{
-        this.setState({
-            name:e.target.value
-        });
-    }
-    descriptionDrink=(e)=>{
-        this.setState({
-            description:e.target.value
-        });
-    }
+    } 
     pictureDrink=(e)=>{
+        if(e){
+            e.preventDefault();
+        }
         if(e.target.files[0]!==null){
             this.setState({
                 picture:e.target.files[0],
                 changedPicture:true
             });   
         }
-    }
-    priceDrink=(e)=>{
-        this.setState({
-            price:e.target.value
-        });
-    }
+    } 
     editDrink=(e)=>{ 
         e.preventDefault();   
-        const {
-            id ,
-            name,
-            description,
-            price,
-            picture,
-            changedPicture
-        } =this.state;
-        var formData=new FormData(),
-        _this=this;
+        var { id ,name,description,price,picture,changedPicture} =this.state;
+        var formData=new FormData()
         if(name===''||price===''||description===''){
             this.setState({
                 error:true
@@ -80,32 +61,33 @@ class EditDrink extends Component{
             this.setState({
                 error:false
             });
-            const infoDrink={
-                id,
-                name,
-                price,
-                description,
-                picture
-            }
+            var infoDrink={ id, name, price, description,  picture};
             formData.append('id',id);
             formData.append('name',name);
             formData.append('price',price);
             formData.append('description',description);
             formData.append('picture',picture); 
-            if(changedPicture===false){
-                this.props.editDrink(infoDrink,id);
+            try {
+                if(changedPicture===false){
+                    this.props.editDrink(infoDrink,id);
+                }
+                else{
+                    this.props.updateDrink(formData,id);
+                }
+            } catch (error) {
+                console.log('An error occurs in EditDrink.editDrink');
+                console.log(error);
             }
-            else{
-                this.props.updateDrink(formData,id);
+            finally{
+                setTimeout(() => {
+                    this.props.getDrinks();
+                    this.props.history.push('/admin/drinks/');
+                }, 1200);
             }
-            setTimeout(() => {
-                this.props.getDrinks();
-                _this.props.history.push('/admin/drinks/');
-            }, 900);
         }
     }
     render(){
-        const {name,price,description,picture,error} = this.state;
+        var {name,price,description,picture,error} = this.state;
         return(
             <div className="row justify-content-center mt-5">
                 <div className="col-md-8">
@@ -117,9 +99,10 @@ class EditDrink extends Component{
                                 <div className="form-group">
                                     <label>Name</label>
                                     <input type="text" defaultValue={this.state.id} 
-                                    onChange={this.id} className="" style={{display:'none'}}
+                                    onChange={this.onChange} className="" style={{display:'none'}}
                                      name="id"/>
-                                    <input type="text" defaultValue={name} onChange={this.nameDrink} 
+                                    <input type="text" defaultValue={name} 
+                                    onChange={(e)=>this.onChange(e)} 
                                     className="form-control" placeholder="Name"
                                     name="name"
                                      />
@@ -127,7 +110,8 @@ class EditDrink extends Component{
                                 <div className="form-group">
                                     <label>Description</label>
                                     <input type="text" defaultValue={description} 
-                                    onChange={this.descriptionDrink} className="form-control" 
+                                    onChange={(e)=>this.onChange(e)} 
+                                    className="form-control" 
                                     placeholder="Description"
                                     name="description" 
                                     />
@@ -135,7 +119,7 @@ class EditDrink extends Component{
                                 <div className="form-group">
                                     <label>Picture</label>
                                     <input type="file" id="picture_upload" defaultValue={picture} 
-                                    onChange={this.pictureDrink} className="form-control-file"
+                                    onChange={(e)=>this.pictureDrink(e)} className="form-control-file"
                                      placeholder="Picture" />
                                     <img src={picture} style={{maxWidth:'400px'}} alt={name}/>
                                     <input type="text" defaultValue={picture} className="form-control-file"
@@ -144,7 +128,7 @@ class EditDrink extends Component{
                                 <div className="form-group">
                                     <label>Price</label>
                                     <input type="text" defaultValue={price} 
-                                    onChange={this.priceDrink} 
+                                    onChange={(e)=>this.onChange(e)} 
                                     className="form-control"
                                      placeholder="Price" 
                                      name="price"
@@ -165,6 +149,12 @@ class EditDrink extends Component{
             </div>
         )
     }
+}
+EditDrink.propTypes = {
+    showDrink: PropTypes.func.isRequired,
+    editDrink: PropTypes.func.isRequired,
+    updateDrink: PropTypes.func.isRequired,
+    getDrinks: PropTypes.func.isRequired
 }
 const mapStateToProps=state=>({
     drink:state.drinks.drink,

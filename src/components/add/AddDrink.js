@@ -1,9 +1,10 @@
-import React,{Component} from 'react';
+import React from 'react';
 import api from "../../api/api";
 import {connect} from "react-redux";
 import {addDrink,getDrinks} from "../../actions/drinkActions";
 import {randomString} from '../../helper/randomString.helper';
-class AddDrink extends Component{
+import PropTypes from 'prop-types';
+export class AddDrink extends React.PureComponent{
     constructor(props){
         super(props);
         this.state={
@@ -11,39 +12,28 @@ class AddDrink extends Component{
             name:'',
             description:'',
             picture:'',
+            pictureName:'',
             price:'',
             error:false
         }
     }
-    id=(e)=>{
+    onChange=(e)=>{
         this.setState({
-            id:e.target.value
-        });
-    }
-    nameDish=(e)=>{
-        this.setState({
-            name:e.target.value
-        });
-    }
-    descriptionDish=(e)=>{
-        this.setState({
-            description:e.target.value
-        });
-    }
+            [e.target.name]:e.target.value
+        })
+    }   
     pictureDrink=(e)=>{
         if(e.target.files[0]!==null ||e.target.files[0]!==undefined){
             this.setState({
-                picture:e.target.files[0]
+                picture:e.target.files[0],
+                pictureName:e.target.files[0].name
             });
         }
-    }
-    priceDish=(e)=>{
-        this.setState({
-            price:e.target.value
-        });
-    }
+    } 
     addNewDrink=(e)=>{
-        e.preventDefault();
+        if(e){
+            e.preventDefault();
+        }
         const {
             id ,
             name,
@@ -108,30 +98,35 @@ class AddDrink extends Component{
                                 <div className="form-group">
                                     <label>Name</label>
                                     <input type="text" defaultValue={this.state.id} 
-                                    onChange={this.id} className="" style={{display:'none'}}
+                                    onChange={this.onChange} className="" style={{display:'none'}}
                                      name="id"/>
-                                    <input type="text" onChange={this.nameDish} name="name"
-                                     className="form-control" placeholder="Name" />
+                                    <input type="text" onChange={this.onChange} name="name"
+                                     className="form-control" placeholder="Name" data-testid="name-drink" />
                                 </div>
                                 <div className="form-group">
                                     <label>Description</label>
                                     <input type="text"
                                         name="description"
-                                     onChange={this.descriptionDish} className="form-control" 
-                                    placeholder="Description" />
+                                     onChange={this.onChange} className="form-control" 
+                                    placeholder="Description" data-testid="description-drink"/>
                                 </div>
                                 <div className="form-group">
                                     <label>Picture</label>
                                     <input type="file" onChange={this.pictureDrink} 
                                     className="form-control-file" 
-                                    placeholder="Picture" name="picture"/>
+                                    placeholder="Picture" name="picture" data-testid="picture-drink"/>
+                                    {this.state.pictureName && (
+                                            <div id="picture_uploaded">
+                                                You have uploaded a file named {this.state.pictureName}
+                                            </div>
+                                    )}
                                 </div>
                                 <div className="form-group">
                                     <label>Price</label>
-                                    <input type="text" onChange={this.priceDish} 
+                                    <input type="text" onChange={this.onChange} 
                                     className="form-control" 
                                     name="price"
-                                    placeholder="Price" />
+                                    placeholder="Price"  data-testid="price-drink"/>
                                 </div>
                             {error ? 
                             <div className="font-weight-bold alert-danger text-center mt-4">
@@ -139,7 +134,7 @@ class AddDrink extends Component{
                             </div>
                             :''
                             }
-                                <button type="submit" className="btn btn-primary font-weight-bold text-uppercase d-block w-100">Add</button>
+                                <button data-testid="btn-submit" type="submit" className="btn btn-primary font-weight-bold text-uppercase d-block w-100">Add</button>
                             </form>
                             
                         </div>
@@ -148,6 +143,10 @@ class AddDrink extends Component{
             </div>
         )
     }
+}
+AddDrink.propTypes = {
+    addDrink: PropTypes.func.isRequired,
+    getDrinks: PropTypes.func.isRequired 
 }
 const mapStateToProps=state=>({
     drinks:state.drinks.drinks

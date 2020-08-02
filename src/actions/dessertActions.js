@@ -1,4 +1,4 @@
-import { SHOW_DESSERTS,DELETE_DESSERT,ADD_DESSERT, SHOW_DESSERT,EDIT_DESSERT} from "../constants/dessertTypes";
+import { SHOW_DESSERTS,DELETE_DESSERT,ADD_DESSERT, SHOW_DESSERT,EDIT_DESSERT,UPDATE_DESSERT} from "../constants/dessertTypes";
 import api from '../api/api';
 export  const getDesserts=()=>async dispatch=>{
     const response = await api.get('/api/desserts');
@@ -32,38 +32,33 @@ export const showDessert=id=>async dispatch=>{
         payload:response.data
     })
 }
-
 export const editDessert=(dessert,id)=>async dispatch=>{
-    const response = await api.put(`/api/dessert/update/${id}`,dessert)
-    .then((res)=>{
-        console.log('Response dessertActions.editDessert()');
-        console.log(res);
+    return await api.put('/api/dessert/update/'+id,dessert)
+    .then((res)=>{ 
+        dispatch({
+            type:EDIT_DESSERT,
+            payload:res.data
+        }) 
     })
     .catch((err)=>{
         console.log('An error occurs in dessertActions.editDessert');
         console.log(err);
-    });
-    dispatch({
-        type:EDIT_DESSERT,
-        payload:response.data
-    })
+    });    
 }
 export const updateDessert=(dessert,id)=>async dispatch=>{
-    const response = await api.put(`/api/dessert/update-img/${id}`,dessert,{
+    return await api.put('/api/dessert/update-img/'+id,dessert,{
         headers: {
             'content-type': 'multipart/form-data'
         }
     })
-    .then((res)=>{
-        console.log('Response dessertActions.updateDessert()');
-        console.log(res);
+    .then((res)=>{ 
+        dispatch({
+            type:UPDATE_DESSERT,
+            payload:res.data
+        })
     })
     .catch((err)=>{
         console.log('An error occurs in dessertActions.updateDessert');
         console.log(err);
     });
-    dispatch({
-        type:EDIT_DESSERT,
-        payload:response.data
-    })
 }

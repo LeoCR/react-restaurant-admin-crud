@@ -3,7 +3,8 @@ import api from "../../api/api";
 import {connect} from "react-redux";
 import {addIngredient,getIngredients} from "../../actions/ingredientActions";
 import {randomString} from '../../helper/randomString.helper';
-class AddIngredient extends React.Component{
+import PropTypes from 'prop-types';
+export class AddIngredient extends React.PureComponent{
     constructor(props){
         super(props);
         this.state={
@@ -13,16 +14,11 @@ class AddIngredient extends React.Component{
             error:false
         }
     }
-    id=(e)=>{
+    onChange=(e)=>{
         this.setState({
-            id:e.target.value
-        });
-    }
-    nameIngredient=(e)=>{
-        this.setState({
-            name:e.target.value
-        });
-    }
+            [e.target.name]:e.target.value
+        })
+    }  
     imgIngredient=(e)=>{
         if(e.target.files[0]!==null ||e.target.files[0]!==undefined){
             this.setState({
@@ -60,26 +56,34 @@ class AddIngredient extends React.Component{
         
     }
     componentDidMount=async()=>{
-        var totalOfItems=1;var idString,_this=this;;
-        var customRandomString=randomString(4);
-        await api.get('/api/ingredients')
-            .then(response => {
-                for(var i = 0; i <= response.data.length; ++i){
-                        ++totalOfItems;
-                }
-            }).then(()=>{
-                idString=totalOfItems+1+'ADDEDING_'+customRandomString;//console.log(idString); 
-            })
-            .catch(error => {
-                console.log(error);
-        });
-        setTimeout(() => {
-            _this.setState({
-                id:idString
+        var totalOfItems=1,
+        idString='',
+        _this=this,
+        customRandomString=randomString(4);
+        try {
+            await api.get('/api/ingredients')
+                .then(response => {
+                    for(var i = 0; i <= response.data.length; ++i){
+                            ++totalOfItems;
+                    }
+                }).then(()=>{
+                    idString=totalOfItems+1+'ADDEDING_'+customRandomString;//console.log(idString); 
+                })
+                .catch(error => {
+                    console.log(error);
             });
-            console.log('this.state.id '+this.state.id);
-        }, 300);
-        
+        } catch (error) {
+            console.log('An error occurs in AddIngredient.componentDidMount');
+            console.log(error); 
+        }
+        finally{
+            setTimeout(() => {
+                _this.setState({
+                    id:idString
+                });
+                console.log('this.state.id '+this.state.id);
+            }, 300);
+        }
     }
     render(){
         const {error} = this.state;
@@ -93,9 +97,9 @@ class AddIngredient extends React.Component{
                                 <div className="form-group">
                                     <label>Name</label>
                                     <input type="text" defaultValue={this.state.id} 
-                                    onChange={this.id} name="id" style={{display:'none'}}
+                                    onChange={this.onChange} name="id" style={{display:'none'}}
                                     />
-                                    <input type="text" onChange={this.nameIngredient} name="name"
+                                    <input type="text" onChange={this.onChange} name="name"
                                      className="form-control" placeholder="Name" />
                                 </div>
                                 <div className="form-group">
@@ -118,6 +122,10 @@ class AddIngredient extends React.Component{
             </div>
         )
     }
+}
+AddIngredient.propTypes = {
+    addIngredient: PropTypes.func.isRequired,
+    getIngredients: PropTypes.func.isRequired
 }
 const mapStateToProps=state=>({
     ingredients:state.ingredients.ingredients

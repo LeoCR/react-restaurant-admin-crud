@@ -1,7 +1,8 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {showUser,editUser,getUsers} from "../../actions/userActions";
-class EditUser extends React.Component{
+import PropTypes from 'prop-types';
+class EditUser extends React.PureComponent{
     constructor(props){
         super(props);
         this.state={
@@ -42,46 +43,11 @@ class EditUser extends React.Component{
             })
         }
     }
-    id=(e)=>{
+    onChange=(e)=>{ 
         this.setState({
-            id:e.target.value
-        });
-    }
-    firstnameUser=(e)=>{
-        this.setState({
-            firstname:e.target.value
-        });
-    }
-    lastnameUser=(e)=>{
-        this.setState({
-            lastname:e.target.value
-        });
-    }
-    usernameUser=(e)=>{
-        this.setState({
-            username:e.target.value
-        });
-    }
-    aboutUser=(e)=>{
-        this.setState({
-            about:e.target.value
-        });
-    }
-    emailUser=(e)=>{
-        this.setState({
-            email:e.target.value
-        });
-    }
-    passwordUser=(e)=>{
-        this.setState({
-            password:e.target.value
-        });
-    }
-    retypePasswordUser=(e)=>{
-        this.setState({
-            retypePassword:e.target.value
-        });
-    }
+            [e.target.name]:e.target.value
+        })
+    } 
     editUser=(e)=>{
         e.preventDefault();
         const {
@@ -152,9 +118,9 @@ class EditUser extends React.Component{
                                 <div className="form-group">
                                     <label>First Name</label>
                                     <input type="text" defaultValue={id} 
-                                    onChange={this.id}  style={{display:'none'}}
+                                    onChange={this.onChange}  style={{display:'none'}}
                                      name="id"/>
-                                    <input type="text" defaultValue={firstname} onChange={this.firstnameUser} 
+                                    <input type="text" defaultValue={firstname} onChange={this.onChange} 
                                     className="form-control" placeholder="First Name"
                                     name="firstname"
                                      />
@@ -162,25 +128,24 @@ class EditUser extends React.Component{
                                 <div className="form-group">
                                     <label style={{width:'100%'}}>Last Name</label> 
                                     <input type="text" defaultValue={lastname} className="form-control"
-                                    onChange={this.lastnameUser} />
+                                    onChange={this.onChange} />
                                 </div>
                                 <div className="form-group">
                                     <label>Username</label>
                                     <input type="text" defaultValue={username} className="form-control"
-                                     name="username" id="username" onChange={this.usernameUser}/>
+                                     name="username" id="username" onChange={this.onChange}/>
                                 </div>
                                 <div className="form-group">
                                     <label>About</label>
-                                    <input type="text" defaultValue={about} 
-                                    onChange={this.aboutUser} className="form-control"
+                                    <textarea type="text" defaultValue={about} 
+                                    onChange={this.onChange} className="form-control"
                                      placeholder="About" 
-                                     name="about"
-                                     />
+                                     name="about" ></textarea>
                                 </div>
                                 <div className="form-group">
                                     <label>Email</label>
                                     <input type="text" defaultValue={email} 
-                                    onChange={this.emailUser} 
+                                    onChange={this.onChange} 
                                     className="form-control"
                                      placeholder="Email" 
                                      name="email"
@@ -189,7 +154,7 @@ class EditUser extends React.Component{
                                 <div className="form-group">
                                     <label>Password</label>
                                     <input type="password" 
-                                    onChange={this.passwordUser} 
+                                    onChange={this.onChange} 
                                     className="form-control"
                                      placeholder="Password" 
                                      name="password"
@@ -198,10 +163,10 @@ class EditUser extends React.Component{
                                 <div className="form-group">
                                     <label>Re-type Password</label>
                                     <input type="password" 
-                                    onChange={this.retypePasswordUser} 
+                                    onChange={this.onChange} 
                                     className="form-control"
                                      placeholder="Password" 
-                                     name="password"
+                                     name="retypePassword"
                                      />
                                 </div> 
                                 
@@ -217,6 +182,11 @@ class EditUser extends React.Component{
             </div>
         )
     }
+}
+EditUser.propTypes = {
+    showUser: PropTypes.func.isRequired,
+    editUser: PropTypes.func.isRequired,
+    getUsers: PropTypes.func.isRequired
 }
 const mapStateToProps=state=>({
     user:state.users.user,

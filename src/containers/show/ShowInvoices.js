@@ -4,7 +4,9 @@ import $ from 'jquery';
 import {connect} from "react-redux";
 import Invoice from '../../components/view/invoice';
 import { Link } from 'react-router-dom';
-class ShowInvoices extends React.Component{
+import { withRouter } from "react-router";
+import PropTypes from 'prop-types';
+export class ShowInvoices extends React.Component{
     constructor(props){
         super(props);
         this.state={
@@ -70,7 +72,7 @@ class ShowInvoices extends React.Component{
             }
         } 
         catch (error) {
-            console.log('An error occurs in ShowDesserts.componentWillReceiveProps(),but don\'t worry about it :) ');
+            console.log('An error occurs in ShowDesserts.componentWillReceiveProps(),but dont worry about it :) ');
             console.log(error);
         }
     }
@@ -181,7 +183,7 @@ class ShowInvoices extends React.Component{
                     <nav id="pagination-bottom">
                         <ul className="pagination">
                             <li className="page-item">
-                                <a className="page-link" onClick={()=>this.getPrevPage()}>Previous</a>
+                                <a className="page-link" onClick={()=>this.getPrevPage()} href="#previous">Previous</a>
                             </li> 
                             {
                                 this.state.totalPagination.map((index,key)=> 
@@ -191,7 +193,7 @@ class ShowInvoices extends React.Component{
                                 )
                             }
                             <li className="page-item">
-                                <a className="page-link" onClick={()=>this.getNextPage()}>Next</a>
+                                <a className="page-link" onClick={()=>this.getNextPage()} href="#next">Next</a>
                             </li> 
                         </ul>
                     </nav>
@@ -218,7 +220,18 @@ class ShowInvoices extends React.Component{
         )
     }
 }
+ShowInvoices.propTypes={
+    getInvoices:PropTypes.func.isRequired,
+    invoices:PropTypes.arrayOf(
+        PropTypes.shape({
+          order_code: PropTypes.string.isRequired,
+          email: PropTypes.string.isRequired,
+          date_of_billing: PropTypes.string.isRequired,
+          username: PropTypes.string.isRequired
+        }).isRequired
+    ).isRequired
+}
 const mapStateToProps=state=>({
     invoices:state.invoices.invoices
 })
-export default connect(mapStateToProps,{getInvoices})(ShowInvoices);
+export default withRouter(connect(mapStateToProps,{getInvoices})(ShowInvoices));

@@ -1,7 +1,8 @@
-import React,{Component} from 'react';
+import React from 'react';
 import {connect} from "react-redux";
 import {showIngredient,editIngredient,updateIngredient,getIngredients} from "../../actions/ingredientActions";
-class EditIngredient extends Component{
+import PropTypes from 'prop-types';
+export class EditIngredient extends React.PureComponent{
     constructor(props){
         super(props);
         this.state={
@@ -11,11 +12,6 @@ class EditIngredient extends Component{
             error:false,
             changedPicture:false
         }
-    }
-    id=(e)=>{
-        this.setState({
-            id:e.target.value
-        });
     }
     componentDidMount(){
         const {id}=this.props.match.params;
@@ -32,11 +28,11 @@ class EditIngredient extends Component{
             }) 
         } 
     }
-    nameIngredient=(e)=>{
+    onChange=(e)=>{ 
         this.setState({
-            name:e.target.value
-        });
-    }
+            [e.target.name]:e.target.value
+        })
+    } 
     imgIngredient=(e)=>{
         if(e.target.files[0]!==null){
             this.setState({
@@ -96,9 +92,9 @@ class EditIngredient extends Component{
                                 <div className="form-group">
                                     <label>Name</label>
                                     <input type="text" defaultValue={this.state.id} 
-                                    onChange={this.id} style={{display:'none'}}
+                                    onChange={this.onChange} style={{display:'none'}}
                                      name="id"/>
-                                    <input type="text" defaultValue={name} onChange={this.nameIngredient} 
+                                    <input type="text" defaultValue={name} onChange={this.onChange} 
                                     className="form-control" placeholder="Name"
                                     name="name"
                                      />
@@ -128,8 +124,15 @@ class EditIngredient extends Component{
         )
     }
 }
+EditIngredient.propTypes = {
+    showIngredient: PropTypes.func.isRequired,
+    editIngredient: PropTypes.func.isRequired,
+    updateIngredient: PropTypes.func.isRequired, 
+    getIngredients: PropTypes.func.isRequired
+}
 const mapStateToProps=state=>({
     ingredient:state.ingredients.ingredient,
     ingredients:state.ingredients.ingredients
 })
-export default connect(mapStateToProps,{showIngredient,editIngredient,updateIngredient,getIngredients})(EditIngredient);
+export default connect(mapStateToProps,{showIngredient,editIngredient,
+    updateIngredient,getIngredients})(EditIngredient);
