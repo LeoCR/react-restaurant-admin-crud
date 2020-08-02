@@ -46,7 +46,6 @@ const props = {
     }
 }
 describe("EditDessert Component",()=>{ 
-    let component;
     let wrapper; 
     afterEach(()=>{
         cleanup();
@@ -104,39 +103,47 @@ describe("EditDessert Component",()=>{
         ).dive().dive();  
     });
     it('Should render a bunch of divs',( )=>{
-        expect(wrapper.find(".card-body")).toHaveLength(1);
-        expect(wrapper.find(".card")).toHaveLength(1);
-        expect(wrapper.find(".col-md-8")).toHaveLength(1);
-        expect(wrapper.find(".row.justify-content-center.mt-5")).toHaveLength(1);
-        expect(wrapper.find(".form-group")).toHaveLength(4);
+        setTimeout(() => {
+            expect(wrapper.find(".card-body")).toHaveLength(1);
+            expect(wrapper.find(".card")).toHaveLength(1);
+            expect(wrapper.find(".col-md-8")).toHaveLength(1);
+            expect(wrapper.find(".row.justify-content-center.mt-5")).toHaveLength(1);
+            expect(wrapper.find(".form-group")).toHaveLength(4);
+        }, 600);
     })
     it('Should render 2 buttons',()=>{
-        const { getByTestId } = render( <Provider store={store}><EditDessert {...props} /></Provider>); 
-        const btnSubmit = getByTestId('btn-submit');  
-        expect(btnSubmit).toHaveClass('btn btn-primary font-weight-bold text-uppercase d-block w-100');  
-        expect(btnSubmit.textContent).toEqual("Update");
-        expect(wrapper.find('.btn-primary').text()).toEqual('Update');
-        expect(wrapper.find("button")).toHaveLength(2);
-        expect(wrapper.find("button").length).toEqual(2);
+        setTimeout(() => {
+            const { getByTestId } = render( <Provider store={store}><EditDessert {...props} /></Provider>); 
+            const btnSubmit = getByTestId('btn-submit'); 
+            expect(btnSubmit).toHaveClass('btn btn-primary font-weight-bold text-uppercase d-block w-100');  
+            expect(btnSubmit.textContent).toEqual("Update");
+            expect(wrapper.find('.btn-primary').text()).toEqual('Update');
+            expect(wrapper.find("button")).toHaveLength(2);
+            expect(wrapper.find("button").length).toEqual(2);
+        }, 600);
     }); 
     it("OnSubmit Form",()=>{ 
         const instance = wrapper.instance();
         const spyAddDessert = sinon.spy(instance, 'editDessert');  
-        instance.forceUpdate();
-        wrapper.find('form').simulate('submit');  
-        sinon.assert.calledOnce(spyAddDessert); 
-        expect(spyAddDessert.called).toBe(true);
+        setTimeout(() => {
+            instance.forceUpdate();
+            wrapper.find('form').simulate('submit');  
+            sinon.assert.calledOnce(spyAddDessert); 
+            expect(spyAddDessert.called).toBe(true);
+        }, 600);
     });
     it("Handling State Change",()=>{ 
-        const file = new File(['awesome_dessert_img'], 'new_dessert.jpg', { type: 'image/jpg' })
-        const { getByTestId,getByText } =  render(<EditDessert {...props} />)
-        fireEvent.change( getByTestId('name-dessert'), { target: { value: 'New Dessert Name' }  });
-        fireEvent.change( getByTestId('description-dessert'), { target: { value: 'New Dessert Description' }  });
-        fireEvent.change( getByTestId('picture-dessert'), { target: { files:[file]}});
-        fireEvent.change( getByTestId('price-dessert'), { target: { value: 5 }  });
-        expect( getByTestId('name-dessert').value).toEqual('New Dessert Name');
-        expect( getByTestId('description-dessert').value).toEqual('New Dessert Description');
-        expect( getByText('You have uploaded a file named new_dessert.jpg')).toBeTruthy();
-        expect( parseInt(getByTestId('price-dessert').value)).toEqual(5);
+        setTimeout(() => {
+            const file = new File(['awesome_dessert_img'], 'new_dessert.jpg', { type: 'image/jpg' })
+            const { getByTestId,getByText } =  render(<EditDessert {...props} />)
+            fireEvent.change( getByTestId('name-dessert'), { target: { value: 'New Dessert Name' }  });
+            fireEvent.change( getByTestId('description-dessert'), { target: { value: 'New Dessert Description' }  });
+            fireEvent.change( getByTestId('picture-dessert'), { target: { files:[file]}});
+            fireEvent.change( getByTestId('price-dessert'), { target: { value: 5 }  });
+            expect( getByTestId('name-dessert').value).toEqual('New Dessert Name');
+            expect( getByTestId('description-dessert').value).toEqual('New Dessert Description');
+            expect( getByText('You have uploaded a file named new_dessert.jpg')).toBeTruthy();
+            expect( parseInt(getByTestId('price-dessert').value)).toEqual(5);
+        }, 600);
     })
 })
