@@ -7,10 +7,10 @@ import {setDelete} from "../../actions/modalActions";
 
 export const StrongDish =props=>{ 
     const {id,name,price,picture} = props.info;
-    const deleteMainCourse=(id)=>{ 
+    const deleteMainCourse=(e,id)=>{ 
         props.setDelete(id,'Main Course'); 
         setTimeout(() => {
-            openModal();
+            openModal(e);
         }, 900);
     } 
     return(
@@ -25,7 +25,7 @@ export const StrongDish =props=>{
                 </div>
                 <div className="col-md-4 d-flex justify-content-end acciones">
                     <Link to={`/admin/edit/main-course/${id}`} className="btn btn-success mr-2">Edit</Link>
-                    <button type="button" className="btn btn-primary ml-2" onClick={()=>deleteMainCourse(id)}>Delete</button>
+                    <button type="button" className="btn btn-primary ml-2" onClick={(e)=>deleteMainCourse(e,id)}>Delete</button>
                 </div>
             </div>
         </li>

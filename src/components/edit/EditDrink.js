@@ -15,14 +15,11 @@ export class EditDrink extends React.PureComponent{
             changedPicture:false
         }
     }
-    id=(e)=>{
-        if(e){
-            e.preventDefault();
-        }
+    onChange=(e)=>{
         this.setState({
-            id:e.target.value
-        });
-    }
+            [e.target.name]:e.target.value
+        })
+    } 
     componentDidMount(){
         const {id}=this.props.match.params;
         this.props.getDrinks();
@@ -39,23 +36,7 @@ export class EditDrink extends React.PureComponent{
                 price
             })
         }
-    }
-    nameDrink=(e)=>{
-        if(e){
-            e.preventDefault();
-        }
-        this.setState({
-            name:e.target.value
-        });
-    }
-    descriptionDrink=(e)=>{
-        if(e){
-            e.preventDefault();
-        }
-        this.setState({
-            description:e.target.value
-        });
-    }
+    } 
     pictureDrink=(e)=>{
         if(e){
             e.preventDefault();
@@ -66,15 +47,7 @@ export class EditDrink extends React.PureComponent{
                 changedPicture:true
             });   
         }
-    }
-    priceDrink=(e)=>{
-        if(e){
-            e.preventDefault();
-        }
-        this.setState({
-            price:e.target.value
-        });
-    }
+    } 
     editDrink=(e)=>{ 
         e.preventDefault();   
         var { id ,name,description,price,picture,changedPicture} =this.state;
@@ -126,10 +99,10 @@ export class EditDrink extends React.PureComponent{
                                 <div className="form-group">
                                     <label>Name</label>
                                     <input type="text" defaultValue={this.state.id} 
-                                    onChange={this.id} className="" style={{display:'none'}}
+                                    onChange={this.onChange} className="" style={{display:'none'}}
                                      name="id"/>
                                     <input type="text" defaultValue={name} 
-                                    onChange={(e)=>this.nameDrink(e)} 
+                                    onChange={(e)=>this.onChange(e)} 
                                     className="form-control" placeholder="Name"
                                     name="name"
                                      />
@@ -137,7 +110,7 @@ export class EditDrink extends React.PureComponent{
                                 <div className="form-group">
                                     <label>Description</label>
                                     <input type="text" defaultValue={description} 
-                                    onChange={(e)=>this.descriptionDrink(e)} 
+                                    onChange={(e)=>this.onChange(e)} 
                                     className="form-control" 
                                     placeholder="Description"
                                     name="description" 
@@ -155,7 +128,7 @@ export class EditDrink extends React.PureComponent{
                                 <div className="form-group">
                                     <label>Price</label>
                                     <input type="text" defaultValue={price} 
-                                    onChange={(e)=>this.priceDrink(e)} 
+                                    onChange={(e)=>this.onChange(e)} 
                                     className="form-control"
                                      placeholder="Price" 
                                      name="price"

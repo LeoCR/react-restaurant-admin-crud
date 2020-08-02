@@ -18,7 +18,8 @@ export class EditEntree extends React.PureComponent{
             price:'',
             error:false,
             changedPicture:false,
-            ingredientsByDish:[]
+            ingredientsByDish:[],
+            isLoadig:true 
         }
     }
     onAddIngredient=(e)=>{
@@ -27,17 +28,14 @@ export class EditEntree extends React.PureComponent{
         }
         this.props.setAddIngredient();
         setTimeout(() => {
-            openModal();
+            openModal(e);
         }, 500);
-    }
-    id=(e)=>{
-        if(e){
-            e.preventDefault();
-        }
+    } 
+    onChange=(e)=>{
         this.setState({
-            name:e.target.value
-        });
-    }
+            [e.target.name]:e.target.value
+        })
+    } 
     componentDidMount=async()=>{
         const {id}=this.props.match.params;
         this.props.getEntrees();
@@ -52,40 +50,25 @@ export class EditEntree extends React.PureComponent{
                 _this.props.setNextIdDishIngredient(nextIdIngDish)
             }
         })
+        setTimeout(() => { 
+            if(this.props.entree!==null){
+                const {id, name,price,description,category,picture}=this.props.entree;
+                this.setState({
+                    id,
+                    name,
+                    description,
+                    category,
+                    picture,
+                    price,
+                    isLoadig:false
+                })
+            }
+        }, 350);
     }
-    componentWillReceiveProps(nextProps,nextState){
-        if(nextProps.ingredientsByDish){
-            this.setState({
-                ingredientsByDish:nextProps.ingredientsByDish
-            })
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (nextProps.ingredientsByDish !== prevState.ingredientsByDish) {
+          return({ ingredientsByDish: nextProps.ingredientsByDish });
         }
-        if(nextProps.entree){
-            const {id, name,price,description,category,picture}=nextProps.entree;
-            this.setState({
-                id,
-                name,
-                description,
-                category,
-                picture,
-                price
-            })
-        }
-    }
-    nameEntree=(e)=>{
-        if(e){
-            e.preventDefault();
-        }
-        this.setState({
-            name:e.target.value
-        });
-    }
-    descriptionEntree=(e)=>{
-        if(e){
-            e.preventDefault();
-        }
-        this.setState({
-            description:e.target.value
-        });
     }
     pictureEntree=(e)=>{
         if(e){
@@ -97,22 +80,6 @@ export class EditEntree extends React.PureComponent{
                 changedPicture:true
             });
         }
-    }
-    categoryEntree=(e)=>{
-        if(e){
-            e.preventDefault();
-        }
-        this.setState({
-            category:e.target.value
-        });
-    }
-    priceEntree=(e)=>{
-        if(e){
-            e.preventDefault();
-        }
-        this.setState({
-            price:e.target.value
-        });
     }
     editEntree=(e)=>{
         if(e){
@@ -210,69 +177,68 @@ export class EditEntree extends React.PureComponent{
     render(){
         var {name,price,description,category,picture,error} = this.state;
         return(
-            <div className="row justify-content-center mt-5">
-                <div className="col-md-8">
-                    <div className="card">
-                        <div className="card-body">
-                            <h2 className="text-center">Edit Appetizer</h2>
-                            <form onSubmit={this.editEntree} id="form-entree-update" >
-                                <div className="form-group">
-                                    <label>Name</label>
-                                    <input type="text" defaultValue={this.state.id} 
-                                    onChange={this.id} className="" style={{display:'none'}}
-                                     name="id"/>
-                                    <input type="text" defaultValue={name} 
-                                    onChange={(e)=>this.nameEntree(e)} 
-                                    className="form-control" placeholder="Name"
-                                    name="name"
-                                     />
+            (this.state.isLoadig===true)?<p>Loading Data, Please wait...</p>:<React.Fragment>
+                <div className="row justify-content-center mt-5">
+                    <div className="col-md-8">
+                        <div className="card">
+                            <div className="card-body">
+                                <h2 className="text-center">Edit Appetizer</h2>
+                                <form onSubmit={this.editEntree} id="form-entree-update" >
+                                    <div className="form-group">
+                                        <label>Name</label>
+                                        <input type="text" defaultValue={this.state.id} 
+                                        onChange={this.onChange} className="" style={{display:'none'}}
+                                        name="id"/>
+                                        <input type="text" defaultValue={name} 
+                                        onChange={this.onChange} 
+                                        className="form-control" placeholder="Name"
+                                        name="name"
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label style={{width:'100%'}}>Description</label> 
+                                        <textarea  value={description} className="form-control" name="description"
+                                        onChange={this.onChange} ></textarea>
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Picture</label>
+                                        <input type="file" id="picture_upload" onChange={(e)=>this.pictureEntree(e)} className="form-control-file"
+                                        placeholder="Picture" /> 
+                                        {
+                                                (this.state.changedPicture===false)?<img src={picture} style={{maxWidth:'400px'}} alt={name}/>:''
+                                        }
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Category</label>
+                                        <input type="text" defaultValue={category} 
+                                        onChange={this.onChange} className="form-control"
+                                        placeholder="Category" 
+                                        name="category"
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Price</label>
+                                        <input type="text" defaultValue={price} 
+                                        onChange={this.onChange} 
+                                        className="form-control"
+                                        placeholder="Price" 
+                                        name="price"
+                                        />
+                                    </div>
+                                {this.getIngredientsByDish()}
+                                {error ? 
+                                <div className="font-weight-bold alert-danger text-center mt-4">
+                                    All the fields are required
                                 </div>
-                                <div className="form-group">
-                                    <label style={{width:'100%'}}>Description</label> 
-                                    <textarea  value={description} className="form-control"
-                                    onChange={(e)=>this.descriptionEntree(e)} ></textarea>
-                                </div>
-                                <div className="form-group">
-                                    <label>Picture</label>
-                                    <input type="file" id="picture_upload" defaultValue={picture} 
-                                    onChange={(e)=>this.pictureEntree(e)} className="form-control-file"
-                                     placeholder="Picture" />
-                                    <img src={picture} style={{maxWidth:'400px'}} alt={name}/>
-                                    <input type="text" defaultValue={picture} 
-                                    className="form-control-file"
-                                    readOnly="readOnly" name="picture" 
-                                    id="picture_hidden" style={{display:"none"}}/>
-                                </div>
-                                <div className="form-group">
-                                    <label>Category</label>
-                                    <input type="text" defaultValue={category} 
-                                    onChange={(e)=>this.categoryEntree(e)} className="form-control"
-                                     placeholder="Category" 
-                                     name="category"
-                                     />
-                                </div>
-                                <div className="form-group">
-                                    <label>Price</label>
-                                    <input type="text" defaultValue={price} 
-                                    onChange={(e)=>this.priceEntree(e)} 
-                                    className="form-control"
-                                     placeholder="Price" 
-                                     name="price"
-                                     />
-                                </div>
-                            {this.getIngredientsByDish()}
-                            {error ? 
-                            <div className="font-weight-bold alert-danger text-center mt-4">
-                                All the fields are required
+                                :''
+                                }
+                                    <button type="submit" className="btn btn-primary font-weight-bold text-uppercase d-block w-100">Update</button>
+                                </form>
                             </div>
-                            :''
-                            }
-                                <button type="submit" className="btn btn-primary font-weight-bold text-uppercase d-block w-100">Update</button>
-                            </form>
                         </div>
                     </div>
                 </div>
-            </div>
+            </React.Fragment>
         )
     }
 }

@@ -3,7 +3,7 @@ import api from '../api/api';
 //import custom constants
 import { GET_INGREDIENTS_BY_DISH_ID,ADD_INGREDIENT_TO_DISH,UPDATE_INGREDIENT_TO_DISH, DELETE_INGREDIENT_TO_DISH,CLEAR_INGREDIENTS_BY_DISH} from "../constants/ingredientToDishTypes";
 //import custom actions
-import {clearIngredientsByDish,addIngredientToDish,deleteIngredientDish,getIngredientsByDishId,updateIngredientToDish} from "./ingredientByDishActions";
+import {clearIngredientsByDish,addIngredientToDishFromModal,deleteIngredientDish,getIngredientsByDishId,updateIngredientToDish} from "./ingredientByDishActions";
 // import configureStore to create a mock store where we will dispatch our actions
 import configureStore from 'redux-mock-store';
 //import thunk middle to make our action asyncronous
@@ -121,7 +121,7 @@ describe('IngredientByDish Actions', () => {
                     console.log(error);
                 });
             });
-            expect(addIngredientToDish(ingredientSelected)).toEqual(expectedActions);
+            expect(addIngredientToDishFromModal(ingredientSelected)).toEqual(expectedActions);
             done();
         }
         else{

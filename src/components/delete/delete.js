@@ -42,7 +42,7 @@ const Delete = props=>{
         if(e){
             e.preventDefault()
         }
-        closeModal();
+        closeModal(e);
     } 
     return(
         <React.Fragment>

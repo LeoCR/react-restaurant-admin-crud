@@ -19,7 +19,8 @@ export class EditDessert extends React.PureComponent{
             pictureName:'',
             error:false,
             changedPicture:false,
-            ingredientsByDish:[]
+            ingredientsByDish:[],
+            isLoadig:true 
         }
     }
     onAddIngredient=(e)=>{
@@ -28,17 +29,9 @@ export class EditDessert extends React.PureComponent{
         }
         this.props.setAddIngredient();
         setTimeout(() => {
-            openModal();
+            openModal(e);
         }, 500);
-    }
-    id=(e)=>{
-        if(e){
-            e.preventDefault();
-        }
-        this.setState({
-            id:e.target.value
-        });
-    }
+    } 
     componentDidMount=async()=>{
         try {
             var _this=this; 
@@ -54,42 +47,27 @@ export class EditDessert extends React.PureComponent{
                     _this.props.setNextIdDishIngredient(nextIdIngDish)
                 }
             })
+            setTimeout(() => {
+                if(this.props.dessert){
+                    const {id, name,price,description,picture}=this.props.dessert;
+                    this.setState({
+                        id,
+                        name,
+                        description,
+                        picture,
+                        price,
+                        isLoadig:false
+                    })
+                }
+            }, 350);
         } catch (error) {
             console.log('An error occurs in EditDessert.componentDidMount()');
         }
     }
-    UNSAFE_componentWillReceiveProps(nextProps,nextState){
-        if(nextProps.ingredientsByDish){
-            this.setState({
-                ingredientsByDish:nextProps.ingredientsByDish
-            })
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (nextProps.ingredientsByDish !== prevState.ingredientsByDish) {
+          return({ ingredientsByDish: nextProps.ingredientsByDish });
         }
-        if(nextProps.dessert){
-            const {id, name,price,description,picture}=nextProps.dessert;
-            this.setState({
-                id,
-                name,
-                description,
-                picture,
-                price
-            })
-        }
-    }
-    nameDessert=(e)=>{
-        if(e){
-            e.preventDefault();
-        }
-        this.setState({
-            name:e.target.value
-        });
-    }
-    descriptionDessert=(e)=>{
-        if(e){
-            e.preventDefault();
-        }
-        this.setState({
-            description:e.target.value
-        });
     }
     pictureDessert=(e)=>{
         if(e){
@@ -103,14 +81,11 @@ export class EditDessert extends React.PureComponent{
             }); 
         } 
     }
-    priceDessert=(e)=>{
-        if(e){
-            e.preventDefault();
-        }
+    onChange=(e)=>{ 
         this.setState({
-            price:e.target.value
-        });
-    }
+            [e.target.name]:e.target.value
+        })
+    } 
     editDessert=(e)=>{   
         if(e){
             e.preventDefault(); 
@@ -208,65 +183,66 @@ export class EditDessert extends React.PureComponent{
     render(){
         var {name,price,description,picture,error} = this.state;
         return(
-            <div className="row justify-content-center mt-5">
-                <div className="col-md-8">
-                    <div className="card">
-                        <div className="card-body">
-                            <h2 className="text-center">Edit Dessert</h2>
-                            <form onSubmit={this.editDessert} id="form-dessert-update">
-                                <div className="form-group">
-                                    <label>Name</label>
-                                    <input type="text" defaultValue={this.state.id} 
-                                    onChange={this.id} className="" style={{display:'none'}}
-                                     name="id"/>
-                                    <input type="text" defaultValue={name} onChange={(e)=>this.nameDessert(e)} 
-                                    className="form-control" placeholder="Name"
-                                    name="name" data-testid="name-dessert"
-                                     />
+            (this.state.isLoadig===true)?<p>Loading Data, Please wait...</p>:<React.Fragment>
+                <div className="row justify-content-center mt-5">
+                    <div className="col-md-8">
+                        <div className="card">
+                            <div className="card-body">
+                                <h2 className="text-center">Edit Dessert</h2>
+                                <form onSubmit={this.editDessert} id="form-dessert-update">
+                                    <div className="form-group">
+                                        <label>Name</label>
+                                        <input type="text" defaultValue={this.state.id} 
+                                        onChange={this.onChange} className="" style={{display:'none'}}
+                                        name="id"/>
+                                        <input type="text" defaultValue={name} onChange={(e)=>this.onChange(e)} 
+                                        className="form-control" placeholder="Name"
+                                        name="name" data-testid="name-dessert"
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Description</label>
+                                        <input type="text" defaultValue={description} 
+                                        onChange={(e)=>this.onChange(e)} className="form-control" 
+                                        placeholder="Description"
+                                        name="description" data-testid="description-dessert"
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Picture</label>
+                                        <input type="file" id="picture_upload" data-testid="picture-dessert" 
+                                        onChange={(e)=>this.pictureDessert(e)} 
+                                        className="form-control-file" placeholder="Picture" />
+                                        {
+                                                (this.state.changedPicture===false)?<img src={picture} style={{maxWidth:'400px'}} alt={name}/>:''
+                                        }
+                                        {this.state.pictureName && (
+                                                <div id="picture_uploaded">
+                                                    You have uploaded a file named {this.state.pictureName}
+                                                </div>
+                                        )} 
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Price</label>
+                                        <input type="text" defaultValue={price}  
+                                        onChange={(e)=>this.onChange(e)} 
+                                        className="form-control" placeholder="Price" 
+                                        name="price"  data-testid="price-dessert"/>
+                                    </div>
+                                    {this.getIngredientsByDish()}
+                                {error ? 
+                                <div className="font-weight-bold alert-danger text-center mt-4">
+                                    All the fields are required
                                 </div>
-                                <div className="form-group">
-                                    <label>Description</label>
-                                    <input type="text" defaultValue={description} 
-                                    onChange={(e)=>this.descriptionDessert(e)} className="form-control" 
-                                    placeholder="Description"
-                                    name="description" data-testid="description-dessert"
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label>Picture</label>
-                                    <input type="file" id="picture_upload" 
-                                    defaultValue={picture} data-testid="picture-dessert" 
-                                    onChange={(e)=>this.pictureDessert(e)} 
-                                    className="form-control-file" placeholder="Picture" />
-                                    <img src={picture} style={{maxWidth:'400px'}} alt={name}/>
-                                    {this.state.pictureName && (
-                                            <div id="picture_uploaded">
-                                                You have uploaded a file named {this.state.pictureName}
-                                            </div>
-                                    )}
-                                    <input type="text" defaultValue={picture} className="form-control-file" 
-                                    readOnly="readonly" name="picture" id="picture_hidden" style={{display:"none"}}/>
-                                </div>
-                                <div className="form-group">
-                                    <label>Price</label>
-                                    <input type="text" defaultValue={price}  
-                                    onChange={(e)=>this.priceDessert(e)} 
-                                     className="form-control" placeholder="Price" 
-                                     name="price"  data-testid="price-dessert"/>
-                                </div>
-                                {this.getIngredientsByDish()}
-                            {error ? 
-                            <div className="font-weight-bold alert-danger text-center mt-4">
-                                All the fields are required
+                                :''
+                                }
+                                    <button data-testid="btn-submit" type="submit" className="btn btn-primary font-weight-bold text-uppercase d-block w-100">Update</button>
+                                </form>
                             </div>
-                            :''
-                            }
-                                <button data-testid="btn-submit" type="submit" className="btn btn-primary font-weight-bold text-uppercase d-block w-100">Update</button>
-                            </form>
                         </div>
                     </div>
                 </div>
-            </div>
+            </React.Fragment>
         )
     }
 }

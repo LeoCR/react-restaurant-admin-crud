@@ -22,28 +22,23 @@ export class AddDessert extends React.PureComponent{
             ingredientsByDish:[]
         }
     }
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (nextProps.ingredientsByDish !== prevState.ingredientsByDish) {
+          return({ ingredientsByDish: nextProps.ingredientsByDish });
+        }
+    }
     onAddIngredient=(e)=>{
         e.preventDefault();
         this.props.setAddIngredient();
         setTimeout(() => {
-            openModal();
+            openModal(e);
         }, 500);
     }
-    id=(e)=>{
+    onChange=(e)=>{
         this.setState({
-            id:e.target.value
-        });
-    }
-    nameDessert=(e)=>{
-        this.setState({
-            name:e.target.value
-        });
-    }
-    descriptionDessert=(e)=>{
-        this.setState({
-            description:e.target.value
-        });
-    }
+            [e.target.name]:e.target.value
+        })
+    }  
     pictureDessert=(e)=>{
         if(e.target.files[0]!==null ||e.target.files[0]!==undefined){
             this.setState({
@@ -51,17 +46,7 @@ export class AddDessert extends React.PureComponent{
                 pictureName:e.target.files[0].name
             }); 
         }
-    }
-    priceDessert=(e)=>{
-        this.setState({
-            price:e.target.value
-        });
-    }
-    UNSAFE_componentWillReceiveProps(nextProps) {
-        if (nextProps.ingredientsByDish !== this.state.ingredientsByDish) {
-          this.setState({ ingredientsByDish: nextProps.ingredientsByDish });
-        }
-    }
+    }  
     addNewDessert=(e)=>{
         if(e){
             e.preventDefault();
@@ -196,16 +181,16 @@ export class AddDessert extends React.PureComponent{
                                 <div className="form-group">
                                     <label>Name</label>
                                     <input type="text" defaultValue={this.state.id} 
-                                    onChange={this.id} className="" style={{display:'none'}}
+                                    onChange={this.onChange} style={{display:'none'}}
                                      name="id"/>
-                                    <input type="text" onChange={this.nameDessert} name="name" data-testid="name-dessert"
+                                    <input type="text" onChange={this.onChange} name="name" data-testid="name-dessert"
                                      className="form-control name-dessert" placeholder="Name" id="name"/>
                                 </div>
                                 <div className="form-group">
                                     <label>Description</label>
                                     <input type="text"
                                         name="description" data-testid="description-dessert"
-                                     onChange={this.descriptionDessert} className="form-control" 
+                                     onChange={this.onChange} className="form-control" 
                                     placeholder="Description" id="description"/>
                                 </div>
                                 <div className="form-group">
@@ -222,7 +207,7 @@ export class AddDessert extends React.PureComponent{
                                 
                                 <div className="form-group">
                                     <label>Price</label>
-                                    <input type="text" onChange={this.priceDessert} 
+                                    <input type="text" onChange={this.onChange} 
                                     className="form-control" data-testid="price-dessert"
                                     name="price" id="price"
                                     placeholder="Price" />

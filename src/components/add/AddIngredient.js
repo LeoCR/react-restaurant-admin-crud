@@ -14,16 +14,11 @@ export class AddIngredient extends React.PureComponent{
             error:false
         }
     }
-    id=(e)=>{
+    onChange=(e)=>{
         this.setState({
-            id:e.target.value
-        });
-    }
-    nameIngredient=(e)=>{
-        this.setState({
-            name:e.target.value
-        });
-    }
+            [e.target.name]:e.target.value
+        })
+    }  
     imgIngredient=(e)=>{
         if(e.target.files[0]!==null ||e.target.files[0]!==undefined){
             this.setState({
@@ -102,9 +97,9 @@ export class AddIngredient extends React.PureComponent{
                                 <div className="form-group">
                                     <label>Name</label>
                                     <input type="text" defaultValue={this.state.id} 
-                                    onChange={this.id} name="id" style={{display:'none'}}
+                                    onChange={this.onChange} name="id" style={{display:'none'}}
                                     />
-                                    <input type="text" onChange={this.nameIngredient} name="name"
+                                    <input type="text" onChange={this.onChange} name="name"
                                      className="form-control" placeholder="Name" />
                                 </div>
                                 <div className="form-group">

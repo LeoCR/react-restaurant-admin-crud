@@ -32,6 +32,6 @@ export default function modalsReducer(state=initialState,action){
                 nextIdDishIngredient:action.nextIdDishIngredient
             }
         default:
-            return {...state}
+            return state;
     }
 }

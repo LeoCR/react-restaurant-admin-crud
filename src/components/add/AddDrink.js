@@ -17,21 +17,11 @@ export class AddDrink extends React.PureComponent{
             error:false
         }
     }
-    id=(e)=>{
+    onChange=(e)=>{
         this.setState({
-            id:e.target.value
-        });
-    }
-    nameDish=(e)=>{
-        this.setState({
-            name:e.target.value
-        });
-    }
-    descriptionDish=(e)=>{
-        this.setState({
-            description:e.target.value
-        });
-    }
+            [e.target.name]:e.target.value
+        })
+    }   
     pictureDrink=(e)=>{
         if(e.target.files[0]!==null ||e.target.files[0]!==undefined){
             this.setState({
@@ -39,12 +29,7 @@ export class AddDrink extends React.PureComponent{
                 pictureName:e.target.files[0].name
             });
         }
-    }
-    priceDish=(e)=>{
-        this.setState({
-            price:e.target.value
-        });
-    }
+    } 
     addNewDrink=(e)=>{
         if(e){
             e.preventDefault();
@@ -113,16 +98,16 @@ export class AddDrink extends React.PureComponent{
                                 <div className="form-group">
                                     <label>Name</label>
                                     <input type="text" defaultValue={this.state.id} 
-                                    onChange={this.id} className="" style={{display:'none'}}
+                                    onChange={this.onChange} className="" style={{display:'none'}}
                                      name="id"/>
-                                    <input type="text" onChange={this.nameDish} name="name"
+                                    <input type="text" onChange={this.onChange} name="name"
                                      className="form-control" placeholder="Name" data-testid="name-drink" />
                                 </div>
                                 <div className="form-group">
                                     <label>Description</label>
                                     <input type="text"
                                         name="description"
-                                     onChange={this.descriptionDish} className="form-control" 
+                                     onChange={this.onChange} className="form-control" 
                                     placeholder="Description" data-testid="description-drink"/>
                                 </div>
                                 <div className="form-group">
@@ -138,7 +123,7 @@ export class AddDrink extends React.PureComponent{
                                 </div>
                                 <div className="form-group">
                                     <label>Price</label>
-                                    <input type="text" onChange={this.priceDish} 
+                                    <input type="text" onChange={this.onChange} 
                                     className="form-control" 
                                     name="price"
                                     placeholder="Price"  data-testid="price-drink"/>

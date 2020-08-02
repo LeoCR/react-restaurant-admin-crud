@@ -22,27 +22,22 @@ export class AddEntree extends React.PureComponent{
             ingredientsByDish:[]
         }
     }
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (nextProps.ingredientsByDish !== prevState.ingredientsByDish) {
+          return({ ingredientsByDish: nextProps.ingredientsByDish });
+        }
+    }
+    onChange=(e)=>{
+        this.setState({
+            [e.target.name]:e.target.value
+        })
+    }  
     onAddIngredient=(e)=>{
         e.preventDefault();
         this.props.setAddIngredient();
         setTimeout(() => {
-            openModal();
+            openModal(e);
         }, 500);
-    }
-    id=(e)=>{
-        this.setState({
-            id:e.target.value
-        });
-    }
-    nameDish=(e)=>{
-        this.setState({
-            name:e.target.value
-        });
-    }
-    descriptionDish=(e)=>{
-        this.setState({
-            description:e.target.value
-        });
     }
     pictureDish=(e)=>{
         if(e.target.files[0]!==null ||e.target.files[0]!==undefined){
@@ -51,22 +46,7 @@ export class AddEntree extends React.PureComponent{
                 pictureName:e.target.files[0].name
             });
         }
-    }
-    categoryDish=(e)=>{
-        this.setState({
-            category:e.target.value
-        });
-    }
-    priceDish=(e)=>{
-        this.setState({
-            price:e.target.value
-        });
-    }
-    UNSAFE_componentWillReceiveProps(nextProps) {
-        if (nextProps.ingredientsByDish !== this.state.ingredientsByDish) {
-          this.setState({ ingredientsByDish: nextProps.ingredientsByDish });
-        }
-    }
+    } 
     addNewEntree=(e)=>{
         if(e){
             e.preventDefault();
@@ -203,16 +183,16 @@ export class AddEntree extends React.PureComponent{
                                 <div className="form-group">
                                     <label>Name</label>
                                     <input type="text" defaultValue={this.state.id} 
-                                    onChange={this.id} className="" style={{display:'none'}}
+                                    onChange={this.onChange} className="" style={{display:'none'}}
                                      name="id"/>
-                                    <input type="text" onChange={this.nameDish} name="name"
+                                    <input type="text" onChange={this.onChange} name="name"
                                      className="form-control" placeholder="Name" data-testid="name-entree"/>
                                 </div>
                                 <div className="form-group">
                                     <label>Description</label>
                                     <input type="text"
                                         name="description"
-                                     onChange={this.descriptionDish} className="form-control" 
+                                     onChange={this.onChange} className="form-control" 
                                     placeholder="Description" data-testid="description-entree"/>
                                 </div>
                                 <div className="form-group">
@@ -228,14 +208,14 @@ export class AddEntree extends React.PureComponent{
                                 </div>
                                 <div className="form-group">
                                     <label>Category</label>
-                                    <input type="text" onChange={this.categoryDish} 
+                                    <input type="text" onChange={this.onChange} 
                                     className="form-control"
                                     name="category"
                                      placeholder="Category"  data-testid="category-entree"/>
                                 </div>
                                 <div className="form-group">
                                     <label>Price</label>
-                                    <input type="text" onChange={this.priceDish} 
+                                    <input type="text" onChange={this.onChange} 
                                     className="form-control" 
                                     name="price"
                                     placeholder="Price"  data-testid="price-entree"/>

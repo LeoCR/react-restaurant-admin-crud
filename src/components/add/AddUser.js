@@ -38,46 +38,11 @@ class AddUser extends React.PureComponent{
             console.log('this.state.id '+this.state.id);
         }, 300);
     }
-    id=(e)=>{
+    onChange=(e)=>{
         this.setState({
-            id:e.target.value
-        });
-    }
-    firstnameUser=(e)=>{
-        this.setState({
-            firstname:e.target.value
-        });
-    }
-    lastnameUser=(e)=>{
-        this.setState({
-            lastname:e.target.value
-        });
-    }
-    usernameUser=(e)=>{
-        this.setState({
-            username:e.target.value
-        });
-    }
-    aboutUser=(e)=>{
-        this.setState({
-            about:e.target.value
-        });
-    }
-    emailUser=(e)=>{
-        this.setState({
-            email:e.target.value
-        });
-    }
-    passwordUser=(e)=>{
-        this.setState({
-            password:e.target.value
-        });
-    }
-    retypePasswordUser=(e)=>{
-        this.setState({
-            retypePassword:e.target.value
-        });
-    }
+            [e.target.name]:e.target.value
+        })
+    } 
     submitAddUser=(e)=>{
         e.preventDefault();
         const {
@@ -138,34 +103,34 @@ class AddUser extends React.PureComponent{
                                 <div className="form-group">
                                     <label>First Name</label>
                                     <input type="text" defaultValue={id} 
-                                    onChange={this.id}  style={{display:'none'}}
+                                    onChange={this.onChange}  style={{display:'none'}}
                                      name="id"/>
-                                    <input type="text" onChange={this.firstnameUser} 
+                                    <input type="text" onChange={this.onChange} 
                                     className="form-control" placeholder="First Name"
                                     name="firstname"
                                      />
                                 </div>
                                 <div className="form-group">
                                     <label style={{width:'100%'}}>Last Name</label> 
-                                    <input type="text" className="form-control"
-                                    onChange={this.lastnameUser} placeholder="Last Name"/>
+                                    <input type="text" className="form-control" name="lastname"
+                                    onChange={this.onChange} placeholder="Last Name"/>
                                 </div>
                                 <div className="form-group">
                                     <label>Username</label>
                                     <input type="text" className="form-control"
-                                     name="username" id="username" placeholder="Username" onChange={this.usernameUser}/>
+                                     name="username" id="username" placeholder="Username" onChange={this.onChange}/>
                                 </div>
                                 <div className="form-group">
                                     <label>About</label>
                                     <input type="text"  
-                                    onChange={this.aboutUser} className="form-control"
+                                    onChange={this.onChange} className="form-control"
                                      placeholder="About Me" 
                                      name="about"
                                      />
                                 </div>
                                 <div className="form-group">
                                     <label>Email</label>
-                                    <input type="text" onChange={this.emailUser} 
+                                    <input type="text" onChange={this.onChange} 
                                     className="form-control"
                                      placeholder="Email" 
                                      name="email"
@@ -174,7 +139,7 @@ class AddUser extends React.PureComponent{
                                 <div className="form-group">
                                     <label>Password</label>
                                     <input type="password" 
-                                    onChange={this.passwordUser} 
+                                    onChange={this.onChange} 
                                     className="form-control"
                                      placeholder="Password" 
                                      name="password"
@@ -183,10 +148,10 @@ class AddUser extends React.PureComponent{
                                 <div className="form-group">
                                     <label>Re-type Password</label>
                                     <input type="password" 
-                                    onChange={this.retypePasswordUser} 
+                                    onChange={this.onChange} 
                                     className="form-control"
                                      placeholder="Password" 
-                                     name="password"
+                                     name="retypePassword"
                                      />
                                 </div>
                             {error ? 

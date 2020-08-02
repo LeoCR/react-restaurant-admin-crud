@@ -13,11 +13,6 @@ export class EditIngredient extends React.PureComponent{
             changedPicture:false
         }
     }
-    id=(e)=>{
-        this.setState({
-            id:e.target.value
-        });
-    }
     componentDidMount(){
         const {id}=this.props.match.params;
         this.props.getIngredients();
@@ -33,11 +28,11 @@ export class EditIngredient extends React.PureComponent{
             }) 
         } 
     }
-    nameIngredient=(e)=>{
+    onChange=(e)=>{ 
         this.setState({
-            name:e.target.value
-        });
-    }
+            [e.target.name]:e.target.value
+        })
+    } 
     imgIngredient=(e)=>{
         if(e.target.files[0]!==null){
             this.setState({
@@ -97,9 +92,9 @@ export class EditIngredient extends React.PureComponent{
                                 <div className="form-group">
                                     <label>Name</label>
                                     <input type="text" defaultValue={this.state.id} 
-                                    onChange={this.id} style={{display:'none'}}
+                                    onChange={this.onChange} style={{display:'none'}}
                                      name="id"/>
-                                    <input type="text" defaultValue={name} onChange={this.nameIngredient} 
+                                    <input type="text" defaultValue={name} onChange={this.onChange} 
                                     className="form-control" placeholder="Name"
                                     name="name"
                                      />

@@ -7,10 +7,10 @@ import {setDelete} from "../../actions/modalActions";
 
 export const Dessert=props=>{
     const {id,name,price,picture} =props.info;
-    const deleteDessert=(id)=>{
+    const deleteDessert=(e,id)=>{
         props.setDelete(id,'Dessert'); 
        setTimeout(() => {
-           openModal();
+           openModal(e);
        },600);
    }
     return(
@@ -25,7 +25,7 @@ export const Dessert=props=>{
                 </div>
                 <div className="col-md-4 d-flex justify-content-end acciones">
                     <Link to={`/admin/edit/dessert/${id}`} className="btn btn-success mr-2">Edit</Link>
-                    <button type="button" className="btn btn-primary ml-2" onClick={()=>deleteDessert(id)}>Delete</button>
+                    <button type="button" className="btn btn-primary ml-2" onClick={(e)=>deleteDessert(e,id)}>Delete</button>
                 </div>
             </div>
         </li>

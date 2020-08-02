@@ -16,7 +16,7 @@ export const getIngredientsByDishId=(id)=>async dispatch=>{
             console.log(err);
         })
 }
-export const addIngredientToDish=(ingredient)=>{
+export const addIngredientToDishFromModal=(ingredient)=>{
     return{
         type:ADD_INGREDIENT_TO_DISH,
         payload:ingredient
@@ -30,9 +30,7 @@ export const updateIngredientToDish=(ingredient)=>{
 }
 export const deleteIngredientDish=(idIngredientDish)=>async dispatch=>{
     await api.delete('/api/ingredient-to-dish/delete/'+idIngredientDish)
-    .then((res)=>{
-        //console.log('Deleted Ingredient');
-        //console.log(res);
+    .then((res)=>{ 
         return res;
     })
     .catch((err)=>{

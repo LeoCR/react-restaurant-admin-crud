@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {getIngredients} from '../../actions/ingredientActions';
-import {addIngredientToDish,updateIngredientToDish} from '../../actions/ingredientByDishActions';
+import {addIngredientToDishFromModal,updateIngredientToDish} from '../../actions/ingredientByDishActions';
 import {setNextIdDishIngredient} from '../../actions/modalActions';
 import {closeModal} from '../../helper/modal.helper';
 import api from '../../api/api';
@@ -21,7 +21,7 @@ export class AddIngredientToDish extends React.PureComponent{
                 ingredientsToAdd:_this.props.ingredients,
                 dishSelected:_this.props.idDish
             })
-        }, 900);
+        }, 900); 
     }
     componentWillReceiveProps(nextProps,nextState) {
         if(nextProps.idDish!==this.state.dishSelected){
@@ -33,13 +33,11 @@ export class AddIngredientToDish extends React.PureComponent{
             this.setState({
                 nextIdDishIngredient:nextProps.nextIdDishIngredient
             })
-        }
+        } 
     }
     onChangeIngredient=(e)=>{
+        e.preventDefault();
         var idIngredient=e.target.value; 
-        if(e){
-            e.preventDefault();
-        }
         var _this=this;
         if(idIngredient!=='none'){
             api.get('/api/ingredient/show/'+idIngredient)
@@ -57,24 +55,21 @@ export class AddIngredientToDish extends React.PureComponent{
             }) 
         }
     }
-    onSubmit=(e)=>{
-       if(e){
+    onSubmit=(e)=>{  
         e.preventDefault();
-       }
-        var selectDish=document.querySelector("#select-add-ingredient-to-dish");
-        var _this=this;
+        var selectDish=document.querySelector("#select-add-ingredient-to-dish"); 
         try {
             if(this.state.ingredientSelected!==null&&selectDish.value!=='none'){
-                closeModal(e);
-                if(typeof _this.props.ingredientsByDish!=='undefined'){
-                    _this.props.updateIngredientToDish(this.state.ingredientSelected);
+                if(typeof this.props.ingredientsByDish!=='undefined'){
+                    this.props.updateIngredientToDish(this.state.ingredientSelected);
                 }
                 else{
-                    _this.props.addIngredientToDish(this.state.ingredientSelected);
-                }
+                    this.props.addIngredientToDishFromModal(this.state.ingredientSelected);
+                } 
+                closeModal(e);
                 setTimeout(() => {
-                    _this.props.getIngredients();
-                    _this.props.setNextIdDishIngredient(parseInt(this.state.nextIdDishIngredient)+1);
+                    this.props.getIngredients();
+                    this.props.setNextIdDishIngredient(parseInt(this.state.nextIdDishIngredient)+1);
                 }, 400);
             }
         } catch (error) {
@@ -86,9 +81,9 @@ export class AddIngredientToDish extends React.PureComponent{
         if(this.state.ingredientsToAdd.length>0){
             return(
                 <React.Fragment>
-                    <form onSubmit={(e)=>this.onSubmit(e)} id="addIngredientForm">
+                    <div id="addIngredientForm">
                         <label htmlFor="select-add-ingredient-to-dish" style={{float:'left'}}>Please Select One Ingredient</label>
-                        <select onChange={(e)=>this.onChangeIngredient(e)} id="select-add-ingredient-to-dish">
+                        <select onChange={this.onChangeIngredient} id="select-add-ingredient-to-dish">
                                 <option id="selected" value="none">Select One Ingredient</option>
                                 {this.state.ingredientsToAdd.map(function(item, i){
                                     return <option key={i} value={item.id}>{item.name}</option>
@@ -99,8 +94,8 @@ export class AddIngredientToDish extends React.PureComponent{
                                 <img src={this.state.ingredientSelected.img} alt={this.state.ingredientSelected.name} style={{maxWidth:'230px',float:'left'}}/>
                             </div> :''
                         }
-                        <button type="submit" className="btn btn-success" form="addIngredientForm">Add to Dish</button>
-                    </form>
+                        <button onClick={this.onSubmit}  className="btn btn-success" form="addIngredientForm">Add to Dish</button>
+                    </div>
                 </React.Fragment>
             )
         }
@@ -114,14 +109,14 @@ export class AddIngredientToDish extends React.PureComponent{
 }
 AddIngredientToDish.propTypes = {
     getIngredients: PropTypes.func.isRequired,
-    addIngredientToDish: PropTypes.func.isRequired,
-    setNextIdDishIngredient: PropTypes.func.isRequired,
+    addIngredientToDishFromModal: PropTypes.func.isRequired,
+    setNextIdDishIngredient: PropTypes.func.isRequired, 
     updateIngredientToDish: PropTypes.func.isRequired
 }
-const mapStateToProps=state=>({
+const mapStateToProps=state=>({ 
     ingredientsByDish:state.ingredientsByDish.ingredientsByDish,
     ingredients:state.ingredients.ingredients,
     idDish:state.modals.idDish,
     nextIdDishIngredient:state.modals.nextIdDishIngredient
 })
-export default connect(mapStateToProps,{getIngredients,addIngredientToDish,setNextIdDishIngredient,updateIngredientToDish})(AddIngredientToDish)
+export default connect(mapStateToProps,{getIngredients,addIngredientToDishFromModal,setNextIdDishIngredient,updateIngredientToDish})(AddIngredientToDish)

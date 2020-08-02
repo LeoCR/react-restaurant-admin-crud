@@ -23,7 +23,7 @@ const Modal =props=>{
                             <div className="modal-title">{titleModal}</div>
                             <button type="button" className="close" 
                                 data-dismiss="modal" aria-label="Close" 
-                                onClick={()=>closeModal()}>
+                                onClick={(e)=>closeModal(e)}>
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
@@ -35,12 +35,10 @@ const Modal =props=>{
 } 
 Modal.propTypes = {
     modals: PropTypes.string,
-    productType: PropTypes.string,
-    idDish: PropTypes.string,
+    productType: PropTypes.string
 }
-const mapStateToProps=state=>({
+const mapStateToProps=state=>({ 
     modals:state.modals.modals,
-    productType:state.modals.productType,
-    idDish:state.modals.idDish
+    productType:state.modals.productType
 })
-export default connect(mapStateToProps)(Modal);
+export default connect(mapStateToProps)(React.memo(Modal));

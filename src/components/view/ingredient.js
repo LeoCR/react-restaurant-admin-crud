@@ -7,13 +7,12 @@ import {setDelete} from "../../actions/modalActions";
 
 export const Ingredient=props=>{ 
     const {id,name,img} = props.info;
-    const deleteIngredient=(id)=>{
+    const deleteIngredient=(e,id)=>{
         props.setDelete(id,'Ingredient'); 
         setTimeout(() => {
-            openModal();
+            openModal(e);
         }, 900);
     } 
-    
     return(
         <li className="list-group-item" id={id}>
             <div className="row justify-content-between align-items-center">
@@ -25,7 +24,7 @@ export const Ingredient=props=>{
                 </div>
                 <div className="col-md-4 d-flex justify-content-end acciones">
                     <Link to={`/admin/edit/ingredient/${id}`} className="btn btn-success mr-2">Edit</Link>
-                    <button type="button" className="btn btn-primary ml-2" onClick={()=>deleteIngredient(id)}>Delete</button>
+                    <button type="button" className="btn btn-primary ml-2" onClick={(e)=>deleteIngredient(e,id)}>Delete</button>
                 </div>
             </div>
         </li>
