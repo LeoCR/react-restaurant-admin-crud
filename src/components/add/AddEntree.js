@@ -59,7 +59,7 @@ export class AddEntree extends React.PureComponent{
             category,
             picture
         } =this.state;
-        var formData = new FormData(),
+        const formData = new FormData(),
         _this=this;
         if(name===''||price===''||description===''||category===''||picture===''){
             this.setState({
@@ -134,15 +134,15 @@ export class AddEntree extends React.PureComponent{
         }  
     }
     componentDidMount=async()=>{
-        var totalOfItems=1, 
+        let totalOfItems=1, 
         idString='',
-        _this=this,
-        customRandomString=randomString(4);
+        _this=this;
+        const customRandomString=randomString(4);
         try {
             _this.props.clearIngredientsByDish();
             await api.get('/api/entrees')
                 .then(response => {
-                    for(var i = 0; i <=response.data.length; ++i){
+                    for(let i = 0; i <=response.data.length; ++i){
                         ++totalOfItems;
                     }
                 }).then(()=>{
@@ -154,7 +154,7 @@ export class AddEntree extends React.PureComponent{
             await api.get('/api/ingredient-to-dish/count/')
             .then((res)=>{
                 if(res.data.maxIngredientDishId){
-                    var nextIdIngDish=parseInt(res.data.maxIngredientDishId)+1;
+                    const nextIdIngDish=parseInt(res.data.maxIngredientDishId)+1;
                     _this.props.setNextIdDishIngredient(nextIdIngDish)
                 }
             })

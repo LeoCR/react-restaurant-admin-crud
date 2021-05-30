@@ -47,8 +47,8 @@ export class ShowDesserts extends Component{
             this.setState({
                 totalItems:desserts.length
             });
-            var tempTotalPages=Math.ceil(desserts.length/this.state.maxItemsPerPage);
-            var tempItems=[];
+            const tempTotalPages=Math.ceil(desserts.length/this.state.maxItemsPerPage);
+            const tempItems=[];
             for (let index = 1; index <= tempTotalPages; index++) {
                 tempItems.push(index);
             }
@@ -104,8 +104,8 @@ export class ShowDesserts extends Component{
                 if($('.page-nav').hasClass('active')){
                     $('.page-nav').removeClass('active');
                 }
-                var tempCurrentPage=parseInt(this.state.currentPage)+1;
-                var tempFirstItemToShow=(tempCurrentPage*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
+                const tempCurrentPage=parseInt(this.state.currentPage)+1;
+                const tempFirstItemToShow=(tempCurrentPage*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
                 this.setState({
                     currentPage:tempCurrentPage,
                     firstItemToShow:tempFirstItemToShow
@@ -123,8 +123,8 @@ export class ShowDesserts extends Component{
                 if($('.page-nav').hasClass('active')){
                     $('.page-nav').removeClass('active');
                 }
-                var tempCurrentPage=parseInt(this.state.currentPage)-1;
-                var tempFirstItemToShow=(tempCurrentPage*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
+                const tempCurrentPage=parseInt(this.state.currentPage)-1;
+                const tempFirstItemToShow=(tempCurrentPage*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
                 this.setState({
                     firstItemToShow:tempFirstItemToShow,
                     currentPage:tempCurrentPage
@@ -138,7 +138,7 @@ export class ShowDesserts extends Component{
     }
     getPage=(index)=>{
         try {
-            var tempFirstItemToShow=(index*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
+            const tempFirstItemToShow=(index*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
             if($('.page-nav').hasClass('active')){
                 $('.page-nav').removeClass('active');
             }
@@ -157,8 +157,8 @@ export class ShowDesserts extends Component{
     }
     setDessertsItems=()=>{
         const {desserts}=this.props;
-        var tempDessertsToShow=[];
-        var maxItemsLenght=parseInt(this.state.maxItemsPerPage*this.state.currentPage);
+        const tempDessertsToShow=[];
+        let maxItemsLenght=parseInt(this.state.maxItemsPerPage*this.state.currentPage);
         try {
             let index = this.state.firstItemToShow;
             if(maxItemsLenght>desserts.length){

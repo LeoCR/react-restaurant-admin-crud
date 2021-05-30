@@ -46,8 +46,8 @@ export class ShowIngredients extends Component{
         this.setState({
             totalItems:ingredients.length
         });
-        var tempTotalPages=Math.ceil(ingredients.length/this.state.maxItemsPerPage);
-        var tempItems=[];
+        const tempTotalPages=Math.ceil(ingredients.length/this.state.maxItemsPerPage);
+        const tempItems=[];
         for (let index = 1; index <= tempTotalPages; index++) {
             tempItems.push(index);
         }
@@ -98,8 +98,8 @@ export class ShowIngredients extends Component{
                 if($('.page-nav').hasClass('active')){
                     $('.page-nav').removeClass('active');
                 }
-                var tempCurrentPage=parseInt(this.state.currentPage)+1;
-                var tempFirstItemToShow=(tempCurrentPage*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
+                const tempCurrentPage=parseInt(this.state.currentPage)+1;
+                const tempFirstItemToShow=(tempCurrentPage*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
                 this.setState({
                     currentPage:tempCurrentPage,
                     firstItemToShow:tempFirstItemToShow
@@ -117,8 +117,8 @@ export class ShowIngredients extends Component{
                 if($('.page-nav').hasClass('active')){
                     $('.page-nav').removeClass('active');
                 }
-                var tempCurrentPage=parseInt(this.state.currentPage)-1;
-                var tempFirstItemToShow=(tempCurrentPage*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
+                const tempCurrentPage=parseInt(this.state.currentPage)-1;
+                const tempFirstItemToShow=(tempCurrentPage*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
                 this.setState({
                     firstItemToShow:tempFirstItemToShow,
                     currentPage:tempCurrentPage

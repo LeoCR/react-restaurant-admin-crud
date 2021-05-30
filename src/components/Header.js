@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link} from "react-router-dom";
-function toggleSubmenu(e){
+
+const toggleSubmenu=(e)=>{
     if(e){
         e.currentTarget.classList.toggle("open");
     }
@@ -82,4 +83,4 @@ const Header=()=>{
         </nav>
     )
 } 
-export default React.memo(Header);
+export default Header;

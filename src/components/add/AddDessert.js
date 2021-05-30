@@ -58,7 +58,7 @@ export class AddDessert extends React.PureComponent{
             price,
             picture
         } =this.state;
-        var formData = new FormData(),
+        const formData = new FormData(),
         _this=this;
         if(name===''||price===''||description===''||picture===''){
             this.setState({
@@ -132,15 +132,15 @@ export class AddDessert extends React.PureComponent{
         }  
     }
     componentDidMount=async()=>{ 
-        var totalOfItems=1,
+        let totalOfItems=1,
         idString='',
         _this=this;
         try { 
             _this.props.clearIngredientsByDish();
-            var customRandomString=randomString(4);
+            const customRandomString=randomString(4);
             await api.get('/api/desserts')
                 .then(response => {
-                    for(var i = 0; i <= response.data.length; ++i){
+                    for(let i = 0; i <= response.data.length; ++i){
                         ++totalOfItems;
                     }
                 }).then(()=>{

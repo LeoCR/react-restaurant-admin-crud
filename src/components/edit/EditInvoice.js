@@ -34,7 +34,7 @@ class EditInvoice extends React.PureComponent{
         }
     }
     renderOrder=()=>{
-        var totalPrice=0;
+        let totalPrice=0;
         if(this.props.orderProducts){
             this.props.orderProducts.forEach(product => {
                 totalPrice+=parseFloat(product.total)
@@ -99,7 +99,7 @@ class EditInvoice extends React.PureComponent{
         return true;
     }
     render(){
-        var {order_code,email,date_of_billing} = this.state.invoice;
+        const {order_code,email,date_of_billing} = this.state.invoice;
         return(
             <div className="row justify-content-center mt-5">
                 <div className="col-md-8">

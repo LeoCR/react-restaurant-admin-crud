@@ -41,7 +41,7 @@ export class AddDrink extends React.PureComponent{
             price,
             picture
         } =this.state;
-        var formData = new FormData(),
+        const formData = new FormData(),
         _this=this;
         if(name===''||price===''||description===''||picture===''||picture===null){
             this.setState({
@@ -65,11 +65,12 @@ export class AddDrink extends React.PureComponent{
         }  
     }
     componentDidMount=async()=>{
-        var totalOfItems=1;var idString;
-        var customRandomString=randomString(4);
+        let totalOfItems=1, 
+        idString='';
+        const customRandomString=randomString(4);
         await api.get('/api/drinks')
             .then(response => {
-                for(var i = 0; i <= response.data.length; ++i){
+                for(let i = 0; i <= response.data.length; ++i){
                     ++totalOfItems;
                 }
             }).then(()=>{

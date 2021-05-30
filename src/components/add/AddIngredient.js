@@ -33,7 +33,7 @@ export class AddIngredient extends React.PureComponent{
             name,
             img
         } =this.state;
-        var formData = new FormData(),
+        const formData = new FormData(),
         _this=this;
         if(name===''||img===''){
             this.setState({
@@ -56,14 +56,14 @@ export class AddIngredient extends React.PureComponent{
         
     }
     componentDidMount=async()=>{
-        var totalOfItems=1,
+        let totalOfItems=1,
         idString='',
-        _this=this,
-        customRandomString=randomString(4);
+        _this=this;
+        const customRandomString=randomString(4);
         try {
             await api.get('/api/ingredients')
                 .then(response => {
-                    for(var i = 0; i <= response.data.length; ++i){
+                    for(let i = 0; i <= response.data.length; ++i){
                             ++totalOfItems;
                     }
                 }).then(()=>{

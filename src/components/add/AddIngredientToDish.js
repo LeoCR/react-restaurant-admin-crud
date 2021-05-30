@@ -15,7 +15,7 @@ export class AddIngredientToDish extends React.PureComponent{
     }
      componentDidMount=async()=>{
         await this.props.getIngredients();  
-        var _this=this;
+        const _this=this;
         setTimeout(() => {
             _this.setState({
                 ingredientsToAdd:_this.props.ingredients,
@@ -37,12 +37,12 @@ export class AddIngredientToDish extends React.PureComponent{
     }
     onChangeIngredient=(e)=>{
         e.preventDefault();
-        var idIngredient=e.target.value; 
-        var _this=this;
+        const idIngredient=e.target.value; 
+        const _this=this;
         if(idIngredient!=='none'){
             api.get('/api/ingredient/show/'+idIngredient)
             .then((res)=>{
-                var tempIngredientSelected=res.data
+                const tempIngredientSelected=res.data
                 _this.setState({
                     ingredientSelected:{
                         id_ingredient_dish:this.state.nextIdDishIngredient,
@@ -57,7 +57,7 @@ export class AddIngredientToDish extends React.PureComponent{
     }
     onSubmit=(e)=>{  
         e.preventDefault();
-        var selectDish=document.querySelector("#select-add-ingredient-to-dish"); 
+        const selectDish=document.querySelector("#select-add-ingredient-to-dish"); 
         try {
             if(this.state.ingredientSelected!==null&&selectDish.value!=='none'){
                 if(typeof this.props.ingredientsByDish!=='undefined'){

@@ -46,8 +46,8 @@ export class ShowInvoices extends React.Component{
         } catch (error) {
             console.log('An error occurs '+error);
         }
-        var tempTotalPages=Math.ceil(this.state.totalItems/this.state.maxItemsPerPage);
-        var tempItems=[];
+        const tempTotalPages=Math.ceil(this.state.totalItems/this.state.maxItemsPerPage);
+        const tempItems=[];
         for (let index = 1; index <= tempTotalPages; index++) {
             tempItems.push(index);
         }
@@ -98,8 +98,8 @@ export class ShowInvoices extends React.Component{
                 if($('.page-nav').hasClass('active')){
                     $('.page-nav').removeClass('active');
                 }
-                var tempCurrentPage=this.state.currentPage+1;
-                var tempFirstItemToShow=(tempCurrentPage*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
+                const tempCurrentPage=this.state.currentPage+1;
+                const tempFirstItemToShow=(tempCurrentPage*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
                 this.setState({
                     currentPage:tempCurrentPage,
                     firstItemToShow:tempFirstItemToShow
@@ -117,8 +117,8 @@ export class ShowInvoices extends React.Component{
                 if($('.page-nav').hasClass('active')){
                     $('.page-nav').removeClass('active');
                 }
-                var tempCurrentPage=this.state.currentPage-1;
-                var tempFirstItemToShow=(tempCurrentPage*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
+                const tempCurrentPage=this.state.currentPage-1;
+                const tempFirstItemToShow=(tempCurrentPage*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
                 this.setState({
                     firstItemToShow:tempFirstItemToShow,
                     currentPage:tempCurrentPage
@@ -132,7 +132,7 @@ export class ShowInvoices extends React.Component{
     }
     getPage=(index)=>{
         try {
-            var tempFirstItemToShow=(index*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
+            const tempFirstItemToShow=(index*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
             if($('.page-nav').hasClass('active')){
                 $('.page-nav').removeClass('active');
             }
@@ -152,9 +152,9 @@ export class ShowInvoices extends React.Component{
     }
     setInvoicesItems= ()=>{
         const {invoices}=this.props;
-        var tempInvoicesToShow=[];
-        var maxItemsLenght=parseInt(this.state.maxItemsPerPage*this.state.currentPage);
-        var _this=this;
+        const tempInvoicesToShow=[];
+        let maxItemsLenght=parseInt(this.state.maxItemsPerPage*this.state.currentPage);
+        const _this=this;
         try {
             let index = this.state.firstItemToShow;
             if(maxItemsLenght>invoices.length){

@@ -90,7 +90,12 @@ describe("EditDessert Component",()=>{
                 idDish:'1DESRT',
                 nextIdDishIngredient:66
             } 
-        }); 
+        }); /*
+        component = create(
+          <Provider store={store}>
+            <EditDessert {...props}/>
+          </Provider>
+        );*/
         wrapper = shallow(
             <Provider store={store}>
                  <EditDessert {...props}/>
@@ -104,7 +109,7 @@ describe("EditDessert Component",()=>{
             expect(wrapper.find(".col-md-8")).toHaveLength(1);
             expect(wrapper.find(".row.justify-content-center.mt-5")).toHaveLength(1);
             expect(wrapper.find(".form-group")).toHaveLength(4);
-        }, 500); 
+        }, 600);
     })
     it('Should render 2 buttons',()=>{
         setTimeout(() => {
@@ -115,7 +120,7 @@ describe("EditDessert Component",()=>{
             expect(wrapper.find('.btn-primary').text()).toEqual('Update');
             expect(wrapper.find("button")).toHaveLength(2);
             expect(wrapper.find("button").length).toEqual(2);
-        }, 500);
+        }, 600);
     }); 
     it("OnSubmit Form",()=>{ 
         const instance = wrapper.instance();
@@ -125,7 +130,7 @@ describe("EditDessert Component",()=>{
             wrapper.find('form').simulate('submit');  
             sinon.assert.calledOnce(spyAddDessert); 
             expect(spyAddDessert.called).toBe(true);
-        }, 500);
+        }, 600);
     });
     it("Handling State Change",()=>{ 
         setTimeout(() => {
@@ -139,6 +144,6 @@ describe("EditDessert Component",()=>{
             expect( getByTestId('description-dessert').value).toEqual('New Dessert Description');
             expect( getByText('You have uploaded a file named new_dessert.jpg')).toBeTruthy();
             expect( parseInt(getByTestId('price-dessert').value)).toEqual(5);
-        }, 500);
+        }, 600);
     })
 })

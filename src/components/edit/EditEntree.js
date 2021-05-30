@@ -42,11 +42,11 @@ export class EditEntree extends React.PureComponent{
         this.props.showEntree(id);
         this.props.setDishId(id);
         this.props.getIngredientsByDishId(id);
-        var _this=this;
+        const _this=this;
         await api.get('/api/ingredient-to-dish/count/')
         .then((res)=>{
             if(res.data.maxIngredientDishId){
-                var nextIdIngDish=parseInt(res.data.maxIngredientDishId)+1;
+                const nextIdIngDish=parseInt(res.data.maxIngredientDishId)+1;
                 _this.props.setNextIdDishIngredient(nextIdIngDish)
             }
         })
@@ -85,8 +85,8 @@ export class EditEntree extends React.PureComponent{
         if(e){
             e.preventDefault();
         }
-        var {id ,name,description,price,category,picture,changedPicture} =this.state;
-        var formData=new FormData();
+        const {id ,name,description,price,category,picture,changedPicture} =this.state;
+        const formData=new FormData();
         if(name===''||price===''||description===''||category===''){
             this.setState({
                 error:true
@@ -175,7 +175,7 @@ export class EditEntree extends React.PureComponent{
             }    
     }
     render(){
-        var {name,price,description,category,picture,error} = this.state;
+        const {name,price,description,category,picture,error} = this.state;
         return(
             (this.state.isLoadig===true)?<p>Loading Data, Please wait...</p>:<React.Fragment>
                 <div className="row justify-content-center mt-5">

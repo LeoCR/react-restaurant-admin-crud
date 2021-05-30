@@ -19,7 +19,7 @@ class AddUser extends React.PureComponent{
         }
     }
     componentDidMount=async()=>{
-        var idUser=0,totalOfItems=0,_this=this;
+        let idUser=0,totalOfItems=0,_this=this;
         await api.get('/api/count-users')
             .then(response => {
                 totalOfItems=response.data.MaxIdUser;
@@ -55,7 +55,7 @@ class AddUser extends React.PureComponent{
             password,
             retypePassword
         }=this.state;
-        var _this=this;
+        const _this=this;
         if(username===''||firstname===''||email===''||password===''||username===''||lastname===''
             || password!==retypePassword){
             this.setState({
@@ -84,7 +84,7 @@ class AddUser extends React.PureComponent{
     }
     render(){
         const { error,id,password,retypePassword}=this.state;
-        var errorMessage=<div className="font-weight-bold alert-danger text-center mt-4">
+        let errorMessage=<div className="font-weight-bold alert-danger text-center mt-4">
             All the fields are required except About
         </div>;
         if(password!==retypePassword){

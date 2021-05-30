@@ -40,8 +40,8 @@ export class ShowDrinks extends React.Component{
         this.setState({
             totalItems:drinks.length
         });
-        var tempTotalPages=Math.ceil(drinks.length/this.state.maxItemsPerPage);
-        var tempItems=[];
+        const tempTotalPages=Math.ceil(drinks.length/this.state.maxItemsPerPage);
+        const tempItems=[];
         for (let index = 1; index <= tempTotalPages; index++) {
             tempItems.push(index);
         }
@@ -92,8 +92,8 @@ export class ShowDrinks extends React.Component{
                 if($('.page-nav').hasClass('active')){
                     $('.page-nav').removeClass('active');
                 }
-                var tempCurrentPage=parseInt(this.state.currentPage)+1;
-                var tempFirstItemToShow=(tempCurrentPage*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
+                const tempCurrentPage=parseInt(this.state.currentPage)+1;
+                const tempFirstItemToShow=(tempCurrentPage*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
                 this.setState({
                     currentPage:tempCurrentPage,
                     firstItemToShow:tempFirstItemToShow
@@ -111,8 +111,8 @@ export class ShowDrinks extends React.Component{
                 if($('.page-nav').hasClass('active')){
                     $('.page-nav').removeClass('active');
                 }
-                var tempCurrentPage=parseInt(this.state.currentPage)-1;
-                var tempFirstItemToShow=(tempCurrentPage*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
+                const tempCurrentPage=parseInt(this.state.currentPage)-1;
+                const tempFirstItemToShow=(tempCurrentPage*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
                 this.setState({
                     firstItemToShow:tempFirstItemToShow,
                     currentPage:tempCurrentPage
@@ -126,7 +126,7 @@ export class ShowDrinks extends React.Component{
     }
     getPage=(index)=>{
         try {
-            var tempFirstItemToShow=(index*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
+            const tempFirstItemToShow=(index*this.state.maxItemsPerPage)-parseInt(this.state.maxItemsPerPage);
             if($('.page-nav').hasClass('active')){
                 $('.page-nav').removeClass('active');
             }
@@ -145,8 +145,8 @@ export class ShowDrinks extends React.Component{
     }
     setDrinksItems=()=>{
         const {drinks}=this.props;
-        var tempDrinksToShow=[];
-        var maxItemsLenght=parseInt(this.state.maxItemsPerPage*this.state.currentPage);
+        const tempDrinksToShow=[];
+        let maxItemsLenght=parseInt(this.state.maxItemsPerPage*this.state.currentPage);
         try {
             let index = this.state.firstItemToShow;
             do{ 
