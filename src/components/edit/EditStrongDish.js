@@ -32,12 +32,12 @@ class EditStrongDish extends React.PureComponent{
         }, 700);
     }   
     componentDidMount=async()=>{
-        var {id}=this.props.match.params;
+        const {id}=this.props.match.params;
         this.props.getStrongsDishes();
         this.props.showStrongDish(id);
         this.props.setDishId(id);
         this.props.getIngredientsByDishId(id);
-        var _this=this;
+        const _this=this;
         await api.get('/api/ingredient-to-dish/count/')
         .then((res)=>{
             if(res.data.maxIngredientDishId){
@@ -83,8 +83,8 @@ class EditStrongDish extends React.PureComponent{
         if(e){
             e.preventDefault();
         }
-        var { id , name, description, price, category, picture, changedPicture } =this.state;
-        var formData=new FormData();
+        const { id , name, description, price, category, picture, changedPicture } =this.state;
+        const formData=new FormData();
         if(name===''||price===''||description===''||category===''){
             this.setState({
                 error:true
@@ -94,7 +94,7 @@ class EditStrongDish extends React.PureComponent{
             this.setState({
                 error:false
             });
-            var infoDish={
+            const infoDish={
                 id:id,
                 name:name,
                 price:price,

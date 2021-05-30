@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 export const Invoice =props=>{ 
     const {id_header,date_of_billing,username,email,order_code} = props.info;
-    var date=date_of_billing.replace('.000Z','');
+    const date=date_of_billing.replace('.000Z','');
     return( <React.Fragment>
         <li className="list-group-item" id={id_header}>
             <div className="row justify-content-between align-items-center">

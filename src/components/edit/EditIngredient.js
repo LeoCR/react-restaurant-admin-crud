@@ -49,7 +49,7 @@ export class EditIngredient extends React.PureComponent{
             img,
             changedPicture
         } =this.state;
-        var formData=new FormData(),
+        const formData=new FormData(),
         _this=this;
         if(name===''){
             this.setState({

@@ -9,7 +9,7 @@ import {deleteStrongDish,getStrongsDishes} from "../../actions/strongDishActions
 import PropTypes from 'prop-types'; 
 const Delete = props=>{
     const deleteProduct=()=>{ 
-        var id=props.idToDelete;
+        const id=props.idToDelete;
         if(props.productType==='Dessert'){
             props.deleteDessert(id);
             props.getDesserts();

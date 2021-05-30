@@ -60,7 +60,7 @@ class EditUser extends React.PureComponent{
             password,
             retypePassword
         }=this.state;
-        var _this=this;
+        const _this=this;
         if(username===''||firstname===''||email===''||password===''||username===''||lastname===''
             || password!==retypePassword){
             this.setState({
@@ -99,7 +99,7 @@ class EditUser extends React.PureComponent{
             password,
             retypePassword
         }=this.state;
-        var errorMessage=<div className="font-weight-bold alert-danger text-center mt-4">
+        let errorMessage=<div className="font-weight-bold alert-danger text-center mt-4">
             All the fields are required except About
         </div>;
         if(password!==retypePassword){

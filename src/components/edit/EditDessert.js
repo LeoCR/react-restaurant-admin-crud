@@ -34,7 +34,7 @@ export class EditDessert extends React.PureComponent{
     } 
     componentDidMount=async()=>{
         try {
-            var _this=this; 
+            const _this=this; 
             const {id}=this.props.match.params;
             this.props.getDesserts();
             this.props.showDessert(id);
@@ -43,7 +43,7 @@ export class EditDessert extends React.PureComponent{
             await api.get('/api/ingredient-to-dish/count/')
             .then((res)=>{
                 if(res.data.maxIngredientDishId){
-                    var nextIdIngDish=parseInt(res.data.maxIngredientDishId)+1;
+                    const nextIdIngDish=parseInt(res.data.maxIngredientDishId)+1;
                     _this.props.setNextIdDishIngredient(nextIdIngDish)
                 }
             })
@@ -90,8 +90,8 @@ export class EditDessert extends React.PureComponent{
         if(e){
             e.preventDefault(); 
         }
-        var { id , name, description, price, picture, changedPicture } =this.state;
-        var formData=new FormData();
+        const { id , name, description, price, picture, changedPicture } =this.state;
+        const formData=new FormData();
         if(name===''||price===''||description===''){
             this.setState({
                 error:true
@@ -101,7 +101,7 @@ export class EditDessert extends React.PureComponent{
             this.setState({
                 error:false
             });
-            var infoDessert={
+            const infoDessert={
                 id,
                 name,
                 price,
@@ -181,7 +181,7 @@ export class EditDessert extends React.PureComponent{
             }    
     }
     render(){
-        var {name,price,description,picture,error} = this.state;
+        const {name,price,description,picture,error} = this.state;
         return(
             (this.state.isLoadig===true)?<p>Loading Data, Please wait...</p>:<React.Fragment>
                 <div className="row justify-content-center mt-5">

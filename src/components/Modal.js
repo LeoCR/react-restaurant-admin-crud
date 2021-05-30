@@ -5,8 +5,8 @@ import AddIngredientToDish from "./add/AddIngredientToDish"
 import PropTypes from 'prop-types';
 import Delete from "./delete/delete";
 const Modal =props=>{
-    var ModalContent=<p>Modal Content</p>;
-        var titleModal=<h1>Title Modal</h1>;
+    let ModalContent=<p>Modal Content</p>;
+        let titleModal=<h1>Title Modal</h1>;
         if(props.modals==='addIngredient'){
             titleModal=<h1>Add Ingredients</h1>;
             ModalContent=<AddIngredientToDish/>;

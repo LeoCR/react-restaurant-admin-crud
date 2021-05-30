@@ -50,8 +50,8 @@ export class EditDrink extends React.PureComponent{
     } 
     editDrink=(e)=>{ 
         e.preventDefault();   
-        var { id ,name,description,price,picture,changedPicture} =this.state;
-        var formData=new FormData()
+        const { id ,name,description,price,picture,changedPicture} =this.state;
+        const formData=new FormData()
         if(name===''||price===''||description===''){
             this.setState({
                 error:true
@@ -61,7 +61,7 @@ export class EditDrink extends React.PureComponent{
             this.setState({
                 error:false
             });
-            var infoDrink={ id, name, price, description,  picture};
+            const infoDrink={ id, name, price, description,  picture};
             formData.append('id',id);
             formData.append('name',name);
             formData.append('price',price);
@@ -87,7 +87,7 @@ export class EditDrink extends React.PureComponent{
         }
     }
     render(){
-        var {name,price,description,picture,error} = this.state;
+        const {name,price,description,picture,error} = this.state;
         return(
             <div className="row justify-content-center mt-5">
                 <div className="col-md-8">
